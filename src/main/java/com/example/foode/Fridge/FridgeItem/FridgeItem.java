@@ -16,7 +16,6 @@ public class FridgeItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "fridge_item_id_seq")
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "fridge_id", referencedColumnName = "id")
     private Fridge fridge;

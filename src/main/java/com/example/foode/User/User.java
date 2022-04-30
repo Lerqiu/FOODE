@@ -21,7 +21,6 @@ public class User {
     @Column(nullable = false)
     private String login;
 
-
     @Column(nullable = false)
     private String password;
 
@@ -34,7 +33,6 @@ public class User {
     @OneToOne
     @JoinColumn(name = "fridge_id", referencedColumnName = "id")
     private Fridge fridge;
-
 
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
