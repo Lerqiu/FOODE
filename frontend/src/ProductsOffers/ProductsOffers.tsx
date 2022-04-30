@@ -1,11 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
 
-function ProductsOffers() {
+const ProductsOffers = () => {
     return (
-       <h1>
-           Raw product
-       </h1>
+        <h1>
+            Raw product
+        </h1>
     );
 }
 

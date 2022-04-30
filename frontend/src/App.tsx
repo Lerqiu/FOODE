@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './Navbar/Navbar';
 import ProductsOffers from './ProductsOffers/ProductsOffers';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
