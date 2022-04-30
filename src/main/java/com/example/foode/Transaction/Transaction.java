@@ -24,6 +24,6 @@ public class Transaction {
     @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     private User buyer;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate date;
 }

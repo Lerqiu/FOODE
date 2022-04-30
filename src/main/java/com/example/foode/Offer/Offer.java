@@ -18,19 +18,19 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "offers_id_seq")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate date;
 
-    @Column
+    @Column(nullable = false)
     private String location;
 
-    @Column(length = 4000)
+    @Column(length = 4000, nullable = false)
     private String description;
 
-    @Column(length = 200)
+    @Column(length = 200, nullable = false)
     private String availability;
 
     @ManyToOne

@@ -25,10 +25,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal points;
 
-    @Column
+    @Column(nullable = false)
     private String contact;
 
     @OneToOne

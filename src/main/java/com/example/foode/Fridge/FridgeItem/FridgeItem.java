@@ -25,7 +25,7 @@ public class FridgeItem {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @Column
+    @Column(nullable = false)
     private Long quantity;
 
 }
