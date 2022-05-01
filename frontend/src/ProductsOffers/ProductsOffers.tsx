@@ -1,10 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
+import NavbarButton from '../Navbar/Button/NavbarButton';
 
 const ProductsOffers = () => {
     return (
         <h1>
-            Raw product
+          Example text
         </h1>
     );
 }
