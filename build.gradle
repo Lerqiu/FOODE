@@ -34,6 +34,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation('org.spockframework:spock-core:2.0-groovy-3.0')
 	testImplementation('org.codehaus.groovy:groovy')
+
+	//health
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 tasks.named('test') {
