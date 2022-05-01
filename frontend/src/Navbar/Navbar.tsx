@@ -2,7 +2,7 @@ import { AppBar, Box, Container, Toolbar } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
 import NavbarStyles from './Navbar.styles'
-import NavbarProfil from './Profil/NavbarProfil';
+import NavbarProfile from './Profile/NavbarProfile';
 
 const Navbar = () => {
 
@@ -32,7 +32,6 @@ const Navbar = () => {
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
 
-                        <img src='http://www.clipartbest.com/cliparts/9iR/B7o/9iRB7oLie.png' style={{ height: '8vh' }} />
                         <img src='https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png' style={{ height: '9.5vh' }} />
 
                         <Box sx={{ flexGrow: 1, display: 'flex' }}>
@@ -48,7 +47,7 @@ const Navbar = () => {
                             ))}
                         </Box>
 
-                        <NavbarProfil/>
+                        <NavbarProfile/>
                     </Toolbar>
                 </Container>
             </AppBar>
