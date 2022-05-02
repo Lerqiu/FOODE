@@ -1,47 +1,58 @@
-import { Container, Grid, List, ListItem, ListItemButton, ListItemText, Paper } from '@mui/material';
+import { Box, Button, Container, Pagination, PaginationItem, Paper, Stack } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const MockDiv = () => {
   return (
-    < div style={{ height: '200px', width: '500px', backgroundColor: 'grey' ,margin:'10px'}}>
+    < div style={{ height: '200px', width: '500px', backgroundColor: 'grey', margin: '10px' }}>
       MOCK
     </div >)
 }
 
-const ProductsOffers = () => {
-
-  const parentRef = useRef<HTMLInputElement | null>(null);;
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (parentRef.current && height === 0) {
-
-      let parentHeight = parentRef.current.offsetHeight;
-      setHeight(parentHeight)
-    }
-  }, [parentRef]);
-
+const ProductsOffersPagination = () => {
   return (
-    <Grid container sx={{ display: 'flex', flexGrow: '1' }} spacing={0} padding={0}>
-      <Grid item xs={2} >
-        <Container sx={{ background: "red", height: '100%' }}>
-          Filtry
-        </Container>
-      </Grid>
-      <Grid item xs={10} >
-        <Container sx={{ background: "pink", height: '100%' }} ref={parentRef}>
-          <Paper sx={{ overflow: "auto", height: `${height}px` }}>
-          <MockDiv/>
-          <MockDiv/>
-          <MockDiv/>
-          <MockDiv/>
-          <MockDiv/>
-          <MockDiv/>
-          <MockDiv/>
+    <Box
+      display="flex"
+      width='100%'
+      bgcolor="lightgreen"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Pagination
+        count={5}
+        renderItem={(item) => (
+          <PaginationItem
+            components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+            {...item}
+          />
+        )}
+      />
+    </Box>
+  );
+}
+
+const ProductsOffers = () => {
+  return (
+    <Stack direction="row" sx={{ height: '100%' }}>
+      <Container sx={{ width: '30vw' }} >
+        <Paper sx={{ overflow: 'auto', height: "90.5vh" , backgroundColor: 'red' }}>
+
         </Paper>
       </Container>
-    </Grid>
-    </Grid >
+      <Container sx={{ height: "100%" }} >
+        <Paper sx={{ overflow: 'scroll', height: "90.5vh" }}>
+          <MockDiv />
+          <MockDiv />
+          <MockDiv />
+          <MockDiv />
+          <MockDiv />
+          <MockDiv />
+          <MockDiv />
+          <ProductsOffersPagination />
+        </Paper>
+      </Container>
+    </Stack >
   );
 }
 

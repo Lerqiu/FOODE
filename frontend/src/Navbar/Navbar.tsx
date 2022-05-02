@@ -30,7 +30,7 @@ const Navbar = () => {
     }
 
     return (
-        <div style={{display:'flex',minHeight:'100vh', flexDirection:'column'}}>
+        <div style={{maxHeight:'100vh'}}>
             <AppBar position='static' style={NavbarStyles}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
