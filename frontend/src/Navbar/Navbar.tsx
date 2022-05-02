@@ -21,13 +21,16 @@ const Navbar = () => {
         }
     }
 
+
     const renderBackground = (path: string) => {
         return ((path.length === 1 && location.pathname.length === 1) ||
-            (location.pathname.startsWith(path) && path.length === location.pathname.length))
+            (location.pathname.startsWith(path) && (path.length === location.pathname.length || (
+                path.length < location.pathname.length && location.pathname[path.length] === '/'
+            ))))
     }
 
     return (
-        <>
+        <div style={{display:'flex',minHeight:'100vh', flexDirection:'column'}}>
             <AppBar position='static' style={NavbarStyles}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
@@ -47,13 +50,13 @@ const Navbar = () => {
                             ))}
                         </Box>
 
-                        <NavbarProfile/>
+                        <NavbarProfile />
                     </Toolbar>
                 </Container>
             </AppBar>
 
             <Outlet />
-        </>
+        </div>
     );
 }
 
