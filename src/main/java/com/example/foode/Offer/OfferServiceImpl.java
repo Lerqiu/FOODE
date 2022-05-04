@@ -34,8 +34,20 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer updateOffer(Offer offer) {
-        return offerRepository.saveAndFlush(offer);
+    public Offer updateOffer(Offer newOffer, Long id) {
+        return offerRepository.findById(id)
+                .map(offer -> {
+                    offer.setAvailability(offer.getAvailability());
+                    offer.setCity(offer.getCity());
+                    offer.setDate(offer.getDate());
+                    offer.setDescription(offer.getDescription());
+                    offer.setPrice(offer.getPrice());
+                    return offerRepository.saveAndFlush(offer);
+                })
+                .orElseGet(() -> {
+                    newOffer.setId(id);
+                    return offerRepository.saveAndFlush(newOffer);
+                });
     }
 
 

@@ -37,9 +37,9 @@ public class OfferController {
         offerService.deleteOffer(id);
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    Offer updateOffer(@RequestBody Offer offer) {
-        return offerService.updateOffer(offer);
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    Offer updateOffer(@RequestBody Offer offer, @PathVariable Long id) {
+        return offerService.updateOffer(offer, id);
     }
 }
