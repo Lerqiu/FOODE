@@ -42,6 +42,8 @@ public class OfferServiceImpl implements OfferService {
                     offer.setDate(newOffer.getDate());
                     offer.setDescription(newOffer.getDescription());
                     offer.setPrice(newOffer.getPrice());
+                    offer.setProduct(newOffer.getProduct());
+                    offer.setCity(newOffer.getCity());
                     return offerRepository.saveAndFlush(offer);
                 })
                 .orElseGet(() -> {

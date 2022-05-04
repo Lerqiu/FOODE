@@ -9,7 +9,7 @@ public interface ProductService {
 
     Product createProduct(Product product);
 
-    Page<Product> getProducts(String name, Pageable pageable);
+    Page<Product> getProductsByName(String name, Pageable pageable);
 
     Optional<Product> getProduct(Long id);
 

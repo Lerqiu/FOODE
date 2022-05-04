@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProducts(String name, Pageable pageable) {
+    public Page<Product> getProductsByName(String name, Pageable pageable) {
         return productRepository.findAllByNameContainingIgnoreCase(name, pageable);
     }
 
