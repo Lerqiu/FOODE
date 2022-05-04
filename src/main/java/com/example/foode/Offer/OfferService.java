@@ -1,5 +1,6 @@
 package com.example.foode.Offer;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface OfferService {
 
     Offer createOffer(Offer offer);
 
-    List<Offer> getOffersByCity(Long cityId, Pageable pageable);
+    Page<Offer> getOffersByCity(Long cityId, Pageable pageable);
 
     Optional<Offer> getOffer(Long id);
 

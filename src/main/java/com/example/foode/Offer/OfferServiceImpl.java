@@ -1,6 +1,7 @@
 package com.example.foode.Offer;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,8 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<Offer> getOffersByCity(Long cityId, Pageable pageable) {
-        return offerRepository.findAllByCityId(cityId, pageable)
-                .stream()
-                .collect(Collectors.toList());
+    public Page<Offer> getOffersByCity(Long cityId, Pageable pageable) {
+        return offerRepository.findAllByCityId(cityId, pageable);
     }
 
     @Override
