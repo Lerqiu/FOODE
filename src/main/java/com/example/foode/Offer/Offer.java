@@ -1,5 +1,6 @@
 package com.example.foode.Offer;
 
+import com.example.foode.City.City;
 import com.example.foode.Product.Product;
 import com.example.foode.User.User;
 import lombok.Data;
@@ -24,8 +25,9 @@ public class Offer {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private String location;
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    private City city;
 
     @Column(length = 4000, nullable = false)
     private String description;

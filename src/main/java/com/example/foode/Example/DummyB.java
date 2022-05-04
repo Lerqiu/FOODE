@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DummyB {
 
-    private final int dummyInt;
+    private final int dummyInt = 5;
 
 
     public int getDummyInt(){
