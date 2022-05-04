@@ -1,10 +1,10 @@
 package com.example.foode.Offer;
 
+import com.example.foode.Offer.Exception.OfferNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,9 +15,9 @@ public class OfferController {
     private final OfferService offerService;
 
     @PostMapping
-    ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
-        var newOffer = offerService.createOffer(offer);
-        return new ResponseEntity<>(newOffer, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    Offer createOffer(@RequestBody Offer offer) {
+        return offerService.createOffer(offer);
     }
 
     @GetMapping()
@@ -26,10 +26,10 @@ public class OfferController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Offer> getOffer(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    Offer getOffer(@PathVariable Long id) throws OfferNotFoundException {
         return offerService.getOffer(id)
-                .map(offer -> ResponseEntity.ok().body(offer))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new OfferNotFoundException(id.toString()));
     }
 
     @DeleteMapping("/{id}")
@@ -38,9 +38,8 @@ public class OfferController {
     }
 
     @PutMapping
-    ResponseEntity<Offer> updateOffer(@RequestBody Offer offer) {
-        var updatedOffer = offerService.updateOffer(offer);
-
-        return new ResponseEntity<>(updatedOffer, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.OK)
+    Offer updateOffer(@RequestBody Offer offer) {
+        return offerService.updateOffer(offer);
     }
 }

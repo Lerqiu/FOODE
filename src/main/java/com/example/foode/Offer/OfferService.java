@@ -14,4 +14,6 @@ public interface OfferService {
     Optional<Offer> getOffer(Long id);
 
     void deleteOffer(Long id);
+
+    Offer updateOffer(Offer offer);
 }

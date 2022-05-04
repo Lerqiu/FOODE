@@ -32,4 +32,11 @@ public class OfferServiceImpl implements OfferService {
     public void deleteOffer(Long id) {
         offerRepository.deleteById(id);
     }
+
+    @Override
+    public Offer updateOffer(Offer offer) {
+        return offerRepository.saveAndFlush(offer);
+    }
+
+
 }
