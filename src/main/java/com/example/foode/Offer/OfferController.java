@@ -33,6 +33,7 @@ public class OfferController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteOffer(@PathVariable Long id) {
         offerService.deleteOffer(id);
     }

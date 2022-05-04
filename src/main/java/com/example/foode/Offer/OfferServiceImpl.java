@@ -37,11 +37,11 @@ public class OfferServiceImpl implements OfferService {
     public Offer updateOffer(Offer newOffer, Long id) {
         return offerRepository.findById(id)
                 .map(offer -> {
-                    offer.setAvailability(offer.getAvailability());
-                    offer.setCity(offer.getCity());
-                    offer.setDate(offer.getDate());
-                    offer.setDescription(offer.getDescription());
-                    offer.setPrice(offer.getPrice());
+                    offer.setAvailability(newOffer.getAvailability());
+                    offer.setCity(newOffer.getCity());
+                    offer.setDate(newOffer.getDate());
+                    offer.setDescription(newOffer.getDescription());
+                    offer.setPrice(newOffer.getPrice());
                     return offerRepository.saveAndFlush(offer);
                 })
                 .orElseGet(() -> {
