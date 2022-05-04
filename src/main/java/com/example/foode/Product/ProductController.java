@@ -21,6 +21,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     Page<Product> getProductsByName(@RequestParam String name, Pageable pageable) {
         return productService.getProductsByName(name, pageable);
     }

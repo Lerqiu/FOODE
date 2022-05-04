@@ -21,6 +21,7 @@ public class OfferController {
     }
 
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     Page<Offer> getOffersByCity(@RequestParam Long cityId, Pageable pageable) {
         return offerService.getOffersByCity(cityId, pageable);
     }
