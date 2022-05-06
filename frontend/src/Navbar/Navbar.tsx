@@ -1,8 +1,9 @@
-import { AppBar, Box, Container, Toolbar } from '@mui/material';
+import { AppBar, Box, Container, List, Paper, Stack, Toolbar } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
 import NavbarStyles from './Navbar.styles'
 import NavbarProfile from './Profile/NavbarProfile';
+
 
 const Navbar = () => {
 
@@ -30,7 +31,7 @@ const Navbar = () => {
     }
 
     return (
-        <div style={{maxHeight:'100vh'}}>
+        <Box sx={{ minHeight: "100vh", display: "flex", flexFlow: "column"}}>
             <AppBar position='static' style={NavbarStyles}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
@@ -49,14 +50,13 @@ const Navbar = () => {
                                 </NavbarButton>
                             ))}
                         </Box>
-
                         <NavbarProfile />
                     </Toolbar>
                 </Container>
             </AppBar>
-
+            
             <Outlet />
-        </div>
+        </Box>
     );
 }
 
