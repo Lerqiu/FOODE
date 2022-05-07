@@ -1,8 +1,9 @@
-import { AppBar, Box, Container, Toolbar } from '@mui/material';
+import { AppBar, Box, Container, List, Paper, Stack, Toolbar } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
 import NavbarStyles from './Navbar.styles'
 import NavbarProfile from './Profile/NavbarProfile';
+
 
 const Navbar = () => {
 
@@ -21,13 +22,23 @@ const Navbar = () => {
         }
     }
 
-    const renderBackground = (path: string) => {
-        return ((path.length === 1 && location.pathname.length === 1) ||
-            (location.pathname.startsWith(path) && path.length === location.pathname.length))
+
+    const doRenderBackground = (path: string) => {
+        const pathname = location.pathname
+
+        // Match to: /
+        const isMain: boolean = (path.length === 1 && pathname.length === 1)
+
+        //Match to: /xyz
+        const isSimpleSubSite: boolean = (pathname.startsWith(path) && path.length === pathname.length)
+
+        //Match to: /xyz/qwe/...
+        const isNestedSubSite: boolean = (pathname.startsWith(path) && path.length < pathname.length && pathname[path.length] === '/')
+        return (isMain || isSimpleSubSite || isNestedSubSite)
     }
 
     return (
-        <>
+        <Box sx={{ minHeight: "100vh", display: "flex", flexFlow: "column" }}>
             <AppBar position='static' style={NavbarStyles}>
                 <Container maxWidth={false}>
                     <Toolbar disableGutters>
@@ -40,20 +51,19 @@ const Navbar = () => {
                                     key={page.link}
                                     onClick={changeSubSite(page.link)}
                                     sx={{ my: 1, display: 'block', mx: 2 }}
-                                    renderBackground={renderBackground(page.link)}
+                                    renderBackground={doRenderBackground(page.link)}
                                 >
                                     {page.name}
                                 </NavbarButton>
                             ))}
                         </Box>
-
-                        <NavbarProfile/>
+                        <NavbarProfile />
                     </Toolbar>
                 </Container>
             </AppBar>
 
             <Outlet />
-        </>
+        </Box>
     );
 }
 
