@@ -51,13 +51,10 @@ const ProductOfertEntry = (props: { data: IProductOffersEntry }) => {
                         </Grid>
 
                         {/*Second line [sum(xs)=12]*/}
-                        <Grid item xs={3}>
-                            <Stack>
+                        <Grid item xs={8}>
                                 <ProductOffersUser data={data.user} />
-                                <ProductOffersLocation data={data.location} /> {/* Currently empty*/}
-                            </Stack>
+                                <ProductOffersLocation data={data.location} /> 
                         </Grid>
-                        <Grid item xs={5} />
                         <Grid item xs={4} >
                             <ProductOffersPrice data={data.price} />
                             <Button variant='contained' color="success" sx={{ m: 2 }} onClick={priceOnClick}>Kup</Button>

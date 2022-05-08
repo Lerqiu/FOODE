@@ -14,7 +14,7 @@ const ProductOfferFiltr = () => {
                 <Divider>Filtrowanie</Divider>
                 <ProductOfferFiltrText title="Nazwa użytkownika:" />
                 <ProductOfferFiltrText title="Nazwa produktu:" />
-                {/* <ProductOfferFiltrText title="Lokalizacja" /> */}
+                <ProductOfferFiltrText title="Lokalizacja" />
                 <Button variant='contained' color="success" sx={{ mx: 2, mt: 2 }} style={buttonStyles}>Filtruj</Button>
             </Stack>
         </AppBar>

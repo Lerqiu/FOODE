@@ -18,7 +18,7 @@ const mockData = (): IProductOffersEntry[] => {
     user: { login: "Olek" },
     imgSrc: "https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png",
     productName: "Jabłko",
-    location: {},
+    location: {location :"Wrocław, Kota 24"},
     price: { price: "12" }
   }
   let array: IProductOffersEntry[] = []
