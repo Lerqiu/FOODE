@@ -1,11 +1,10 @@
 package com.example.foode.Product;
 
+import com.example.foode.Product.Exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +18,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByName(String name, Pageable pageable) {
+    public Page<Product> getProductsByName(String name,
+                                           Pageable pageable) {
         return productRepository.findAllByNameContainingIgnoreCase(name, pageable);
     }
 
     @Override
-    public Optional<Product> getProduct(Long id) {
-        return productRepository.findById(id);
+    public Product getProduct(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
@@ -34,16 +35,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product newProduct, Long id) {
+    public Product updateProduct(Product newProduct,
+                                 Long id) {
         return productRepository.findById(id)
-                .map(product -> {
-                    product.setExpirationDate(newProduct.getExpirationDate());
-                    product.setName(newProduct.getName());
-                    return productRepository.saveAndFlush(product);
-                })
-                .orElseGet(() -> {
-                    newProduct.setId(id);
-                    return productRepository.saveAndFlush(newProduct);
-                });
+                .map(product -> cloneAndSaveProduct(product, newProduct))
+                .orElseGet(() -> saveNewProduct(newProduct, id));
+    }
+
+    private Product cloneAndSaveProduct(Product fromProduct, Product toProduct) {
+        toProduct.setExpirationDate(fromProduct.getExpirationDate());
+        toProduct.setName(fromProduct.getName());
+        return productRepository.saveAndFlush(toProduct);
+    }
+
+    private Product saveNewProduct(Product product,
+                                   Long id) {
+        product.setId(id);
+        return productRepository.saveAndFlush(product);
     }
 }

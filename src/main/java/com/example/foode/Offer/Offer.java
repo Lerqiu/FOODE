@@ -43,5 +43,14 @@ public class Offer {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
+    public void setFrom(Offer offer) {
+        this.setAvailability(offer.getAvailability());
+        this.setCity(offer.getCity());
+        this.setDate(offer.getDate());
+        this.setDescription(offer.getDescription());
+        this.setPrice(offer.getPrice());
+        this.setProduct(offer.getProduct());
+        this.setCity(offer.getCity());
+    }
 
 }

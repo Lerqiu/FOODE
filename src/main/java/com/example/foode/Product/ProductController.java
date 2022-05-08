@@ -1,6 +1,5 @@
 package com.example.foode.Product;
 
-import com.example.foode.Product.Exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,32 +15,31 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    Page<Product> getProductsByName(@RequestParam String name, Pageable pageable) {
+    public Page<Product> getProductsByName(@RequestParam String name,
+                                           Pageable pageable) {
         return productService.getProductsByName(name, pageable);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    Product getProduct(@PathVariable Long id) {
-        return productService.getProduct(id)
-                .orElseThrow(() -> new ProductNotFoundException(id.toString()));
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProduct(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteProduct(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    Product updateProduct(@RequestBody Product product, @PathVariable Long id) {
+    public Product updateProduct(@RequestBody Product product,
+                                 @PathVariable Long id) {
         return productService.updateProduct(product, id);
     }
 

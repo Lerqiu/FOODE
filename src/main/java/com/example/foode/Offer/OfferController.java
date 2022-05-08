@@ -16,32 +16,31 @@ public class OfferController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    Offer createOffer(@RequestBody Offer offer) {
+    public Offer createOffer(@RequestBody Offer offer) {
         return offerService.createOffer(offer);
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    Page<Offer> getOffersByCity(@RequestParam Long cityId, Pageable pageable) {
+    public Page<Offer> getOffersByCity(@RequestParam Long cityId,
+                                       Pageable pageable) {
         return offerService.getOffersByCity(cityId, pageable);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    Offer getOffer(@PathVariable Long id) throws OfferNotFoundException {
-        return offerService.getOffer(id)
-                .orElseThrow(() -> new OfferNotFoundException(id.toString()));
+    public Offer getOffer(@PathVariable Long id) throws OfferNotFoundException {
+        return offerService.getOffer(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteOffer(@PathVariable Long id) {
+    public void deleteOffer(@PathVariable Long id) {
         offerService.deleteOffer(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    Offer updateOffer(@RequestBody Offer offer, @PathVariable Long id) {
+    public Offer updateOffer(@RequestBody Offer offer,
+                             @PathVariable Long id) {
         return offerService.updateOffer(offer, id);
     }
 }

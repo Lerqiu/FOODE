@@ -9,9 +9,10 @@ public interface OfferService {
 
     Offer createOffer(Offer offer);
 
-    Page<Offer> getOffersByCity(Long cityId, Pageable pageable);
+    Page<Offer> getOffersByCity(Long cityId,
+                                Pageable pageable);
 
-    Optional<Offer> getOffer(Long id);
+    Offer getOffer(Long id);
 
     void deleteOffer(Long id);
 

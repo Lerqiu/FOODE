@@ -1,11 +1,10 @@
 package com.example.foode.Offer;
 
+import com.example.foode.Offer.Exception.OfferNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +18,15 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Page<Offer> getOffersByCity(Long cityId, Pageable pageable) {
+    public Page<Offer> getOffersByCity(Long cityId,
+                                       Pageable pageable) {
         return offerRepository.findAllByCityId(cityId, pageable);
     }
 
     @Override
-    public Optional<Offer> getOffer(Long id) {
-        return offerRepository.findById(id);
+    public Offer getOffer(Long id) {
+        return offerRepository.findById(id)
+                .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
     @Override
@@ -34,23 +35,23 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer updateOffer(Offer newOffer, Long id) {
+    public Offer updateOffer(Offer newOffer,
+                             Long id) {
         return offerRepository.findById(id)
-                .map(offer -> {
-                    offer.setAvailability(newOffer.getAvailability());
-                    offer.setCity(newOffer.getCity());
-                    offer.setDate(newOffer.getDate());
-                    offer.setDescription(newOffer.getDescription());
-                    offer.setPrice(newOffer.getPrice());
-                    offer.setProduct(newOffer.getProduct());
-                    offer.setCity(newOffer.getCity());
-                    return offerRepository.saveAndFlush(offer);
-                })
-                .orElseGet(() -> {
-                    newOffer.setId(id);
-                    return offerRepository.saveAndFlush(newOffer);
-                });
+                .map(offer -> cloneAndSaveOffer(newOffer, offer))
+                .orElseGet(() -> saveNewOffer(newOffer, id));
     }
 
+    private Offer cloneAndSaveOffer(Offer fromOffer,
+                                    Offer toOffer) {
+        toOffer.setFrom(fromOffer);
+        return offerRepository.saveAndFlush(toOffer);
+    }
+
+    private Offer saveNewOffer(Offer offer,
+                               Long id) {
+        offer.setId(id);
+        return offerRepository.saveAndFlush(offer);
+    }
 
 }
