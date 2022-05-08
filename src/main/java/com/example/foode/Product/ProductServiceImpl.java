@@ -42,7 +42,8 @@ public class ProductServiceImpl implements ProductService {
                 .orElseGet(() -> saveNewProduct(newProduct, id));
     }
 
-    private Product cloneAndSaveProduct(Product fromProduct, Product toProduct) {
+    private Product cloneAndSaveProduct(Product fromProduct,
+                                        Product toProduct) {
         toProduct.setExpirationDate(fromProduct.getExpirationDate());
         toProduct.setName(fromProduct.getName());
         return productRepository.saveAndFlush(toProduct);
