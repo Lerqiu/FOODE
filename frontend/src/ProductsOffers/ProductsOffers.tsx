@@ -1,69 +1,54 @@
-import { AppBar, Box, Button, Container, Grid, List, Pagination, PaginationItem, Paper, Stack, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Container, List, Pagination, PaginationItem, Stack, TextField } from '@mui/material';
+import ProductsOffersPagination from './Pagination/ProductsOffersPagination';
+import ProductOfertEntry, { IProductOffersEntry } from './ProductOfferEntry/ProductOfferEntry';
+import ProductOfferFiltr from './ProductOfferFiltr/ProductOfferFiltr';
 
-const MockDiv = () => {
-  return (
-    < div style={{ height: '200px', width: '500px', backgroundColor: 'grey', margin: '10px' }}>
-      MOCK
-    </div >)
+const mockData = (): IProductOffersEntry[] => {
+  const single = {
+    addDate: {
+      day: "17",
+      month: "05",
+      year: "2022"
+    },
+    expirationDate: {
+      day: "18",
+      month: "05",
+      year: "2022"
+    },
+    user: { login: "Olek" },
+    imgSrc: "https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png",
+    productName: "Jabłko",
+    location: {},
+    price: { price: "12" }
+  }
+  let array: IProductOffersEntry[] = []
+  for (let i = 0; i < 15; i++)
+    array.push({ ...single, id: i.toString() })
+  return array
 }
 
-const ProductsOffersPagination = () => {
-  return (
-    <Box
-      display="flex"
-      flex="0 1 auto"
-      width='100%'
-      height="fit-content"
-      bgcolor="lightgreen"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Pagination
-        count={5}
-        renderItem={(item) => (
-          <PaginationItem
-            components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-            {...item}
-          />
-        )}
-      />
-    </Box>
-  );
-}
 
 const ProductsOffers = () => {
+  const listEntry = mockData()
+
   return (
     <>
-      <Grid container spacing={0} padding={0} style={{ flex: "1 1 auto", display: "flex" }}>
-        <Grid item xs={2} >
-          <AppBar position='sticky' >
-            <Container sx={{ background: "grey" }} >
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-            <TextField id="filled-basic" label="Filled" variant="filled" />
-          </Container>
-          </AppBar>
-        </Grid>
-        <Grid item xs={10} >
-          <Container sx={{ background: "pink", height: '100%' }}>
+      <Box style={{ flex: "1 1 auto", display: "flex", flexFlow: "column", backgroundColor: "#E9EFC0" }}>
+        <Box style={{ flex: "1 1 auto", display: "flex" }}>
+          <Box>
+            <ProductOfferFiltr />
+          </Box>
+
+          <Container sx={{ height: '100%' }}>
             <List>
-              <MockDiv />
-              <MockDiv />
-              <MockDiv />
-              <MockDiv />
-              <MockDiv />
-              <MockDiv />
-              <MockDiv />
+              {
+                listEntry.map(data => <ProductOfertEntry data={data} key={data.id} />)
+              }
             </List>
           </Container>
-        </Grid>
-      </Grid >
-      <ProductsOffersPagination />
+        </Box >
+        <ProductsOffersPagination />
+      </Box>
     </>
   );
 }
