@@ -4,6 +4,7 @@ import com.example.foode.City.City
 import com.example.foode.Offer.Exception.OfferNotFoundException
 import com.example.foode.Product.Product
 import com.example.foode.User.User
+import org.springframework.data.domain.*
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -15,12 +16,14 @@ class OfferServiceImplSpock extends Specification {
 
     private Offer offer
     private Offer updatedOffer
+    private Offer secondOffer
+    private Page<Offer> allOffers
 
     void setup() {
         offerRepository = Mock(OfferRepository)
         offerService = new OfferServiceImpl(offerRepository)
 
-        def city = Mock(City)
+        def city = new City(1, "Wroclaw")
         def user = Mock(User)
         def product = Mock(Product)
 
@@ -43,6 +46,21 @@ class OfferServiceImplSpock extends Specification {
                 "updatedAvailability",
                 user,
                 product)
+
+        secondOffer = new Offer(
+                2,
+                BigDecimal.valueOf(50),
+                LocalDate.now(),
+                city,
+                "secondDesc",
+                "secondAvailability",
+                user,
+                product)
+
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
+        def listOfOffers = new ArrayList<Offer>(List.of(offer, secondOffer))
+
+        allOffers = new PageImpl<>(listOfOffers, pageable, 100)
     }
 
     def "createOffer() WHEN called with offer SHOULD return same offer"() {
@@ -67,7 +85,38 @@ class OfferServiceImplSpock extends Specification {
         1 * offerRepository.saveAndFlush(_)
     }
 
-    def "getOffersByCity"() {
+    def "getOffersByCity() WHEN called with city id SHOULD return page of offers with given city id"() {
+        given: "city id"
+        def cityId = 1
+
+        and: "pageable object"
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
+
+        and: "mocked offerRepository"
+        offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
+
+        when:
+        Page<Offer> returnedOffers = offerService.getOffersByCity(cityId, pageable)
+
+        then:
+        returnedOffers == allOffers
+    }
+
+    def "getOffersByCity() WHEN called with city id SHOULD call findAllByCityId() method from offerRepository once"() {
+        given: "city id"
+        def cityId = 1
+
+        and: "pageable object"
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
+
+        and: "mocked offerRepository"
+        offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
+
+        when:
+        offerService.getOffersByCity(cityId, pageable)
+
+        then:
+        1 * offerRepository.findAllByCityId(_, _) >> allOffers
     }
 
     def "getOffer() WHEN called with id, which is found in offerRepository SHOULD return offer with given id"() {
