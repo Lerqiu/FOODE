@@ -43,6 +43,28 @@ public class Offer {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
+    public Offer() {
+    }
+
+    public Offer(
+            Long id,
+            BigDecimal price,
+            LocalDate date,
+            City city,
+            String description,
+            String availability,
+            User user,
+            Product product) {
+        this.id = id;
+        this.price = price;
+        this.date = date;
+        this.city = city;
+        this.description = description;
+        this.availability = availability;
+        this.user = user;
+        this.product = product;
+    }
+
     public void setFrom(Offer offer) {
         this.setAvailability(offer.getAvailability());
         this.setCity(offer.getCity());
