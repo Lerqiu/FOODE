@@ -8,5 +8,6 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     Page<Offer> findAllByUserId(Long userId, Pageable pageable);
 
-    Page<Offer> findAllByCityId(Long cityId, Pageable pageable);
+    Page<OfferProjection> findAllByCityId(Long cityId, Pageable pageable);
+
 }

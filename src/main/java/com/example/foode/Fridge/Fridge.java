@@ -20,7 +20,6 @@ public class Fridge {
     @OneToMany(mappedBy = "fridge")
     private List<FridgeItem> fridgeItems;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne()
     private User user;
 }

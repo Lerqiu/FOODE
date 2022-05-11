@@ -2,7 +2,7 @@ package com.example.foode.User;
 
 import com.example.foode.Fridge.Fridge;
 import com.example.foode.Offer.Offer;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -30,12 +30,10 @@ public class User {
     @Column(nullable = false)
     private String contact;
 
-    @OneToOne
-    @JoinColumn(name = "fridge_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user")
     private Fridge fridge;
 
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
-
 
 }
