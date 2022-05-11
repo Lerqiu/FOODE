@@ -1,4 +1,4 @@
-package com.example.foode.authConfig;
+package com.example.foode.config.authentication;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -40,3 +40,6 @@ out/
 ### properties
 application-developer.properties
 
+### derby
+derby.log
+foode_db/
