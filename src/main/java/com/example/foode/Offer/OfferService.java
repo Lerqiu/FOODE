@@ -1,20 +1,56 @@
 package com.example.foode.Offer;
 
+import com.example.foode.Offer.Exception.OfferNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+@Service
+@RequiredArgsConstructor
+public class OfferService{
 
-public interface OfferService {
+    private final OfferRepository offerRepository;
 
-    Offer createOffer(Offer offer);
+    public Offer createOffer(Offer offer) {
+        return offerRepository.saveAndFlush(offer);
+    }
 
-    Page<Offer> getOffersByCity(Long cityId,
-                                Pageable pageable);
+    public Page<OfferProjection> getOffersByCity(Long cityId,
+                                       Pageable pageable) {
+        return offerRepository.findAllByCityId(cityId, pageable);
+    }
 
-    Offer getOffer(Long id);
+    public Page<Offer> getOffers(Pageable pageable) {
+        return offerRepository.findAll(pageable);
+    }
 
-    void deleteOffer(Long id);
+    public Offer getOffer(Long id) {
+        return offerRepository.findById(id)
+                .orElseThrow(() -> new OfferNotFoundException(id));
+    }
 
-    Offer updateOffer(Offer newOffer, Long id);
+    public void deleteOffer(Long id) {
+        offerRepository.deleteById(id);
+    }
+
+    public Offer updateOffer(Offer newOffer,
+                             Long id) {
+        return offerRepository.findById(id)
+                .map(offer -> cloneAndSaveOffer(newOffer, offer))
+                .orElseGet(() -> saveNewOffer(newOffer, id));
+    }
+
+    private Offer cloneAndSaveOffer(Offer fromOffer,
+                                    Offer toOffer) {
+        toOffer.setFrom(fromOffer);
+        return offerRepository.saveAndFlush(toOffer);
+    }
+
+    private Offer saveNewOffer(Offer offer,
+                               Long id) {
+        offer.setId(id);
+        return offerRepository.saveAndFlush(offer);
+    }
+
 }
