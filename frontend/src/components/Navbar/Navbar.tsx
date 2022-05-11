@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, List, Paper, Stack, Toolbar } from '@mui/material';
+import { AppBar, Box, Container, Toolbar } from '@mui/material';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
 import NavbarStyles from './Navbar.styles'
