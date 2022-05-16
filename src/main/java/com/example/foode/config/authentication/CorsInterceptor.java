@@ -1,4 +1,4 @@
-package com.example.foode.authConfig;
+package com.example.foode.config.authentication;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
