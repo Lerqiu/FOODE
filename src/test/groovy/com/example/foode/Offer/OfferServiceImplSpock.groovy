@@ -21,7 +21,7 @@ class OfferServiceImplSpock extends Specification {
 
     void setup() {
         offerRepository = Mock(OfferRepository)
-        offerService = new OfferServiceImpl(offerRepository)
+        offerService = new OfferService(offerRepository)
 
         def city = new City(1, "Wroclaw")
         def user = Mock(User)

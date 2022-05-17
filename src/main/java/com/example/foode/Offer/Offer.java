@@ -35,7 +35,7 @@ public class Offer {
     @Column(length = 200, nullable = false)
     private String availability;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -65,6 +65,19 @@ public class Offer {
         this.product = product;
     }
 
+    public Offer(
+            BigDecimal price,
+            LocalDate date,
+            String description,
+            String availability,
+            User user) {
+        this.price = price;
+        this.date = date;
+        this.description = description;
+        this.availability = availability;
+        this.user = user;
+    }
+
     public void setFrom(Offer offer) {
         this.setAvailability(offer.getAvailability());
         this.setCity(offer.getCity());
@@ -75,7 +88,7 @@ public class Offer {
         this.setCity(offer.getCity());
     }
 
-    public UserOfferOutput getUserOutput(){
+    public UserOfferOutput getUserOutput() {
         return UserOfferOutput.from(user);
     }
 }

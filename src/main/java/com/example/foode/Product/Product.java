@@ -17,7 +17,7 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "expiration_date")
     private LocalDate expirationDate;
 
 }
