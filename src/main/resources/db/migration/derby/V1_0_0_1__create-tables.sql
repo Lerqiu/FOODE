@@ -4,7 +4,7 @@ create table city (
     primary key   (id)
 );
 
-create table "USER" (
+create table user_detail (
     id            bigint,
     login         varchar(255),
     password      varchar(255),
@@ -17,7 +17,7 @@ create table fridge (
     id            bigint,
     user_id       bigint,
     primary key   (id),
-    foreign key   (user_id) references "USER"
+    foreign key   (user_id) references user_detail
 );
 
 create table product (
@@ -47,7 +47,7 @@ create table offer (
     user_id      bigint,
     product_id   bigint,
     primary key (id),
-    foreign key (user_id) references "USER",
+    foreign key (user_id) references user_detail,
     foreign key (product_id) references product
 );
 
@@ -56,8 +56,8 @@ create table "TRANSACTION" (
     seller_id   bigint,
     buyer_id    bigint,
     date        date,
-    foreign key (seller_id) references "USER",
-    foreign key (buyer_id) references "USER"
+    foreign key (seller_id) references user_detail,
+    foreign key (buyer_id) references user_detail
 );
 
 CREATE SEQUENCE city_id_seq start with 1;
