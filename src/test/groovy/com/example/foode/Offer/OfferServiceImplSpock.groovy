@@ -67,10 +67,10 @@ class OfferServiceImplSpock extends Specification {
         given: "mocked offerRepository"
         offerRepository.saveAndFlush(_ as Offer) >> offer
 
-        when:
+        when: "createOffer() returns newly created offer"
         def returnedOffer = offerService.createOffer(offer)
 
-        then:
+        then: "newly created offer is same as we given as parameter"
         offer == returnedOffer
     }
 
@@ -78,10 +78,10 @@ class OfferServiceImplSpock extends Specification {
         given: "mocked offerRepository"
         offerRepository.saveAndFlush(_ as Offer) >> offer
 
-        when:
+        when: "we run createOffer()"
         offerService.createOffer(offer)
 
-        then:
+        then: "saveAndFlush() is called once"
         1 * offerRepository.saveAndFlush(_)
     }
 
@@ -95,11 +95,12 @@ class OfferServiceImplSpock extends Specification {
         and: "mocked offerRepository"
         offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
 
-        when:
+        when: "getOffersByCity() returns Page of offers"
         Page<Offer> returnedOffers = offerService.getOffersByCity(cityId, pageable)
 
-        then:
+        then: "returned offers are of size max. 5"
         returnedOffers == allOffers
+        returnedOffers.size <= 5
     }
 
     def "getOffersByCity() WHEN called with city id SHOULD call findAllByCityId() method from offerRepository once"() {
@@ -112,10 +113,10 @@ class OfferServiceImplSpock extends Specification {
         and: "mocked offerRepository"
         offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
 
-        when:
+        when: "we run getOffersByCity()"
         offerService.getOffersByCity(cityId, pageable)
 
-        then:
+        then: "findAllByCityId() is called once"
         1 * offerRepository.findAllByCityId(_, _) >> allOffers
     }
 
@@ -126,10 +127,10 @@ class OfferServiceImplSpock extends Specification {
         and: "mocked offerRepository"
         offerRepository.findById(_ as Long) >> Optional.of(offer)
 
-        when:
+        when: "getOffer() returns offer"
         def returnedOffer = offerService.getOffer(offerId)
 
-        then:
+        then: "returned offer has same id as given in method parameter"
         returnedOffer.getId() == offerId
     }
 
@@ -137,10 +138,10 @@ class OfferServiceImplSpock extends Specification {
         given: "mocked offerRepository"
         offerRepository.findById(_ as Long) >> Optional.empty()
 
-        when:
+        when: "we run getOffer()"
         offerService.getOffer(offerId)
 
-        then:
+        then: "there is thrown offerNotFoundException"
         def offerNotFoundException = thrown(OfferNotFoundException)
         offerNotFoundException.message == "There is no such offer with id: " + offerId
 
@@ -159,10 +160,10 @@ class OfferServiceImplSpock extends Specification {
         and: "mocked offerRepository"
         offerRepository.findById(_ as Long) >> Optional.of(offer)
 
-        when:
+        when: "we run getOffer()"
         offerService.getOffer(offerId)
 
-        then:
+        then: "findById() is called once"
         1 * offerRepository.findById(_) >> Optional.of(offer)
     }
 
@@ -170,10 +171,10 @@ class OfferServiceImplSpock extends Specification {
         given: "id of the offer to delete"
         def offerId = 1
 
-        when:
+        when: "we run deleteOffer()"
         offerService.deleteOffer(offerId)
 
-        then:
+        then: "deleteById() is called once"
         1 * offerRepository.deleteById(_)
     }
 
@@ -185,10 +186,10 @@ class OfferServiceImplSpock extends Specification {
         offerRepository.findById(_ as Long) >> Optional.of(offer)
         offerRepository.saveAndFlush(_ as Offer) >> offer
 
-        when:
+        when: "updateOffer() returns offer with given offerId"
         Offer returnedOffer = offerService.updateOffer(updatedOffer, offerId)
 
-        then:
+        then: "returned offer is a same record which we saved first"
         returnedOffer == offer
     }
 
@@ -200,10 +201,10 @@ class OfferServiceImplSpock extends Specification {
         offerRepository.findById(_ as Long) >> Optional.empty()
         offerRepository.saveAndFlush(_ as Offer) >> updatedOffer
 
-        when:
+        when: "updateOffer return offer with given offerId"
         Offer returnedOffer = offerService.updateOffer(updatedOffer, offerId)
 
-        then:
+        then: "returned offer is a same record which we passed as parameter"
         returnedOffer == updatedOffer
     }
 
@@ -213,12 +214,12 @@ class OfferServiceImplSpock extends Specification {
 
         and: "mocked offerRepository"
         offerRepository.findById(_ as Long) >> Optional.of(offer)
-
-        when:
-        offerService.updateOffer(updatedOffer, offerId)
         offerRepository.saveAndFlush(_ as Offer) >> offer
 
-        then:
+        when: "we run updateOffer"
+        offerService.updateOffer(updatedOffer, offerId)
+
+        then: "saveAndFlush() is called once"
         1 * offerRepository.saveAndFlush(_) >> offer
     }
 

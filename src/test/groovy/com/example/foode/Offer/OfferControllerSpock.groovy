@@ -63,13 +63,13 @@ class OfferControllerSpock extends Specification {
     }
 
     def "creates Offer"() throws Exception {
-        when:
+        when: "we perform post request with offer given in body"
         def result = mockMvc
                 .perform(post("/api/offers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(offerBody))
 
-        then:
+        then: "response status is equal to Created and we can find created offer in db"
         result.andExpect(status().isCreated())
 
         assertThat(offerRepository.findAll())
@@ -86,69 +86,73 @@ class OfferControllerSpock extends Specification {
     }
 
     def "gets Offers by City"() throws Exception {
-        given:
+        given: "city id which offers are assigned to"
         def cityId = "1"
 
-        when:
+        when: "we perform get request with pageable parameters and city id"
         def result = mockMvc
                 .perform(get("/api/offers?page=1&size=10")
                         .param("cityId", cityId))
 
-        then:
+        then: "response status is equal to Ok"
         result.andExpect(status().isOk())
     }
 
     def "gets Offer"() throws Exception {
-        given:
+        given: "offer id which we want to search for and firstly we save it to db"
         def offerId = 10000
 
         offer.setId(offerId)
         offerRepository.saveAndFlush(offer)
 
-        when:
+        when: "we perform get request with given id"
         def result = mockMvc
                 .perform(get(String.format(
                         "/api/offers/%d",
                         offerId)))
 
-        then:
+        then: "response status is equal to Ok and offer has same parameters as saved one"
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("id").value(offer.getId()))
                 .andExpect(jsonPath("price").value(offer.getPrice()))
                 .andExpect(jsonPath("date").value(offer.getDate()))
+                .andExpect(jsonPath("description").value(offer.getDescription()))
+                .andExpect(jsonPath("availability").value(offer.getAvailability()))
     }
 
     def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() {
-        given:
+        given: "offer id which we want to search for and " +
+                "we delete it firstly from db to be sure there is no record with such id"
         def offerId = 10000
 
         offer.setId(offerId)
         offerRepository.delete(offer)
 
-        when:
+        when: "we perform get request with given id"
         def result = mockMvc
                 .perform(get(String.format(
                         "/api/offers/%d",
                         offerId)))
 
-        then:
+        then: "response status is equal to NotFound"
         result.andExpect(status().isNotFound())
     }
 
     def "deletes Offer"() throws Exception {
-        given:
+        given: "offer id we want to delete and firstly we save offer with such id to db"
         def offerId = 10000
 
         offer.setId(offerId)
         offerRepository.saveAndFlush(offer)
 
-        when:
+        when: "we perform delete request with given id"
         def result = mockMvc
                 .perform(delete(String.format(
                         "/api/offers/%d",
                         offerId)))
 
-        then:
+        then: "response status is equal to NoContent and there is no offer with given id in db"
         result.andExpect(status().isNoContent())
 
         assertThat(offerRepository.findAll())
@@ -159,6 +163,7 @@ class OfferControllerSpock extends Specification {
                         Offer.&getDescription as Function,
                         Offer.&getAvailability as Function)
                 .doesNotContain(tuple(
+                        offer.getId(),
                         offer.getPrice(),
                         offer.getDate(),
                         offer.getDescription(),
@@ -166,14 +171,14 @@ class OfferControllerSpock extends Specification {
     }
 
     def "updates Offer"() throws Exception {
-        given:
+        given: "offer id we want to update and firstly we save offer with such id"
         def offerId = 10000
 
         offer.setId(offerId)
         offer.setDescription("oldDesc")
         offerRepository.saveAndFlush(offer)
 
-        when:
+        when: "we perform put request with given id and updated offer body"
         def result = mockMvc
                 .perform(put(String.format(
                         "/api/offers/%d",
@@ -181,7 +186,7 @@ class OfferControllerSpock extends Specification {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(offerBody))
 
-        then:
+        then: "response status is equal to Created and we can find updated offer in db"
         result.andExpect(status().isCreated())
 
         assertThat(offerRepository.findAll())
