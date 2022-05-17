@@ -35,8 +35,8 @@ public class Offer {
     @Column(length = 200, nullable = false)
     private String availability;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne
@@ -75,4 +75,7 @@ public class Offer {
         this.setCity(offer.getCity());
     }
 
+    public UserOfferOutput getUserOutput(){
+        return UserOfferOutput.from(user);
+    }
 }
