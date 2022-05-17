@@ -15,8 +15,9 @@ import java.util.function.Function
 
 import static org.assertj.core.api.Assertions.assertThat
 import static org.assertj.core.api.Assertions.tuple
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -63,12 +64,14 @@ class OfferControllerSpock extends Specification {
     }
 
     def "creates Offer"() throws Exception {
-        expect:
-        mockMvc
+        when:
+        def result = mockMvc
                 .perform(post("/api/offers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(offerBody))
-                .andExpect(status().isCreated())
+
+        then:
+        result.andExpect(status().isCreated())
 
         assertThat(offerRepository.findAll())
                 .extracting(
@@ -77,6 +80,28 @@ class OfferControllerSpock extends Specification {
                         Offer.&getDescription as Function,
                         Offer.&getAvailability as Function)
                 .contains(tuple(offer.getPrice(), offer.getDate(), offer.getDescription(), offer.getAvailability()))
+    }
+
+    def "gets Offer"() throws Exception {
+        given:
+        def offerId = 1
+
+        offer.setId(10000)
+        offerRepository.saveAndFlush(offer)
+
+        when:
+        def result = mockMvc
+                .perform(get(String.format(
+                        "/api/offers/%d",
+                        offerId))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(offerBody))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("price").value(offer.getPrice()))
+                .andExpect(jsonPath("date").value(offer.getDate()))
     }
 
 }
