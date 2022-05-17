@@ -11,13 +11,12 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
 import java.time.LocalDate
+import java.util.function.Function
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.assertThat
+import static org.assertj.core.api.Assertions.tuple
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,7 +50,7 @@ class OfferControllerSpock extends Specification {
 
     void setup() {
         offer = new Offer(
-                BigDecimal.valueOf(30),
+                BigDecimal.valueOf(30).setScale(2),
                 LocalDate.of(2022, 03, 02),
                 "desc",
                 "avail",
@@ -72,8 +71,12 @@ class OfferControllerSpock extends Specification {
                 .andExpect(status().isCreated())
 
         assertThat(offerRepository.findAll())
-        .extracting(Offer::getPrice, Offer::getDate, Offer::getDescription, Offer::getAvailability)
-        .containsExactly(tuple(offer.getPrice(), offer.getDate(), offer.getDescription(), offer.getAvailability()))
+                .extracting(
+                        Offer.&getPrice as Function,
+                        Offer.&getDate as Function,
+                        Offer.&getDescription as Function,
+                        Offer.&getAvailability as Function)
+                .contains(tuple(offer.getPrice(), offer.getDate(), offer.getDescription(), offer.getAvailability()))
     }
 
 }

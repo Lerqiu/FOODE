@@ -91,4 +91,5 @@ public class Offer {
     public UserOfferOutput getUserOutput() {
         return UserOfferOutput.from(user);
     }
+
 }
