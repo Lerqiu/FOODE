@@ -187,7 +187,7 @@ class OfferServiceSpock extends Specification {
         offerRepository.saveAndFlush(_ as Offer) >> offer
 
         when: "updateOffer() returns offer with given offerId"
-        Offer returnedOffer = offerService.updateOffer(updatedOffer, offerId)
+        def returnedOffer = offerService.updateOffer(updatedOffer, offerId)
 
         then: "returned offer is a same record which we saved first"
         returnedOffer == offer
@@ -201,7 +201,7 @@ class OfferServiceSpock extends Specification {
         offerRepository.findById(_ as Long) >> Optional.empty()
         offerRepository.saveAndFlush(_ as Offer) >> updatedOffer
 
-        when: "updateOffer return offer with given offerId"
+        when: "updateOffer() returns offer with given offerId"
         Offer returnedOffer = offerService.updateOffer(updatedOffer, offerId)
 
         then: "returned offer is a same record which we passed as parameter"
