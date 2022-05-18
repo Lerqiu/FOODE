@@ -26,7 +26,7 @@ public class Offer {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
@@ -37,11 +37,11 @@ public class Offer {
     private String availability;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
@@ -67,17 +67,12 @@ public class Offer {
         this.product = product;
     }
 
-    public Offer(
-            BigDecimal price,
-            LocalDate date,
-            String description,
-            String availability,
-            User user) {
+    public Offer(BigDecimal price, LocalDate date, String description, String availability, Product product) {
         this.price = price;
         this.date = date;
         this.description = description;
         this.availability = availability;
-        this.user = user;
+        this.product = product;
     }
 
     public void setFrom(Offer offer) {
@@ -91,7 +86,7 @@ public class Offer {
     }
 
     public UserOfferOutput getUserOutput() {
-        return UserOfferOutput.from(user);
+        return UserOfferOutput.from(user != null ? user : new User());
     }
 
 }

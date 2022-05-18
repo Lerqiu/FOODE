@@ -1,6 +1,7 @@
 package com.example.foode.Offer
 
-
+import com.example.foode.City.City
+import com.example.foode.Product.Product
 import com.example.foode.User.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -31,12 +32,9 @@ class OfferControllerSpock extends Specification {
             "date": "2022-03-02",
             "description": "newDesc",
             "availability": "avail",
-            "user": {
-                "login": "login",
-                "password": "passwd",
-                "points": 50,
-                "contact": "contact",
-                "offers": []
+            "product": {
+                "name": "Apple",
+                "expirationDate": "2030-02-10"
             }
         }
         """
@@ -55,11 +53,9 @@ class OfferControllerSpock extends Specification {
                 LocalDate.of(2022, 03, 02),
                 "newDesc",
                 "avail",
-                new User("login",
-                        "passwd",
-                        BigDecimal.valueOf(50),
-                        "contact",
-                        new ArrayList<>()))
+                new Product(
+                        "apple",
+                        LocalDate.of(2030, 02, 10)))
     }
 
     def "creates Offer"() throws Exception {
@@ -121,7 +117,8 @@ class OfferControllerSpock extends Specification {
     }
 
     def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() {
-        given: "offer id which we want to search for and " +
+        given:
+        "offer id which we want to search for and " +
                 "we delete it firstly from db to be sure there is no record with such id"
         def offerId = 10000
 

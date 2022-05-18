@@ -18,17 +18,21 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, name = "expiration_date")
+    @Column(nullable = false)
     private LocalDate expirationDate;
 
     public Product() {
     }
 
+    public Product(String name, LocalDate expirationDate) {
+        this.name = name;
+        this.expirationDate = expirationDate;
+    }
+
     public Product(Long id,
                    String name,
                    LocalDate expirationDate) {
+        this(name, expirationDate);
         this.id = id;
-        this.name = name;
-        this.expirationDate = expirationDate;
     }
 }
