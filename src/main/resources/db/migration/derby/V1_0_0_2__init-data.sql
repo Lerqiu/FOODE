@@ -10,13 +10,13 @@ VALUES (NEXT VALUE FOR city_id_seq, 'Krakow');
 
 /* user */
 
-INSERT INTO "USER"
+INSERT INTO user_detail
 VALUES (NEXT VALUE FOR users_id_seq, 'login1', 'password1', 100, 'contact1');
 
-INSERT INTO "USER"
+INSERT INTO user_detail
 VALUES (NEXT VALUE FOR users_id_seq, 'login2', 'password2', 101, 'contact2');
 
-INSERT INTO "USER"
+INSERT INTO user_detail
 VALUES (NEXT VALUE FOR users_id_seq, 'login3', 'password3', 101, 'contact3');
 
 /* fridge */
