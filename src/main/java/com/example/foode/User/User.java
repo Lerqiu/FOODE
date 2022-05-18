@@ -2,6 +2,7 @@ package com.example.foode.User;
 
 import com.example.foode.Fridge.Fridge;
 import com.example.foode.Offer.Offer;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +34,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Fridge fridge;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Offer> offers;
 

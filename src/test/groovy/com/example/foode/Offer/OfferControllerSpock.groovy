@@ -29,7 +29,7 @@ class OfferControllerSpock extends Specification {
         {
             "price": 30,
             "date": "2022-03-02",
-            "description": "desc",
+            "description": "newDesc",
             "availability": "avail",
             "user": {
                 "login": "login",
@@ -100,10 +100,9 @@ class OfferControllerSpock extends Specification {
 
     def "gets Offer"() throws Exception {
         given: "offer id which we want to search for and firstly we save it to db"
-        def offerId = 10000
-
-        offer.setId(offerId)
         offerRepository.saveAndFlush(offer)
+
+        def offerId = offer.getId()
 
         when: "we perform get request with given id"
         def result = mockMvc
@@ -141,10 +140,9 @@ class OfferControllerSpock extends Specification {
 
     def "deletes Offer"() throws Exception {
         given: "offer id we want to delete and firstly we save offer with such id to db"
-        def offerId = 10000
-
-        offer.setId(offerId)
         offerRepository.saveAndFlush(offer)
+
+        def offerId = offer.getId()
 
         when: "we perform delete request with given id"
         def result = mockMvc
@@ -172,11 +170,10 @@ class OfferControllerSpock extends Specification {
 
     def "updates Offer"() throws Exception {
         given: "offer id we want to update and firstly we save offer with such id"
-        def offerId = 10000
-
-        offer.setId(offerId)
         offer.setDescription("oldDesc")
         offerRepository.saveAndFlush(offer)
+
+        def offerId = offer.getId()
 
         when: "we perform put request with given id and updated offer body"
         def result = mockMvc

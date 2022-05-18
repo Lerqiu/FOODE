@@ -3,6 +3,7 @@ package com.example.foode.Offer;
 import com.example.foode.City.City;
 import com.example.foode.Product.Product;
 import com.example.foode.User.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class Offer {
     @Column(length = 200, nullable = false)
     private String availability;
 
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
