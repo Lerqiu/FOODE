@@ -1,11 +1,14 @@
+import React from 'react';
 
-const OfferImage = (props: { link: string }) => {
-    return (
-        <img
-            src={props.link}
-            style={{ height: '15vh', maxWidth: '100%' }}
-        />
-    )
+function OfferImage(props: { link: string }) {
+  const { link } = props;
+  return (
+    <img
+      src={link}
+      style={{ height: '15vh', maxWidth: '100%' }}
+      alt="Offer view"
+    />
+  );
 }
 
 export default OfferImage;

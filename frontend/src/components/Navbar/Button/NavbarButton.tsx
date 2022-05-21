@@ -1,15 +1,27 @@
+import React from 'react';
 import { Button, ButtonProps } from '@mui/material';
-import { NavbarButton_Background, NavbarButton_Raw } from './NavbarButton.styles'
+import { NavLink } from 'react-router-dom';
+import { NavbarButton_Background, NavbarButton_Raw, NavbarNavLink_style } from './NavbarButton.styles';
 
-type NavbarButtonType = ButtonProps & { renderBackground: boolean }
+interface NavbarButtonProps extends ButtonProps{
+  renderLink : string
+}
 
-const NavbarButton = (props: NavbarButtonType) => {
-    const buttonProps = { ...props } as any
-    delete buttonProps.renderBackground
-
-    const style = props.renderBackground ? NavbarButton_Background : NavbarButton_Raw;
-
-    return <Button style={style} {...buttonProps} />;
+function NavbarButton(props: NavbarButtonProps) {
+  const { renderLink, ...buttonProps } = props;
+  return (
+    <NavLink
+      to={renderLink}
+      style={NavbarNavLink_style}
+      children={
+        ({ isActive }) => (
+          isActive
+            ? <Button {...buttonProps} style={NavbarButton_Background} />
+            : <Button {...buttonProps} style={NavbarButton_Raw} />
+        )
+}
+    />
+  );
 }
 
 export default NavbarButton;

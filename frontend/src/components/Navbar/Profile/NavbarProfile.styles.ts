@@ -1,3 +1,3 @@
 export default {
-    color: 'white'
-}
+  color: 'white',
+};

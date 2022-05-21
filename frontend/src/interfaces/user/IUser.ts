@@ -1,4 +1,4 @@
-import IFridge from "../fridge/IFridge";
+import IFridge from '../fridge/IFridge';
 
 interface IUser {
     id: number
