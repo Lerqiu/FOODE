@@ -5,7 +5,7 @@ import OfferDate_style from './OfferDate.style';
 function OfferDate(props: { date: Date, prefix: string }) {
   const { date, prefix } = props;
 
-  const getButtonText = () => `${prefix} ${date}`;
+  const getButtonText = () => `${prefix} ${date.toLocaleDateString()}`;
 
   return (
     <Button

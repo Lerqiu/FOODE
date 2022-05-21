@@ -18,7 +18,8 @@ const mapOffers = (_offers: IOffer[]): IOfferView[] => {
     {
       ..._offer,
       imgSrc: IMAGE_PLACEHOLDER_URL,
-      expirationDate: _offer.product.expirationDate,
+      expirationDate: new Date(_offer.product.expirationDate),
+      date: new Date(_offer.date),
     }));
 
   return result;

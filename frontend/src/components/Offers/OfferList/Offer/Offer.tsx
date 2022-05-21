@@ -39,7 +39,7 @@ function Offer(props: { offer: IOfferView }) {
               <OfferProduct product={offer.product} />
             </Grid>
             <Grid item xs={3}>
-              <OfferDate date={offer.product.expirationDate} prefix="Termin ważności:" />
+              <OfferDate date={offer.expirationDate} prefix="Termin ważności:" />
             </Grid>
 
             {/* Second line [sum(xs)=12] */}
