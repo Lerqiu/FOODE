@@ -4,3 +4,9 @@ interface IProduct {
     expirationDate: Date
 }
 export default IProduct;
+
+export interface IProductRaw {
+    id: number,
+    name: string,
+    expirationDate: string
+}

@@ -1,60 +1,63 @@
-import {Box, Container} from '@mui/material';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Box, Container } from '@mui/material';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
-import ProductOfferFiltr from '../../components/Offers/ProductOfferFilter/ProductOfferFilter';
+import ProductOfferFilter from '../../components/Offers/ProductOfferFilter/ProductOfferFilter';
 import OfferList from '../../components/Offers/OfferList/OfferList';
 import {
-    OffersPage_style_contextContainer,
-    OffersPage_style_mainContainer,
+  OffersPage_style_contextContainer,
+  OffersPage_style_mainContainer,
 } from './OffersPage.style';
-import {useCallback, useEffect, useState} from "react";
-import axios from 'axios';
-import IOffer from "../../interfaces/offer/IOffer";
+import IOffer from '../../interfaces/offer/IOffer';
+import IOfferView from '../../interfaces/offer/IOfferView';
+import getOffersConnection from '../../components/Offers/Axios/Connection';
 
-const OffersPage = () => {
+const mapOffers = (_offers: IOffer[]): IOfferView[] => {
+  const IMAGE_PLACEHOLDER_URL = 'https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png';
 
-    const [offers, setOffers] = useState<any>([])
+  const result = _offers.map((_offer) => (
+    {
+      ..._offer,
+      imgSrc: IMAGE_PLACEHOLDER_URL,
+      expirationDate: new Date(_offer.product.expirationDate),
+      date: new Date(_offer.date),
+    }));
 
-    const URL_PREFIX = `http://localhost:8080/api/`;
+  return result;
+};
 
-    const OFFER_API_PREFIX = `offers`;
+function OffersPage() {
+  const [offers, setOffers] = useState<IOfferView[]>([]);
 
-    const DEFAULT_CITY_ID = `cityId=1`;
+  const api_prefix = 'offers';
+  const default_id = 'cityId=1';
+  const url_prefix = process.env.REACT_APP_URL_PREFIX;
+  const client = getOffersConnection();
 
-    const IMAGE_PLACEHOLDER_URL = `https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png`;
+  const getOffers = useCallback(() => {
+    client.get(
+      `${url_prefix}${api_prefix}?${default_id}`,
+    )
+      .then((response) => setOffers(mapOffers(response.data.content)))
+      .catch(console.error);
+  }, [api_prefix, default_id, url_prefix, client]);
 
-    const client = axios.create({
-        baseURL: URL_PREFIX
-    });
+  useEffect(() => {
+    getOffers();
+  }, [getOffers]);
 
-    const getOffers = useCallback(() => {
-        client.get(
-            `${URL_PREFIX}${OFFER_API_PREFIX}?${DEFAULT_CITY_ID}`,
-        )
-            .then((response) => setOffers(mapOffers(response.data.content)))
-            .catch((reason) => console.log(reason));
-    }, []);
-
-    const mapOffers = (offers: IOffer[]) => {
-        return offers.map(offer => ({...offer, imgSrc: IMAGE_PLACEHOLDER_URL }))
-    }
-
-    useEffect(() => {
-        getOffers();
-    }, [getOffers]);
-
-    return (
-        <Box style={OffersPage_style_mainContainer}>
-           <Box style={OffersPage_style_contextContainer}>
-               <Box>
-                   <ProductOfferFiltr/>
-               </Box>
-               <Container sx={{height: '100%'}}>
-                   <OfferList offers={offers}/>
-               </Container>
-           </Box>
-           <ProductsOffersPagination/>
+  return (
+    <Box style={OffersPage_style_mainContainer}>
+      <Box style={OffersPage_style_contextContainer}>
+        <Box>
+          <ProductOfferFilter />
         </Box>
-    );
+        <Container sx={{ height: '100%' }}>
+          <OfferList offers={offers} />
+        </Container>
+      </Box>
+      <ProductsOffersPagination />
+    </Box>
+  );
 }
 
 export default OffersPage;

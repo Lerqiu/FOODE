@@ -1,13 +1,14 @@
-import IProduct from "../product/IProduct";
-import ICity from "../city/ICity";
-import IOfferUser from "./user/IOfferUser";
+import IProductRaw from '../product/IProduct';
+import ICity from '../city/ICity';
+import IOfferUser from './user/IOfferUser';
 
 interface IOffer {
     id: string
-    date: Date,
-    user: IOfferUser,
-    product: IProduct,
+    date: string,
+    userOutput: IOfferUser,
+    product: IProductRaw,
     city: ICity,
-    price: number
+    price: number,
+    availability : string
 }
 export default IOffer;

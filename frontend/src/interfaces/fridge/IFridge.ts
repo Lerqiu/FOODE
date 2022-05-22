@@ -1,8 +1,8 @@
-import IUser from "../user/IUser";
+import IUser from '../user/IUser';
 
 interface IFridge {
     id: number,
-    fridgeItems: any,
+    fridgeItems: any, // TODO
     user: IUser
 }
 export default IFridge;

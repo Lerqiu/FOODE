@@ -1,6 +1,6 @@
-import IProduct from "../product/IProduct";
-import ICity from "../city/ICity";
-import IOfferUser from "./user/IOfferUser";
+import IProduct from '../product/IProduct';
+import ICity from '../city/ICity';
+import IOfferUser from './user/IOfferUser';
 
 interface IOfferView {
     id: string
