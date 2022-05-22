@@ -22,7 +22,7 @@ public class OfferController {
 
     @GetMapping()
     public Page<OfferProjection> getOffersByCity(@RequestParam Long cityId,
-                                       Pageable pageable) {
+                                                 Pageable pageable) {
         return offerService.getOffersByCity(cityId, pageable);
     }
 

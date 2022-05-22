@@ -3,6 +3,7 @@ package com.example.foode.Offer;
 import com.example.foode.City.City;
 import com.example.foode.Product.Product;
 import com.example.foode.User.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ public class Offer {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
@@ -35,13 +36,44 @@ public class Offer {
     @Column(length = 200, nullable = false)
     private String availability;
 
-    @ManyToOne()
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
+
+    public Offer() {
+    }
+
+    public Offer(
+            Long id,
+            BigDecimal price,
+            LocalDate date,
+            City city,
+            String description,
+            String availability,
+            User user,
+            Product product) {
+        this.id = id;
+        this.price = price;
+        this.date = date;
+        this.city = city;
+        this.description = description;
+        this.availability = availability;
+        this.user = user;
+        this.product = product;
+    }
+
+    public Offer(BigDecimal price, LocalDate date, String description, String availability, Product product) {
+        this.price = price;
+        this.date = date;
+        this.description = description;
+        this.availability = availability;
+        this.product = product;
+    }
 
     public void setFrom(Offer offer) {
         this.setAvailability(offer.getAvailability());
@@ -53,7 +85,8 @@ public class Offer {
         this.setCity(offer.getCity());
     }
 
-    public UserOfferOutput getUserOutput(){
-        return UserOfferOutput.from(user);
+    public UserOfferOutput getUserOutput() {
+        return UserOfferOutput.from(user != null ? user : new User());
     }
+
 }

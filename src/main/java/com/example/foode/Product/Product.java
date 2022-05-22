@@ -1,6 +1,7 @@
 package com.example.foode.Product;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -20,4 +21,18 @@ public class Product {
     @Column(nullable = false)
     private LocalDate expirationDate;
 
+    public Product() {
+    }
+
+    public Product(String name, LocalDate expirationDate) {
+        this.name = name;
+        this.expirationDate = expirationDate;
+    }
+
+    public Product(Long id,
+                   String name,
+                   LocalDate expirationDate) {
+        this(name, expirationDate);
+        this.id = id;
+    }
 }

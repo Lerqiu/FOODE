@@ -16,4 +16,17 @@ public class City {
 
     @Column(nullable = false)
     private String name;
+
+    public City() {
+    }
+
+    public City(String name) {
+        this.name = name;
+    }
+
+    public City(Long id,
+                String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
