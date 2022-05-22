@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureDataJpa
 class OfferControllerSpock extends Specification {
 
-    private final String offerBody = """
+    private static final String OFFER_BODY = """
         {
             "price": 30,
             "date": "2022-03-02",
@@ -49,7 +49,7 @@ class OfferControllerSpock extends Specification {
 
     void setup() {
         offer = new Offer(
-                BigDecimal.valueOf(30).setScale(2),
+                BigDecimal.valueOf(30).setScale(0),
                 LocalDate.of(2022, 03, 02),
                 "newDesc",
                 "avail",
@@ -63,7 +63,7 @@ class OfferControllerSpock extends Specification {
         def result = mockMvc
                 .perform(post("/api/offers")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(offerBody))
+                        .content(OFFER_BODY))
 
         then: "response status is equal to Created and we can find created offer in db"
         result.andExpect(status().isCreated())
@@ -111,7 +111,7 @@ class OfferControllerSpock extends Specification {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("id").value(offer.getId()))
                 .andExpect(jsonPath("price").value(offer.getPrice()))
-                .andExpect(jsonPath("date").value(offer.getDate()))
+                .andExpect(jsonPath("date").value(offer.getDate().toString()))
                 .andExpect(jsonPath("description").value(offer.getDescription()))
                 .andExpect(jsonPath("availability").value(offer.getAvailability()))
     }
@@ -178,7 +178,7 @@ class OfferControllerSpock extends Specification {
                         "/api/offers/%d",
                         offerId))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(offerBody))
+                        .content(OFFER_BODY))
 
         then: "response status is equal to Created and we can find updated offer in db"
         result.andExpect(status().isCreated())
