@@ -26,7 +26,7 @@ public class Offer {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
@@ -37,7 +37,7 @@ public class Offer {
     private String availability;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 

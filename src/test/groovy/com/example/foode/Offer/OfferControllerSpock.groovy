@@ -87,7 +87,7 @@ class OfferControllerSpock extends Specification {
 
         when: "we perform get request with pageable parameters and city id"
         def result = mockMvc
-                .perform(get("/api/offers?page=1&size=10")
+                .perform(get("/api/offers?page=0&size=10")
                         .param("cityId", cityId))
 
         then: "response status is equal to Ok"
