@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class OfferServiceSpock extends Specification {
+class OfferServiceSpec extends Specification {
 
     private OfferService offerService
     private OfferRepository offerRepository
@@ -71,7 +71,11 @@ class OfferServiceSpock extends Specification {
         def returnedOffer = offerService.createOffer(offer)
 
         then: "newly created offer is same as we given as parameter"
-        offer == returnedOffer
+        offer.getDate() == returnedOffer.getDate()
+        offer.getPrice() == returnedOffer.getPrice()
+        offer.getDescription() == returnedOffer.getDescription()
+        offer.getAvailability() == returnedOffer.getAvailability()
+        offer.getId() == returnedOffer.getId()
     }
 
     def "createOffer() WHEN called with offer SHOULD call saveAndFlush() method from offerRepository once"() {
@@ -190,22 +194,26 @@ class OfferServiceSpock extends Specification {
         def returnedOffer = offerService.updateOffer(updatedOffer, offerId)
 
         then: "returned offer is a same record which we saved first"
-        returnedOffer == offer
+        offer.getDate() == returnedOffer.getDate()
+        offer.getPrice() == returnedOffer.getPrice()
+        offer.getDescription() == returnedOffer.getDescription()
+        offer.getAvailability() == returnedOffer.getAvailability()
+        offer.getId() == returnedOffer.getId()
     }
 
-    def "updateOffer() WHEN called with offer and non-existing id SHOULD return given offer with given id"() {
+    def "updateOffer() WHEN called with offer and non-existing id SHOULD throw OfferNotFoundException"() {
         given: "offer id"
         def offerId = 1
 
         and: "mocked offerRepository"
         offerRepository.findById(_ as Long) >> Optional.empty()
-        offerRepository.saveAndFlush(_ as Offer) >> updatedOffer
 
         when: "updateOffer() returns offer with given offerId"
-        Offer returnedOffer = offerService.updateOffer(updatedOffer, offerId)
+        offerService.updateOffer(updatedOffer, offerId)
 
-        then: "returned offer is a same record which we passed as parameter"
-        returnedOffer == updatedOffer
+        then: "there should be thrown OfferNotFoundException"
+        def offerNotFoundException = thrown(OfferNotFoundException)
+        offerNotFoundException.message == "There is no such offer with id: " + offerId
     }
 
     def "updateOffer() WHEN called with offer and id SHOULD call saveAndFlush() method of offerRepository once"() {

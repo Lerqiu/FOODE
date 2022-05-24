@@ -1,8 +1,8 @@
 package com.example.foode.Offer
 
-import com.example.foode.City.City
+
 import com.example.foode.Product.Product
-import com.example.foode.User.User
+import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
-class OfferControllerSpock extends Specification {
+class OfferControllerSpec extends Specification {
 
     private static final String OFFER_BODY = """
         {
@@ -65,20 +65,22 @@ class OfferControllerSpock extends Specification {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(OFFER_BODY))
 
+        def resultId = Long.valueOf(
+                JsonPath.read(
+                        result.andReturn()
+                                .getResponse()
+                                .getContentAsString(),
+                        "id").toString())
+
+        def createdOffer = offerRepository.findById(resultId).get()
+
         then: "response status is equal to Created and we can find created offer in db"
         result.andExpect(status().isCreated())
 
-        assertThat(offerRepository.findAll())
-                .extracting(
-                        Offer.&getPrice as Function,
-                        Offer.&getDate as Function,
-                        Offer.&getDescription as Function,
-                        Offer.&getAvailability as Function)
-                .contains(tuple(
-                        offer.getPrice(),
-                        offer.getDate(),
-                        offer.getDescription(),
-                        offer.getAvailability()))
+        createdOffer.getAvailability() == offer.availability
+        createdOffer.getDescription() == offer.getDescription()
+        createdOffer.getPrice() == offer.getPrice()
+        createdOffer.getDate() == offer.getDate()
     }
 
     def "gets Offers by City"() throws Exception {
@@ -96,9 +98,9 @@ class OfferControllerSpock extends Specification {
 
     def "gets Offer"() throws Exception {
         given: "offer id which we want to search for and firstly we save it to db"
-        offerRepository.saveAndFlush(offer)
+        def savedOffer = offerRepository.saveAndFlush(offer)
 
-        def offerId = offer.getId()
+        def offerId = savedOffer.getId()
 
         when: "we perform get request with given id"
         def result = mockMvc
@@ -116,14 +118,14 @@ class OfferControllerSpock extends Specification {
                 .andExpect(jsonPath("availability").value(offer.getAvailability()))
     }
 
-    def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() {
+    def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() throws Exception {
         given:
         "offer id which we want to search for and " +
                 "we delete it firstly from db to be sure there is no record with such id"
-        def offerId = 10000
+        def offerId = Long.valueOf(10000)
 
-        offer.setId(offerId)
-        offerRepository.delete(offer)
+        offerRepository.findById(offerId)
+                .ifPresent(() -> offerRepository.deleteById(offerId))
 
         when: "we perform get request with given id"
         def result = mockMvc

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OfferService{
+public class OfferService {
 
     private final OfferRepository offerRepository;
 
@@ -17,7 +17,7 @@ public class OfferService{
     }
 
     public Page<OfferProjection> getOffersByCity(Long cityId,
-                                       Pageable pageable) {
+                                                 Pageable pageable) {
         return offerRepository.findAllByCityId(cityId, pageable);
     }
 
@@ -38,19 +38,13 @@ public class OfferService{
                              Long id) {
         return offerRepository.findById(id)
                 .map(offer -> cloneAndSaveOffer(newOffer, offer))
-                .orElseGet(() -> saveNewOffer(newOffer, id));
+                .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
     private Offer cloneAndSaveOffer(Offer fromOffer,
                                     Offer toOffer) {
         toOffer.setFrom(fromOffer);
         return offerRepository.saveAndFlush(toOffer);
-    }
-
-    private Offer saveNewOffer(Offer offer,
-                               Long id) {
-        offer.setId(id);
-        return offerRepository.saveAndFlush(offer);
     }
 
 }
