@@ -1,57 +1,55 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Container } from '@mui/material';
+import { useQuery } from 'react-query';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
-import ProductOfferFilter from '../../components/Offers/ProductOfferFilter/ProductOfferFilter';
 import OfferList from '../../components/Offers/OfferList/OfferList';
-import {
-  OffersPage_style_contextContainer,
-  OffersPage_style_mainContainer,
-} from './OffersPage.style';
-import IOffer from '../../interfaces/offer/IOffer';
+import { OffersPage_style_contextContainer, OffersPage_style_mainContainer } from './OffersPage.style';
 import IOfferView from '../../interfaces/offer/IOfferView';
-import getOffersConnection from '../../components/Offers/Axios/Connection';
+import IOffers from '../../interfaces/offer/IOffers';
+import OfferSidebar from '../../components/Offers/OfferSidebar/OfferSidebar';
+import AddOfferModal from '../../components/Offers/AddOfferModal/AddOfferModal';
+import OfferService from '../../services/OfferService';
 
-const mapOffers = (_offers: IOffer[]): IOfferView[] => {
+const mapOffers = (_offers: IOffers): IOfferView[] => {
   const IMAGE_PLACEHOLDER_URL = 'https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png';
 
-  const result = _offers.map((_offer) => (
+  return _offers.content.map((_offer) => (
     {
       ..._offer,
       imgSrc: IMAGE_PLACEHOLDER_URL,
       expirationDate: new Date(_offer.product.expirationDate),
       date: new Date(_offer.date),
     }));
-
-  return result;
 };
 
-const api_prefix = 'offers';
-const default_id = 'cityId=1';
-const url_prefix = process.env.REACT_APP_URL_PREFIX;
-const client = getOffersConnection();
-
 function OffersPage() {
+  const [showModal, setShowModal] = useState(false);
   const [offers, setOffers] = useState<IOfferView[]>([]);
 
-  const getOffers = useCallback(() => {
-    client.get(
-      `${url_prefix}${api_prefix}?${default_id}`,
-    )
-      .then((response) => setOffers(mapOffers(response.data.content)))
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    getOffers();
-  }, [getOffers]);
+  useQuery<IOffers, Error>(
+    'offers-get',
+    async () => OfferService.findAll(),
+    {
+      onSuccess: (res) => {
+        setOffers(mapOffers(res));
+      },
+      onError: () => {
+        setOffers([]);
+      },
+    },
+  );
 
   return (
     <Box style={OffersPage_style_mainContainer}>
       <Box style={OffersPage_style_contextContainer}>
         <Box>
-          <ProductOfferFilter />
+          <OfferSidebar showModal={setShowModal} />
         </Box>
         <Container sx={{ height: '100%' }}>
+          <AddOfferModal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+          />
           <OfferList offers={offers} />
         </Container>
       </Box>

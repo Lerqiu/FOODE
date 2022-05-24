@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem, Select, Typography } from '@mui/material';
-import { ProductOfferFilterSelect_style, ProductOfferFilterSelect_style_Display } from './ProductOfferFilterSelect.style';
+import { OfferSortSelect_style, OfferSortSelect_style_Display } from './OfferSortSelect.style';
 
 function ProductOfferFilterSelect() {
   const [selectIndex, setSelectIndex] = useState('0');
@@ -14,8 +14,8 @@ function ProductOfferFilterSelect() {
       value={selectIndex}
       onChange={handleChange}
       variant="filled"
-      style={ProductOfferFilterSelect_style}
-      SelectDisplayProps={{ style: ProductOfferFilterSelect_style_Display }}
+      style={OfferSortSelect_style}
+      SelectDisplayProps={{ style: OfferSortSelect_style_Display }}
     >
       <MenuItem value={0}><Typography variant="button">Data dodania</Typography></MenuItem>
       <MenuItem value={10}><Typography variant="button">Data ważności</Typography></MenuItem>

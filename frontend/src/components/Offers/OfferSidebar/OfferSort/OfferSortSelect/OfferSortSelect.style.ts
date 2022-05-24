@@ -1,4 +1,4 @@
-export const ProductOfferFilterSelect_style = {
+export const OfferSortSelect_style = {
   borderRadius: 4,
   backgroundColor: '#4E944F',
   border: '1px solid #ced4da',
@@ -8,6 +8,6 @@ export const ProductOfferFilterSelect_style = {
   color: 'white',
 };
 
-export const ProductOfferFilterSelect_style_Display = {
+export const OfferSortSelect_style_Display = {
   padding: 5,
 };
