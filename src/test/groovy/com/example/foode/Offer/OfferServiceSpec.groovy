@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class OfferServiceSpock extends Specification {
+class OfferServiceSpec extends Specification {
 
     private OfferService offerService
     private OfferRepository offerRepository

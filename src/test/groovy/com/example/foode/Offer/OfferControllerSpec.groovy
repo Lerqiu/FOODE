@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
-class OfferControllerSpock extends Specification {
+class OfferControllerSpec extends Specification {
 
     private static final String OFFER_BODY = """
         {
