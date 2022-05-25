@@ -1,40 +1,51 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import {
   Button,
   Form, FormControl, FormLabel, Modal,
 } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
+// eslint-disable-next-line import/no-named-default
 import { default as ReactDatePicker } from 'react-datepicker';
-import {useQueryClient} from "react-query";
-import OfferService from "../../../services/OfferService";
+import { useQuery, useQueryClient } from 'react-query';
+import OfferService from '../../../services/OfferService';
+import ICity from '../../../interfaces/city/ICity';
+import CityService from '../../../services/CityService';
 
 function AddOfferModal(props: {show: any, onHide: any}) {
   const { show, onHide } = props;
-  const defaultCity = {
-    id: 1,
-    name: 'Wrocław',
-  };
-
-  const queryClient = useQueryClient();
-
-  const addOffer = (offer: any) => {
-      OfferService.save(offer)
-      .then( () => queryClient.invalidateQueries('offers-get'))
-      .catch(console.error);
-  };
+  const [cities, setCities] = useState<ICity[]>([]);
 
   const title = 'Dodaj oferte';
   const [price, setPrice] = useState('');
-  const [city, setCity] = useState(defaultCity);
+  const [city, setCity] = useState();
   const [description, setDescription] = useState('');
   const [availability, setAvailability] = useState('');
   const [productName, setProductName] = useState('');
   const [expirationDate, setExpirationDate] = useState(new Date());
 
+  const queryClient = useQueryClient();
+
+  useQuery<ICity[], Error>(
+    'city-get',
+    async () => CityService.findAll(),
+    {
+      onSuccess: (res) => {
+        setCities(res);
+      },
+      onError: () => {
+        setCities([]);
+      },
+    },
+  );
+
+  const addOffer = (offer: any) => {
+    OfferService.save(offer)
+      .then(() => queryClient.invalidateQueries('offers-get'));
+  };
+
   const clearModal = () => {
     setPrice('');
-    setCity(defaultCity);
+    setCity(undefined);
     setDescription('');
     setAvailability('');
     setProductName('');
@@ -56,7 +67,6 @@ function AddOfferModal(props: {show: any, onHide: any}) {
         expirationDate,
       },
     };
-    console.log(offer);
     addOffer(offer);
     clearModal();
     onHide();
@@ -93,8 +103,11 @@ function AddOfferModal(props: {show: any, onHide: any}) {
             defaultValue="PLACEHOLDER"
             onChange={(event) => setCity(JSON.parse(event.target.value))}
           >
-            <option value="PLACEHOLDER" hidden>Wybierz miasto</option>
-            <option value={JSON.stringify(defaultCity)}>Wroclaw</option>
+            {cities ? cities.map((_city) => (
+              <option key={_city.id} value={JSON.stringify(_city)}>
+                {_city.name}
+              </option>
+            )) : ''}
           </Form.Select>
           <Form.Group
             className="mb-3"
@@ -119,6 +132,7 @@ function AddOfferModal(props: {show: any, onHide: any}) {
           <ReactDatePicker
             dateFormat="yyyy-MM-dd"
             showPopperArrow={false}
+            minDate={new Date()}
             selected={expirationDate}
             onChange={(date) => setExpirationDate(date!)}
             useWeekdaysShort
