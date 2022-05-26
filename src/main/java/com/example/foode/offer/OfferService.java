@@ -16,6 +16,10 @@ public class OfferService {
         return offerRepository.saveAndFlush(offer);
     }
 
+    public Page<OfferProjection> getOffersFiltered(OfferFilters filters, Pageable pageable) {
+        return offerRepository.findAll(new OfferSpecification(filters), pageable);
+    }
+
     public Page<OfferProjection> getOffersByCity(Long cityId,
                                                  Pageable pageable) {
         return offerRepository.findAllByCityId(cityId, pageable);
