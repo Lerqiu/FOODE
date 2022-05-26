@@ -89,39 +89,47 @@ class OfferServiceSpec extends Specification {
         1 * offerRepository.saveAndFlush(_)
     }
 
-    def "getOffersByCity() WHEN called with city id SHOULD return page of offers with given city id"() {
-        given: "city id"
-        def cityId = 1
+    def "getOffersFiltered() WHEN called with filters SHOULD return exactly what repository returns"() {
+        given: "filters"
+        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN);
 
         and: "pageable object"
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
 
         and: "mocked offerRepository"
-        offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
+        offerRepository.findAll(
+                _ as org.springframework.data.jpa.domain.Specification<OfferProjection>,
+                _ as Pageable)
+                >> allOffers
 
-        when: "getOffersByCity() returns Page of offers"
-        Page<Offer> returnedOffers = offerService.getOffersByCity(cityId, pageable)
+        when: "getOffersFiltered() returns Page of offers"
+        Page<OfferProjection> returnedOffers = offerService.getOffersFiltered(filters, pageable)
 
-        then: "returned offers are of size max. 5"
+        then: "results from service repository are identical"
         returnedOffers == allOffers
-        returnedOffers.size <= 5
     }
 
-    def "getOffersByCity() WHEN called with city id SHOULD call findAllByCityId() method from offerRepository once"() {
-        given: "city id"
-        def cityId = 1
+    def "getOffersFiltered() WHEN called with filters SHOULD call findAll() method from offerRepository once"() {
+        given: "filters"
+        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN);
 
         and: "pageable object"
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
 
         and: "mocked offerRepository"
-        offerRepository.findAllByCityId(_ as Long, _ as Pageable) >> allOffers
+        offerRepository.findAll(
+                _ as org.springframework.data.jpa.domain.Specification<OfferProjection>,
+                _ as Pageable)
+                >> allOffers
 
-        when: "we run getOffersByCity()"
-        offerService.getOffersByCity(cityId, pageable)
+        when: "we run getOffersFiltered()"
+        offerService.getOffersFiltered(filters, pageable)
 
-        then: "findAllByCityId() is called once"
-        1 * offerRepository.findAllByCityId(_, _) >> allOffers
+        then: "findAll() is called once"
+        1 * offerRepository.findAll(
+                _ as org.springframework.data.jpa.domain.Specification<Offer>,
+                _ as Pageable)
+                >> allOffers
     }
 
     def "getOffer() WHEN called with id, which is found in offerRepository SHOULD return offer with given id"() {
