@@ -1,4 +1,4 @@
-package com.example.foode.fridge.FridgeItem;
+package com.example.foode.fridge.fridgeitem;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

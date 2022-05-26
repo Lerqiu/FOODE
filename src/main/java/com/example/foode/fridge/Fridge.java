@@ -1,6 +1,6 @@
 package com.example.foode.fridge;
 
-import com.example.foode.fridge.FridgeItem.FridgeItem;
+import com.example.foode.fridge.fridgeitem.FridgeItem;
 import com.example.foode.user.User;
 import lombok.Data;
 

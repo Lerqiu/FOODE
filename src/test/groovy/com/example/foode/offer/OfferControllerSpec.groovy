@@ -119,11 +119,10 @@ class OfferControllerSpec extends Specification {
     }
 
     def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() throws Exception {
-        given:
-        "offer id which we want to search for and " +
-                "we delete it firstly from db to be sure there is no record with such id"
+        given: "offer id which we want to search for"
         def offerId = Long.valueOf(10000)
 
+        and: "we delete it firstly from db to be sure there is no record with such id"
         offerRepository.findById(offerId)
                 .ifPresent(() -> offerRepository.deleteById(offerId))
 

@@ -1,4 +1,4 @@
-package com.example.foode.fridge.FridgeItem;
+package com.example.foode.fridge.fridgeitem;
 
 import com.example.foode.fridge.Fridge;
 import com.example.foode.product.Product;
