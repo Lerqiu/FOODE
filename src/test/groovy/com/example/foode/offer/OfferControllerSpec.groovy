@@ -97,10 +97,10 @@ class OfferControllerSpec extends Specification {
     }
 
     def "gets Offer"() throws Exception {
-        given: "offer id which we want to search for"
+        given: "firstly we save it to db"
         def savedOffer = offerRepository.saveAndFlush(offer)
 
-        and: "firstly we save it to db"
+        and: "offer id which we want to search for"
         def offerId = savedOffer.getId()
 
         when: "we perform get request with given id"
