@@ -97,9 +97,10 @@ class OfferControllerSpec extends Specification {
     }
 
     def "gets Offer"() throws Exception {
-        given: "offer id which we want to search for and firstly we save it to db"
+        given: "offer id which we want to search for"
         def savedOffer = offerRepository.saveAndFlush(offer)
 
+        and: "firstly we save it to db"
         def offerId = savedOffer.getId()
 
         when: "we perform get request with given id"
@@ -137,10 +138,11 @@ class OfferControllerSpec extends Specification {
     }
 
     def "deletes Offer"() throws Exception {
-        given: "offer id we want to delete and firstly we save offer with such id to db"
-        offerRepository.saveAndFlush(offer)
+        given: "firstly we save offer"
+        def savedOffer = offerRepository.saveAndFlush(offer)
 
-        def offerId = offer.getId()
+        and: "offer id we want to delete"
+        def offerId = savedOffer.getId()
 
         when: "we perform delete request with given id"
         def result = mockMvc
@@ -167,11 +169,12 @@ class OfferControllerSpec extends Specification {
     }
 
     def "updates Offer"() throws Exception {
-        given: "offer id we want to update and firstly we save offer with such id"
+        given: "firstly we save offer with old description"
         offer.setDescription("oldDesc")
-        offerRepository.saveAndFlush(offer)
+        def savedOffer = offerRepository.saveAndFlush(offer)
 
-        def offerId = offer.getId()
+        and: "id of the offer we want to update"
+        def offerId = savedOffer.getId()
 
         when: "we perform put request with given id and updated offer body"
         def result = mockMvc
