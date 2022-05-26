@@ -67,8 +67,9 @@ public class Offer {
         this.product = product;
     }
 
-    public Offer(BigDecimal price, LocalDate date, String description, String availability, Product product) {
+    public Offer(BigDecimal price, City city, LocalDate date, String description, String availability, Product product) {
         this.price = price;
+        this.city = city;
         this.date = date;
         this.description = description;
         this.availability = availability;

@@ -1,6 +1,7 @@
 package com.example.foode.offer
 
-
+import com.example.foode.city.City
+import com.example.foode.city.CityRepository
 import com.example.foode.product.Product
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,11 +46,19 @@ class OfferControllerSpec extends Specification {
     @Autowired
     private OfferRepository offerRepository
 
+    @Autowired
+    private CityRepository cityRepository
+
     private Offer offer
 
+    private City city
+
     void setup() {
+        city = new City("Wrocław")
+
         offer = new Offer(
                 BigDecimal.valueOf(30).setScale(0),
+                city,
                 LocalDate.of(2022, 03, 02),
                 "newDesc",
                 "avail",
@@ -83,17 +92,48 @@ class OfferControllerSpec extends Specification {
         createdOffer.getDate() == offer.getDate()
     }
 
-    def "gets Offers by City"() throws Exception {
-        given: "city id which offers are assigned to"
+    def "gets Offers filtered"() throws Exception {
+        given: "product name"
+        def name = "jab"
+
+        and: "city"
+        cityRepository.saveAndFlush(city);
+
+        and: "city id"
         def cityId = "1"
+
+        and: "price from"
+        def priceFrom = "2"
+
+        and: "price to"
+        def priceTo = "3"
+
+        and: "example offers"
+        def offers = exampleOffers();
+
+        and: "filtered offer"
+        def filteredOffer = offers.get(1);
+        and: "offers saved to db"
+        offerRepository.saveAllAndFlush(offers)
 
         when: "we perform get request with pageable parameters and city id"
         def result = mockMvc
-                .perform(get("/api/offers?page=0&size=10")
-                        .param("cityId", cityId))
+                .perform(get("/api/offers")
+                        .param("page", "0")
+                        .param('size', "10")
+                        .param("name", name)
+                        .param("cityId", cityId)
+                        .param("priceFrom", priceFrom)
+                        .param("priceTo", priceTo))
 
         then: "response status is equal to Ok"
         result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("[0].id").value(filteredOffer.getId()))
+                .andExpect(jsonPath("[0].price").value(filteredOffer.getPrice()))
+                .andExpect(jsonPath("[0].date").value(filteredOffer.getDate().toString()))
+                .andExpect(jsonPath("[0].description").value(filteredOffer.getDescription()))
+                .andExpect(jsonPath("[0].availability").value(filteredOffer.getAvailability()))
     }
 
     def "gets Offer"() throws Exception {
@@ -198,6 +238,40 @@ class OfferControllerSpec extends Specification {
                         offer.getDate(),
                         "newDesc",
                         offer.getAvailability()))
+    }
+
+    private List<Offer> exampleOffers() {
+        return List.of(
+                new Offer(
+                        BigDecimal.valueOf(1).setScale(0),
+                        city,
+                        LocalDate.of(2022, 03, 02),
+                        "newDesc",
+                        "avail",
+                        new Product(
+                                "apple",
+                                LocalDate.of(2030, 02, 10))
+                ),
+                new Offer(
+                        BigDecimal.valueOf(2).setScale(0),
+                        city,
+                        LocalDate.of(2022, 03, 02),
+                        "newDesc",
+                        "avail",
+                        new Product(
+                                "banana",
+                                LocalDate.of(2030, 02, 10))
+                ),
+                new Offer(
+                        BigDecimal.valueOf(3).setScale(0),
+                        city,
+                        LocalDate.of(2022, 03, 02),
+                        "newDesc",
+                        "avail",
+                        new Product(
+                                "apple",
+                                LocalDate.of(2030, 02, 10)))
+        )
     }
 
 }
