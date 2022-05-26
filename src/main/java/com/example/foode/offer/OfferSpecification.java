@@ -23,7 +23,7 @@ public class OfferSpecification implements Specification<OfferProjection> {
             predicates.add(
                     criteriaBuilder.like(
                             root.join("product").get("name"),
-                            filters.getName())
+                            toPattern(filters.getName()))
             );
         }
 
@@ -52,5 +52,9 @@ public class OfferSpecification implements Specification<OfferProjection> {
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    }
+
+    private String toPattern(String text) {
+        return "%" + text + "%";
     }
 }
