@@ -35,3 +35,7 @@ To run backend use gradle task names bootRun `./gradlew bootRun`
 
 Application will be available on `localhost:8080`. By default application use h2 in memory database.
 If you want to change it modify `application.properties` file
+
+#### TEST DATA
+To run backend with test data, set "test" as an active profile.
+![readme_img1.png](img/readme_img1.png)
