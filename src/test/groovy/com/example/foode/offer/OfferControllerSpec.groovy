@@ -53,8 +53,12 @@ class OfferControllerSpec extends Specification {
 
     private City city
 
+    private City secondCity
+
     void setup() {
         city = new City("Wrocław")
+        secondCity = new City("Warszawa")
+        cityRepository.saveAllAndFlush(List.of(city, secondCity))
 
         offer = new Offer(
                 BigDecimal.valueOf(30).setScale(0),
@@ -94,13 +98,10 @@ class OfferControllerSpec extends Specification {
 
     def "gets Offers filtered"() throws Exception {
         given: "product name"
-        def name = "jab"
-
-        and: "city"
-        cityRepository.saveAndFlush(city);
+        def name = "app"
 
         and: "city id"
-        def cityId = "1"
+        def cityId = city.getId().toString()
 
         and: "price from"
         def priceFrom = "2"
@@ -109,14 +110,15 @@ class OfferControllerSpec extends Specification {
         def priceTo = "3"
 
         and: "example offers"
-        def offers = exampleOffers();
+        def offers = exampleOffers()
 
         and: "filtered offer"
-        def filteredOffer = offers.get(1);
+        def filteredOffer = offers.get(2)
+
         and: "offers saved to db"
         offerRepository.saveAllAndFlush(offers)
 
-        when: "we perform get request with pageable parameters and city id"
+        when: "we perform get request with pageable parameters and filters"
         def result = mockMvc
                 .perform(get("/api/offers")
                         .param("page", "0")
@@ -126,14 +128,15 @@ class OfferControllerSpec extends Specification {
                         .param("priceFrom", priceFrom)
                         .param("priceTo", priceTo))
 
-        then: "response status is equal to Ok"
+        then: "response status is equal to OK and offers has been filtered"
         result.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("[0].id").value(filteredOffer.getId()))
-                .andExpect(jsonPath("[0].price").value(filteredOffer.getPrice()))
-                .andExpect(jsonPath("[0].date").value(filteredOffer.getDate().toString()))
-                .andExpect(jsonPath("[0].description").value(filteredOffer.getDescription()))
-                .andExpect(jsonPath("[0].availability").value(filteredOffer.getAvailability()))
+                .andExpect(jsonPath("content.length()").value(1))
+                .andExpect(jsonPath("content[0].id").value(filteredOffer.getId()))
+                .andExpect(jsonPath("content[0].price").value(filteredOffer.getPrice()))
+                .andExpect(jsonPath("content[0].date").value(filteredOffer.getDate().toString()))
+                .andExpect(jsonPath("content[0].description").value(filteredOffer.getDescription()))
+                .andExpect(jsonPath("content[0].availability").value(filteredOffer.getAvailability()))
     }
 
     def "gets Offer"() throws Exception {
@@ -270,8 +273,17 @@ class OfferControllerSpec extends Specification {
                         "avail",
                         new Product(
                                 "apple",
+                                LocalDate.of(2030, 02, 10))
+                ),
+                new Offer(
+                        BigDecimal.valueOf(3).setScale(0),
+                        secondCity,
+                        LocalDate.of(2022, 03, 02),
+                        "newDesc",
+                        "avail",
+                        new Product(
+                                "apple",
                                 LocalDate.of(2030, 02, 10)))
         )
     }
-
 }
