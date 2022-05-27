@@ -20,11 +20,6 @@ public class OfferService {
         return offerRepository.findAll(new OfferSpecification(filters), pageable);
     }
 
-    public Page<OfferProjection> getOffersByCity(Long cityId,
-                                                 Pageable pageable) {
-        return offerRepository.findAllByCityId(cityId, pageable);
-    }
-
     public Page<Offer> getOffers(Pageable pageable) {
         return offerRepository.findAll(pageable);
     }

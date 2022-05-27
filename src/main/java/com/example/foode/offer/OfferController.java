@@ -26,12 +26,6 @@ public class OfferController {
         return offerService.getOffersFiltered(filters, pageable);
     }
 
-//    @GetMapping()
-//    public Page<OfferProjection> getOffersByCity(@RequestParam Long cityId,
-//                                                 Pageable pageable) {
-//        return offerService.getOffersByCity(cityId, pageable);
-//    }
-
     @GetMapping("/{id}")
     public Offer getOffer(@PathVariable Long id) throws OfferNotFoundException {
         return offerService.getOffer(id);
