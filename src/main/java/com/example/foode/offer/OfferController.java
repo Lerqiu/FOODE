@@ -21,9 +21,9 @@ public class OfferController {
     }
 
     @GetMapping()
-    public Page<OfferProjection> getOffersByCity(@RequestParam Long cityId,
-                                                 Pageable pageable) {
-        return offerService.getOffersByCity(cityId, pageable);
+    public Page<OfferProjection> getOffersFiltered(OfferFilters filters,
+                                                   Pageable pageable) {
+        return offerService.getOffersFiltered(filters, pageable);
     }
 
     @GetMapping("/{id}")
