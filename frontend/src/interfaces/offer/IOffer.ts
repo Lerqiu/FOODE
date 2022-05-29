@@ -9,6 +9,6 @@ interface IOffer {
     product: IProductRaw,
     city: ICity,
     price: number,
-    availability : string
+    availability: string
 }
 export default IOffer;

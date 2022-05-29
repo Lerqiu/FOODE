@@ -8,8 +8,8 @@ function OfferList(props: { offers: IOfferView[] }) {
   return (
     <List>
       {
-               offers.map((offer) => <Offer offer={offer} key={offer.id} />)
-            }
+        offers.map((offer) => <Offer offer={offer} key={offer.id} />)
+      }
     </List>
   );
 }

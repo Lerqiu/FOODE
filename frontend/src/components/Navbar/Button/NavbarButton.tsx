@@ -7,8 +7,7 @@ interface NavbarButtonProps extends ButtonProps{
   renderLink : string
 }
 
-function NavbarButton(props: NavbarButtonProps) {
-  const { renderLink, ...buttonProps } = props;
+function NavbarButton({ renderLink, ...buttonProps }: NavbarButtonProps) {
   return (
     <NavLink
       to={renderLink}

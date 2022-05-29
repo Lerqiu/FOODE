@@ -25,13 +25,13 @@ const mapOffers = (_offers: IOffer[]): IOfferView[] => {
   return result;
 };
 
+const api_prefix = 'offers';
+const default_id = 'cityId=1';
+const url_prefix = process.env.REACT_APP_URL_PREFIX;
+const client = getOffersConnection();
+
 function OffersPage() {
   const [offers, setOffers] = useState<IOfferView[]>([]);
-
-  const api_prefix = 'offers';
-  const default_id = 'cityId=1';
-  const url_prefix = process.env.REACT_APP_URL_PREFIX;
-  const client = getOffersConnection();
 
   const getOffers = useCallback(() => {
     client.get(
@@ -39,7 +39,7 @@ function OffersPage() {
     )
       .then((response) => setOffers(mapOffers(response.data.content)))
       .catch(console.error);
-  }, [api_prefix, default_id, url_prefix, client]);
+  }, []);
 
   useEffect(() => {
     getOffers();
