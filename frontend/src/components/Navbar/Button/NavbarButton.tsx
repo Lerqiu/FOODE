@@ -1,24 +1,24 @@
 import React from 'react';
-import { Button, ButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { NavbarButton_Background, NavbarButton_Raw, NavbarNavLink_style } from './NavbarButton.styles';
+import { NavbarButton_NoBackground, NavbarButton_WithBackground } from './NavbarButton.styles';
 
-interface NavbarButtonProps extends ButtonProps{
-  renderLink : string
+interface NavbarButtonProps extends ButtonProps {
+  renderLink: string
 }
 
 function NavbarButton({ renderLink, ...buttonProps }: NavbarButtonProps) {
   return (
     <NavLink
       to={renderLink}
-      style={NavbarNavLink_style}
+      style={{ textDecoration: 'none' }}
       children={
         ({ isActive }) => (
           isActive
-            ? <Button {...buttonProps} style={NavbarButton_Background} />
-            : <Button {...buttonProps} style={NavbarButton_Raw} />
+            ? <NavbarButton_WithBackground {...buttonProps} />
+            : <NavbarButton_NoBackground {...buttonProps} />
         )
-}
+      }
     />
   );
 }

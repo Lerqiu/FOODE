@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
-import OffersPrice_style from './OffersPrice.style';
+import OffersPrice_Button from './OfferPrice.style';
 
 function OffersPrice(props: { price: number }) {
   const { price } = props;
@@ -8,16 +7,15 @@ function OffersPrice(props: { price: number }) {
   const getButtonMessage = () => `Cena ${price} pkt`;
 
   return (
-    <Button
+    <OffersPrice_Button
       variant="contained"
       disabled
       sx={{ m: 2 }}
       size="small"
       color="success"
-      style={OffersPrice_style}
     >
       {getButtonMessage()}
-    </Button>
+    </OffersPrice_Button>
   );
 }
 

@@ -1,5 +1,8 @@
-const OfferProduct_style = {
-  color: '#4E944F',
-};
+import { styled } from '@mui/material/styles';
+import MuiTypography from '@mui/material/Typography';
 
-export default OfferProduct_style;
+const OffersList_Typography = styled(MuiTypography)(() => ({
+  color: '#4E944F',
+}));
+
+export default OffersList_Typography;

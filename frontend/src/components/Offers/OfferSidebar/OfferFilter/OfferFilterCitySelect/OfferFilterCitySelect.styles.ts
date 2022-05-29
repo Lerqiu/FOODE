@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import MuiSelect from '@mui/material/Select';
 
-const OfferSidebarSort_Select = styled(MuiSelect)(() => ({
+const OfferFilterCity_Select = styled(MuiSelect)(() => ({
   borderRadius: 4,
   backgroundColor: '#4E944F',
   border: '1px solid #ced4da',
@@ -14,4 +14,4 @@ const OfferSidebarSort_Select = styled(MuiSelect)(() => ({
   },
 }));
 
-export default OfferSidebarSort_Select;
+export default OfferFilterCity_Select;

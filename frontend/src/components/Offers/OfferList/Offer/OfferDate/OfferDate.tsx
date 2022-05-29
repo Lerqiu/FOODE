@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
-import OfferDate_style from './OfferDate.style';
+import OfferDate_Button from './OfferDate.style';
 
 function OfferDate(props: { date: Date, prefix: string }) {
   const { date, prefix } = props;
@@ -8,14 +7,13 @@ function OfferDate(props: { date: Date, prefix: string }) {
   const getButtonText = () => `${prefix} ${date.toLocaleDateString()}`;
 
   return (
-    <Button
+    <OfferDate_Button
       variant="contained"
       disabled
       size="small"
-      style={OfferDate_style}
     >
       {getButtonText()}
-    </Button>
+    </OfferDate_Button>
   );
 }
 

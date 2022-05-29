@@ -1,12 +1,9 @@
 import {
-  AppBar, Button, Divider, Stack,
+  Divider, Stack,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import {
-  OfferFilter_style_ButtonStyles,
-  OfferSidebar_style_AppBar,
-} from './OfferSidebar.style';
+import OfferSidebar_AppBar, { OfferSidebar_Button } from './OfferSidebar.style';
 import OfferSortSelect from './OfferSort/OfferSortSelect/OfferSortSelect';
 import OfferFilterText from './OfferFilter/OfferFilterText/OfferFilterText';
 import OfferFilterCitySelect from './OfferFilter/OfferFilterCitySelect/OfferFilterCitySelect';
@@ -82,16 +79,16 @@ function OfferSidebar(props: {showModal: any}) {
   };
 
   return (
-    <AppBar position="sticky" style={OfferSidebar_style_AppBar}>
+    <OfferSidebar_AppBar position="sticky">
       <Stack spacing={1}>
-        <Button
+        <OfferSidebar_Button
           variant="contained"
           color="success"
           sx={{ mx: 2, mt: 2 }}
           onClick={() => showModal(true)}
         >
           Dodaj ofertę
-        </Button>
+        </OfferSidebar_Button>
 
         <Divider>Sortowanie</Divider>
         <OfferSortSelect />
@@ -117,26 +114,24 @@ function OfferSidebar(props: {showModal: any}) {
           onChange={setCity}
           value={city}
         />
-        <Button
+        <OfferSidebar_Button
           variant="contained"
           color="success"
           sx={{ mx: 2, mt: 2 }}
-          style={OfferFilter_style_ButtonStyles}
           onClick={() => handleFilterClick()}
         >
           Filtruj
-        </Button>
-        <Button
+        </OfferSidebar_Button>
+        <OfferSidebar_Button
           variant="contained"
           color="success"
           sx={{ mx: 2, mt: 2 }}
-          style={OfferFilter_style_ButtonStyles}
           onClick={() => handleClearFilterClick()}
         >
           wyczyść filtry
-        </Button>
+        </OfferSidebar_Button>
       </Stack>
-    </AppBar>
+    </OfferSidebar_AppBar>
   );
 }
 

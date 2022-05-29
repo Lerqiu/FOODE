@@ -1,7 +1,13 @@
-export const OfferFilterText_style = {
-  backgroundColor: '#83BD75',
-};
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import MuiTextField from '@mui/material/TextField/TextField';
 
-export const OfferFilterText_style_nested = {
+const OfferFilterText_TextField = styled(MuiTextField)(() => ({
+  backgroundColor: '#83BD75',
+}));
+
+export const OfferFilterText_style_nested: React.CSSProperties = {
   color: 'white',
 };
+
+export default OfferFilterText_TextField;
