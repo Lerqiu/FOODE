@@ -1,6 +1,7 @@
-package com.example.foode.offer;
+package com.example.foode.offer.persistence;
 
 import com.example.foode.city.City;
+import com.example.foode.offer.presentation.UserOfferOutput;
 import com.example.foode.product.Product;
 import com.example.foode.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "offer")
 @Data
-public class Offer {
+public class OfferEntity {
 
     @Id
     @SequenceGenerator(name = "offers_id_seq", sequenceName = "offers_id_seq", allocationSize = 1)
@@ -45,10 +46,10 @@ public class Offer {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    public Offer() {
+    public OfferEntity() {
     }
 
-    public Offer(
+    public OfferEntity(
             Long id,
             BigDecimal price,
             LocalDate date,
@@ -67,27 +68,13 @@ public class Offer {
         this.product = product;
     }
 
-    public Offer(BigDecimal price, City city, LocalDate date, String description, String availability, Product product) {
+    public OfferEntity(BigDecimal price, City city, LocalDate date, String description, String availability, Product product) {
         this.price = price;
         this.city = city;
         this.date = date;
         this.description = description;
         this.availability = availability;
         this.product = product;
-    }
-
-    public void setFrom(Offer offer) {
-        this.setAvailability(offer.getAvailability());
-        this.setCity(offer.getCity());
-        this.setDate(offer.getDate());
-        this.setDescription(offer.getDescription());
-        this.setPrice(offer.getPrice());
-        this.setProduct(offer.getProduct());
-        this.setCity(offer.getCity());
-    }
-
-    public UserOfferOutput getUserOutput() {
-        return UserOfferOutput.from(user != null ? user : new User());
     }
 
 }

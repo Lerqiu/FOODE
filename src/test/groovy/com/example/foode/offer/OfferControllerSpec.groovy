@@ -2,6 +2,8 @@ package com.example.foode.offer
 
 import com.example.foode.city.City
 import com.example.foode.city.CityRepository
+import com.example.foode.offer.persistence.OfferEntity
+import com.example.foode.offer.persistence.OfferRepository
 import com.example.foode.product.Product
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
@@ -21,7 +24,7 @@ import static org.assertj.core.api.Assertions.tuple
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@SpringBootTest
+@SpringBootTest(classes = {OfferMapperImpl.class})
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
@@ -36,6 +39,11 @@ class OfferControllerSpec extends Specification {
             "product": {
                 "name": "Apple",
                 "expirationDate": "2030-02-10"
+            },
+            "userOutput": {
+                "id": 1,
+                "login": "log",
+                "contact": "cont"
             }
         }
         """
@@ -49,7 +57,7 @@ class OfferControllerSpec extends Specification {
     @Autowired
     private CityRepository cityRepository
 
-    private Offer offer
+    private OfferEntity offer
 
     private City city
 
@@ -60,7 +68,7 @@ class OfferControllerSpec extends Specification {
         secondCity = new City("Warszawa")
         cityRepository.saveAllAndFlush(List.of(city, secondCity))
 
-        offer = new Offer(
+        offer = new OfferEntity(
                 BigDecimal.valueOf(30).setScale(0),
                 city,
                 LocalDate.of(2022, 03, 02),
@@ -198,11 +206,11 @@ class OfferControllerSpec extends Specification {
 
         assertThat(offerRepository.findAll())
                 .extracting(
-                        Offer.&getId as Function,
-                        Offer.&getPrice as Function,
-                        Offer.&getDate as Function,
-                        Offer.&getDescription as Function,
-                        Offer.&getAvailability as Function)
+                        OfferEntity.&getId as Function,
+                        OfferEntity.&getPrice as Function,
+                        OfferEntity.&getDate as Function,
+                        OfferEntity.&getDescription as Function,
+                        OfferEntity.&getAvailability as Function)
                 .doesNotContain(tuple(
                         offer.getId(),
                         offer.getPrice(),
@@ -232,10 +240,10 @@ class OfferControllerSpec extends Specification {
 
         assertThat(offerRepository.findAll())
                 .extracting(
-                        Offer.&getPrice as Function,
-                        Offer.&getDate as Function,
-                        Offer.&getDescription as Function,
-                        Offer.&getAvailability as Function)
+                        OfferEntity.&getPrice as Function,
+                        OfferEntity.&getDate as Function,
+                        OfferEntity.&getDescription as Function,
+                        OfferEntity.&getAvailability as Function)
                 .contains(tuple(
                         offer.getPrice(),
                         offer.getDate(),
@@ -243,9 +251,9 @@ class OfferControllerSpec extends Specification {
                         offer.getAvailability()))
     }
 
-    private List<Offer> exampleOffers() {
+    private List<OfferEntity> exampleOffers() {
         return List.of(
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(1).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
@@ -255,7 +263,7 @@ class OfferControllerSpec extends Specification {
                                 "apple",
                                 LocalDate.of(2030, 02, 10))
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(2).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
@@ -265,7 +273,7 @@ class OfferControllerSpec extends Specification {
                                 "banana",
                                 LocalDate.of(2030, 02, 10))
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
@@ -275,7 +283,7 @@ class OfferControllerSpec extends Specification {
                                 "apple",
                                 LocalDate.of(2030, 02, 10))
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
                         secondCity,
                         LocalDate.of(2022, 03, 02),
