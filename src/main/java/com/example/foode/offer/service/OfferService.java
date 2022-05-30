@@ -19,10 +19,11 @@ import java.util.List;
 public class OfferService {
 
     private final OfferRepository offerRepository;
+    private final OfferMapper offerMapper;
 
     public Offer createOffer(Offer offer) {
-        OfferEntity offerEntity = OfferMapper.INSTANCE.toEntity(offer);
-        return OfferMapper.INSTANCE.fromEntity(offerRepository.saveAndFlush(offerEntity));
+        OfferEntity offerEntity = offerMapper.toEntity(offer);
+        return offerMapper.fromEntity(offerRepository.saveAndFlush(offerEntity));
     }
 
     public Page<OfferDto> getOffersFiltered(OfferFilters filters, Pageable pageable) {
@@ -33,13 +34,13 @@ public class OfferService {
         Page<OfferEntity> offerEntitiesPage = offerRepository.findAll(pageable);
         List<OfferEntity> offerEntities = offerEntitiesPage.getContent();
 
-        List<Offer> offers = OfferMapper.INSTANCE.fromEntities(offerEntities);
+        List<Offer> offers = offerMapper.fromEntities(offerEntities);
 
         return new PageImpl<>(offers, pageable, offerEntitiesPage.getTotalElements());
     }
 
     public Offer getOffer(Long id) {
-        return OfferMapper.INSTANCE.fromEntity(offerRepository.findById(id)
+        return offerMapper.fromEntity(offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id)));
     }
 
@@ -50,15 +51,15 @@ public class OfferService {
     public Offer updateOffer(Offer newOffer,
                              Long id) {
         return offerRepository.findById(id)
-                .map(offer -> cloneAndSaveOffer(newOffer, OfferMapper.INSTANCE.fromEntity(offer)))
+                .map(offer -> cloneAndSaveOffer(newOffer, offerMapper.fromEntity(offer)))
                 .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
     private Offer cloneAndSaveOffer(Offer fromOffer,
                                     Offer toOffer) {
         toOffer.setFrom(fromOffer);
-        OfferEntity toOfferEntity = OfferMapper.INSTANCE.toEntity(toOffer);
-        return OfferMapper.INSTANCE.fromEntity(offerRepository.saveAndFlush(toOfferEntity));
+        OfferEntity toOfferEntity = offerMapper.toEntity(toOffer);
+        return offerMapper.fromEntity(offerRepository.saveAndFlush(toOfferEntity));
     }
 
 }

@@ -7,6 +7,7 @@ import com.example.foode.offer.persistence.OfferRepository
 import com.example.foode.product.Product
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,7 +25,8 @@ import static org.assertj.core.api.Assertions.tuple
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@SpringBootTest(classes = {OfferMapperImpl.class})
+@SpringBootTest(classes = OfferConfiguration.class,
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
