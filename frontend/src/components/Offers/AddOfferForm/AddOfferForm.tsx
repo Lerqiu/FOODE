@@ -4,8 +4,7 @@ import {
   Form, FormControl, FormLabel, InputGroup,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-// eslint-disable-next-line import/no-named-default
-import { default as ReactDatePicker } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import { CheckLg as AcceptIcon } from 'react-bootstrap-icons';
 import React from 'react';
 import ICity from '../../../interfaces/city/ICity';
@@ -140,7 +139,7 @@ function AddOfferForm(props: {cities: ICity[], submit: (values: any) => void}) {
           </InputGroup>
           <FormLabel>Data ważności</FormLabel>
           <InputGroup>
-            <ReactDatePicker
+            <DatePicker
               name="expirationDate"
               dateFormat="yyyy-MM-dd"
               showPopperArrow={false}

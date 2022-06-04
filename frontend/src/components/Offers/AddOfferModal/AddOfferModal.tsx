@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Modal,
-} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useQuery, useQueryClient } from 'react-query';
 import OfferService from '../../../services/OfferService';
 import ICity from '../../../interfaces/city/ICity';
 import CityService from '../../../services/CityService';
 import AddOfferForm from '../AddOfferForm/AddOfferForm';
+import IOfferForm from '../../../interfaces/offer/IOfferForm';
 
 function AddOfferModal(props: {show: any, onHide: any}) {
   const { show, onHide } = props;
@@ -30,15 +29,13 @@ function AddOfferModal(props: {show: any, onHide: any}) {
     },
   );
 
-  const addOffer = (offer: any) => {
+  const buildOfferFromForm = (offer: IOfferForm) => {
     const product = {
       name: offer.productName,
       expirationDate: offer.expirationDate,
     };
 
-    console.log(offer);
-
-    const offerToSend = {
+    return {
       ...offer,
       date: new Date(),
       user: {
@@ -47,6 +44,10 @@ function AddOfferModal(props: {show: any, onHide: any}) {
       product,
       city: JSON.parse(offer.city),
     };
+  };
+
+  const addOffer = (offer: any) => {
+    const offerToSend = buildOfferFromForm(offer);
     OfferService.save(offerToSend)
       .then(() => queryClient.invalidateQueries('offers-get'));
     onHide();
@@ -71,7 +72,6 @@ function AddOfferModal(props: {show: any, onHide: any}) {
         />
       </Modal.Body>
     </Modal>
-  // <AddOfferForm cities={cities} submit={(e) => console.log(e)} />
   );
 }
 
