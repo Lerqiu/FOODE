@@ -39,6 +39,8 @@ function AddOfferForm(props: {cities: ICity[], submit: (values: any) => void}) {
   return (
     <Formik
       validationSchema={schema}
+      validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={(values, actions) => {
         submit(values);
         actions.setSubmitting(false);
