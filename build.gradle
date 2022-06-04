@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
 	compileOnly {
@@ -23,19 +23,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	//lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly('org.projectlombok:lombok')
+	annotationProcessor('org.projectlombok:lombok')
 
 	//database
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.7'
-//	runtimeOnly("com.h2database:h2:2.0.202")
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa:2.6.7')
 	runtimeOnly("org.apache.derby:derby:10.14.2.0")
 	// Database migration
 	implementation("org.flywaydb:flyway-core")
 
 
 	//testing
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.spockframework:spock-core:2.0-groovy-3.0')
 	testImplementation('org.spockframework:spock-spring:2.0-groovy-3.0')
 	testImplementation('org.codehaus.groovy:groovy')
