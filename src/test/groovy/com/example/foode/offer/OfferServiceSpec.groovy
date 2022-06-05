@@ -32,7 +32,11 @@ class OfferServiceSpec extends Specification {
     private Offer updatedOffer
     private Offer secondOffer
 
-    private Page<OfferEntity> allOffers
+    private List<OfferEntity> listOfOfferEntities
+    private List<Offer> listOfOffers
+
+    private Page<OfferEntity> allOfferEntities
+    private Page<Offer> allOffers
 
     void setup() {
         offerRepository = Mock(OfferRepository)
@@ -104,8 +108,10 @@ class OfferServiceSpec extends Specification {
                 product)
 
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
-        def listOfOffers = new ArrayList<OfferEntity>(List.of(offerEntity, secondOfferEntity))
+        listOfOfferEntities = new ArrayList<OfferEntity>(List.of(offerEntity, secondOfferEntity))
+        listOfOffers = new ArrayList<Offer>(List.of(offer, secondOffer))
 
+        allOfferEntities = new PageImpl<>(listOfOfferEntities, pageable, 100)
         allOffers = new PageImpl<>(listOfOffers, pageable, 100)
     }
 
@@ -147,7 +153,7 @@ class OfferServiceSpec extends Specification {
 
     def "getOffersFiltered() WHEN called with filters SHOULD return exactly what repository returns"() {
         given: "filters"
-        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN);
+        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN)
 
         and: "pageable object"
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
@@ -156,7 +162,10 @@ class OfferServiceSpec extends Specification {
         offerRepository.findAll(
                 _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
-                >> allOffers
+                >> allOfferEntities
+
+        and: "mocked offerMapper"
+        offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
 
         when: "getOffersFiltered() returns Page of offers"
         Page<Offer> returnedOffers = offerService.getOffersFiltered(filters, pageable)
@@ -167,7 +176,7 @@ class OfferServiceSpec extends Specification {
 
     def "getOffersFiltered() WHEN called with filters SHOULD call findAll() method from offerRepository once"() {
         given: "filters"
-        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN);
+        def filters = new OfferFilters("name", 1L, BigDecimal.ONE, BigDecimal.TEN)
 
         and: "pageable object"
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
@@ -176,7 +185,10 @@ class OfferServiceSpec extends Specification {
         offerRepository.findAll(
                 _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
-                >> allOffers
+                >> allOfferEntities
+
+        and: "mocked offerMapper"
+        offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
 
         when: "we run getOffersFiltered()"
         offerService.getOffersFiltered(filters, pageable)
@@ -185,7 +197,8 @@ class OfferServiceSpec extends Specification {
         1 * offerRepository.findAll(
                 _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
-                >> allOffers
+                >> allOfferEntities
+        1 * offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
     }
 
     def "getOffer() WHEN called with id, which is found in offerRepository SHOULD return offer with given id"() {

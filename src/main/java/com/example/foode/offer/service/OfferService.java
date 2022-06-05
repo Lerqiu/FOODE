@@ -27,8 +27,13 @@ public class OfferService {
     }
 
     public Page<Offer> getOffersFiltered(OfferFilters filters, Pageable pageable) {
-        return offerRepository.findAll(new OfferSpecification(filters), pageable)
-                .map(offerMapper::fromEntity);
+        Page<OfferEntity> offerEntitiesPage = offerRepository.findAll(new OfferSpecification(filters), pageable);
+
+        List<OfferEntity> offerEntities = offerEntitiesPage.getContent();
+
+        List<Offer> offers = offerMapper.fromEntities(offerEntities);
+
+        return new PageImpl<>(offers, pageable, offerEntitiesPage.getTotalElements());
     }
 
     public Page<Offer> getOffers(Pageable pageable) {
