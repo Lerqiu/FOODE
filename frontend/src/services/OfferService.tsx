@@ -1,5 +1,6 @@
 import axios from 'axios';
 import IOffers from '../interfaces/offer/IOffers';
+import { getOffersPageManagement } from '../helpers/offerPageStorageHelper';
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_URL_PREFIX,
@@ -9,7 +10,9 @@ const apiClient = axios.create({
 });
 
 const findAll = async () => {
-  const response = await apiClient.get<IOffers>('/offers?cityId=1');
+  const storageManagement = getOffersPageManagement();
+  const sort = storageManagement.sort ? `sort=${storageManagement.sort}` : '';
+  const response = await apiClient.get<IOffers>(`/offers?cityId=1&${sort}`);
   return response.data;
 };
 
