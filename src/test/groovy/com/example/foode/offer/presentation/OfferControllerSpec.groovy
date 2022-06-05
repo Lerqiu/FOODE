@@ -1,4 +1,4 @@
-package com.example.foode.offer
+package com.example.foode.offer.presentation
 
 import com.example.foode.city.City
 import com.example.foode.city.CityRepository
