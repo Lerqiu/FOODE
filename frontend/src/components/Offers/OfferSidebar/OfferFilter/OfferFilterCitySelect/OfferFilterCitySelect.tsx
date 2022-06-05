@@ -6,12 +6,16 @@ import {
   OfferSortSelect_style_Display,
 } from '../../OfferSort/OfferSortSelect/OfferSortSelect.style';
 
-function OfferFilterCitySelect(props: {cities: ICity[]}) {
-  const { cities } = props;
-  const [selectIndex, setSelectIndex] = useState('default');
+function OfferFilterCitySelect(props: {
+  cities: ICity[],
+  onChange: (value: ICity) => void,
+  defaultValue: string}) {
+  const { cities, onChange, defaultValue } = props;
+  const [selectIndex, setSelectIndex] = useState(defaultValue);
 
   const handleChange = (event: { target: { value: string } }) => {
     const choosenValue = event.target.value;
+    onChange(JSON.parse(choosenValue));
     setSelectIndex(choosenValue);
   };
 
@@ -25,7 +29,7 @@ function OfferFilterCitySelect(props: {cities: ICity[]}) {
       style={OfferSortSelect_style}
       SelectDisplayProps={{ style: OfferSortSelect_style_Display }}
     >
-      <MenuItem value="default">
+      <MenuItem value="default" hidden>
         Wybierz miasto
         {' '}
       </MenuItem>

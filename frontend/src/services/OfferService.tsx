@@ -9,10 +9,22 @@ const apiClient = axios.create({
   },
 });
 
+const handleFilters = () => {
+  const storageManagement = getOffersPageManagement();
+  const city = JSON.parse(storageManagement.city || '{}');
+  let filterString = '';
+  filterString += storageManagement.priceFrom ? `&priceFrom=${storageManagement.priceFrom}` : '';
+  filterString += storageManagement.priceTo ? `&priceTo=${storageManagement.priceTo}` : '';
+  filterString += storageManagement.name ? `&name=${storageManagement.name}` : '';
+  filterString += city?.id ? `&cityId=${city.id}` : '';
+  return filterString;
+};
+
 const findAll = async () => {
   const storageManagement = getOffersPageManagement();
   const sort = storageManagement.sort ? `sort=${storageManagement.sort}` : '';
-  const response = await apiClient.get<IOffers>(`/offers?cityId=1&${sort}`);
+  const filter = handleFilters();
+  const response = await apiClient.get<IOffers>(`/offers?${sort}${filter}`);
   return response.data;
 };
 
