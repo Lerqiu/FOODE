@@ -6,6 +6,7 @@ import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferFilters
 import com.example.foode.offer.persistence.OfferRepository
 import com.example.foode.product.persistence.ProductEntity
+import com.example.foode.product.service.Product
 import com.example.foode.user.User
 import org.springframework.data.domain.*
 import spock.lang.Specification
@@ -41,7 +42,8 @@ class OfferServiceSpec extends Specification {
 
         def city = new City(1, "Wroclaw")
         def user = Mock(User)
-        def product = Mock(ProductEntity)
+        def productEntity = Mock(ProductEntity)
+        def product = Mock(Product)
 
         offerEntity = new OfferEntity(
                 1,
@@ -51,7 +53,7 @@ class OfferServiceSpec extends Specification {
                 "testDesc",
                 "testAvailability",
                 user,
-                product)
+                productEntity)
 
         updatedOfferEntity = new OfferEntity(
                 1,
@@ -61,7 +63,7 @@ class OfferServiceSpec extends Specification {
                 "updatedDesc",
                 "updatedAvailability",
                 user,
-                product)
+                productEntity)
 
         secondOfferEntity = new OfferEntity(
                 2,
@@ -71,7 +73,7 @@ class OfferServiceSpec extends Specification {
                 "secondDesc",
                 "secondAvailability",
                 user,
-                product)
+                productEntity)
 
         offer = new Offer(
                 1,
