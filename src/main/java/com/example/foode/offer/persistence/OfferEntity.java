@@ -1,8 +1,7 @@
 package com.example.foode.offer.persistence;
 
 import com.example.foode.city.City;
-import com.example.foode.offer.presentation.UserOfferOutput;
-import com.example.foode.product.Product;
+import com.example.foode.product.persistence.ProductEntity;
 import com.example.foode.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
@@ -44,7 +43,7 @@ public class OfferEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private ProductEntity productEntity;
 
     public OfferEntity() {
     }
@@ -57,7 +56,7 @@ public class OfferEntity {
             String description,
             String availability,
             User user,
-            Product product) {
+            ProductEntity productEntity) {
         this.id = id;
         this.price = price;
         this.date = date;
@@ -65,7 +64,7 @@ public class OfferEntity {
         this.description = description;
         this.availability = availability;
         this.user = user;
-        this.product = product;
+        this.productEntity = productEntity;
     }
 
     public OfferEntity(BigDecimal price,
@@ -73,14 +72,14 @@ public class OfferEntity {
                        LocalDate date,
                        String description,
                        String availability,
-                       Product product,
+                       ProductEntity productEntity,
                        User user) {
         this.price = price;
         this.city = city;
         this.date = date;
         this.description = description;
         this.availability = availability;
-        this.product = product;
+        this.productEntity = productEntity;
         this.user = user;
     }
 

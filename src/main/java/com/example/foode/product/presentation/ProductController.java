@@ -1,5 +1,7 @@
-package com.example.foode.product;
+package com.example.foode.product.presentation;
 
+import com.example.foode.product.service.ProductService;
+import com.example.foode.product.persistence.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,18 +17,18 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ProductEntity createProduct(@RequestBody ProductEntity productEntity) {
+        return productService.createProduct(productEntity);
     }
 
     @GetMapping
-    public Page<Product> getProductsByName(@RequestParam String name,
-                                           Pageable pageable) {
+    public Page<ProductEntity> getProductsByName(@RequestParam String name,
+                                                 Pageable pageable) {
         return productService.getProductsByName(name, pageable);
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
+    public ProductEntity getProduct(@PathVariable Long id) {
         return productService.getProduct(id);
     }
 
@@ -38,9 +40,9 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product updateProduct(@RequestBody Product product,
-                                 @PathVariable Long id) {
-        return productService.updateProduct(product, id);
+    public ProductEntity updateProduct(@RequestBody ProductEntity productEntity,
+                                       @PathVariable Long id) {
+        return productService.updateProduct(productEntity, id);
     }
 
 }

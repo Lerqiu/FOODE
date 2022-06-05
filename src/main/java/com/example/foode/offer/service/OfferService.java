@@ -5,7 +5,6 @@ import com.example.foode.offer.persistence.OfferEntity;
 import com.example.foode.offer.persistence.OfferFilters;
 import com.example.foode.offer.persistence.OfferRepository;
 import com.example.foode.offer.persistence.OfferSpecification;
-import com.example.foode.offer.presentation.OfferDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,8 +21,8 @@ public class OfferService {
     private final OfferMapper offerMapper;
 
     public Offer createOffer(Offer offer) {
-        OfferEntity offerEntity = offerMapper.toEntity(offer);
-        return offerMapper.fromEntity(offerRepository.saveAndFlush(offerEntity));
+        OfferEntity offerEntity = offerMapper.toOfferEntity(offer);
+        return offerMapper.fromOfferEntity(offerRepository.saveAndFlush(offerEntity));
     }
 
     public Page<Offer> getOffersFiltered(OfferFilters filters, Pageable pageable) {
@@ -31,7 +30,7 @@ public class OfferService {
 
         List<OfferEntity> offerEntities = offerEntitiesPage.getContent();
 
-        List<Offer> offers = offerMapper.fromEntities(offerEntities);
+        List<Offer> offers = offerMapper.fromOfferEntities(offerEntities);
 
         return new PageImpl<>(offers, pageable, offerEntitiesPage.getTotalElements());
     }
@@ -40,13 +39,13 @@ public class OfferService {
         Page<OfferEntity> offerEntitiesPage = offerRepository.findAll(pageable);
         List<OfferEntity> offerEntities = offerEntitiesPage.getContent();
 
-        List<Offer> offers = offerMapper.fromEntities(offerEntities);
+        List<Offer> offers = offerMapper.fromOfferEntities(offerEntities);
 
         return new PageImpl<>(offers, pageable, offerEntitiesPage.getTotalElements());
     }
 
     public Offer getOffer(Long id) {
-        return offerMapper.fromEntity(offerRepository.findById(id)
+        return offerMapper.fromOfferEntity(offerRepository.findById(id)
                 .orElseThrow(() -> new OfferNotFoundException(id)));
     }
 
@@ -57,15 +56,15 @@ public class OfferService {
     public Offer updateOffer(Offer newOffer,
                              Long id) {
         return offerRepository.findById(id)
-                .map(offer -> cloneAndSaveOffer(newOffer, offerMapper.fromEntity(offer)))
+                .map(offer -> cloneAndSaveOffer(newOffer, offerMapper.fromOfferEntity(offer)))
                 .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
     private Offer cloneAndSaveOffer(Offer fromOffer,
                                     Offer toOffer) {
         toOffer.buildFrom(fromOffer);
-        OfferEntity toOfferEntity = offerMapper.toEntity(toOffer);
-        return offerMapper.fromEntity(offerRepository.saveAndFlush(toOfferEntity));
+        OfferEntity toOfferEntity = offerMapper.toOfferEntity(toOffer);
+        return offerMapper.fromOfferEntity(offerRepository.saveAndFlush(toOfferEntity));
     }
 
 }

@@ -4,19 +4,16 @@ import com.example.foode.city.City
 import com.example.foode.city.CityRepository
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferRepository
-import com.example.foode.product.Product
+import com.example.foode.product.persistence.ProductEntity
 import com.example.foode.user.User
 import com.example.foode.user.UserRepository
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.MediaType
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
@@ -94,7 +91,7 @@ class OfferControllerSpec extends Specification {
                 LocalDate.of(2022, 03, 02),
                 "newDesc",
                 "avail",
-                new Product(
+                new ProductEntity(
                         "apple",
                         LocalDate.of(2030, 02, 10)),
                 user)
@@ -280,7 +277,7 @@ class OfferControllerSpec extends Specification {
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
                                 LocalDate.of(2030, 02, 10)),
                         user
@@ -291,7 +288,7 @@ class OfferControllerSpec extends Specification {
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "banana",
                                 LocalDate.of(2030, 02, 10)),
                         user
@@ -302,7 +299,7 @@ class OfferControllerSpec extends Specification {
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
                                 LocalDate.of(2030, 02, 10)),
                         user
@@ -313,7 +310,7 @@ class OfferControllerSpec extends Specification {
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
                                 LocalDate.of(2030, 02, 10)),
                         user

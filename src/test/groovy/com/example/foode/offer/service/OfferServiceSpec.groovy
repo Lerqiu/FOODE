@@ -5,11 +5,7 @@ import com.example.foode.offer.exception.OfferNotFoundException
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferFilters
 import com.example.foode.offer.persistence.OfferRepository
-import com.example.foode.offer.presentation.OfferDTO
-import com.example.foode.offer.service.Offer
-import com.example.foode.offer.service.OfferMapper
-import com.example.foode.offer.service.OfferService
-import com.example.foode.product.Product
+import com.example.foode.product.persistence.ProductEntity
 import com.example.foode.user.User
 import org.springframework.data.domain.*
 import spock.lang.Specification
@@ -45,7 +41,7 @@ class OfferServiceSpec extends Specification {
 
         def city = new City(1, "Wroclaw")
         def user = Mock(User)
-        def product = Mock(Product)
+        def product = Mock(ProductEntity)
 
         offerEntity = new OfferEntity(
                 1,
@@ -120,8 +116,8 @@ class OfferServiceSpec extends Specification {
         offerRepository.saveAndFlush(_ as OfferEntity) >> offerEntity
 
         and: "mocked offerMapper"
-        offerMapper.toEntity(_ as Offer) >> offerEntity
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "createOffer() returns newly created offer"
         def returnedOffer = offerService.createOffer(offer)
@@ -139,16 +135,16 @@ class OfferServiceSpec extends Specification {
         offerRepository.saveAndFlush(_ as OfferEntity) >> offerEntity
 
         and: "mocked offerMapper"
-        offerMapper.toEntity(_ as Offer) >> offerEntity
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "we run createOffer()"
         offerService.createOffer(offer)
 
         then: "saveAndFlush() is called once"
         1 * offerRepository.saveAndFlush(_) >> offerEntity
-        1 * offerMapper.toEntity(_ as Offer) >> offerEntity
-        1 * offerMapper.fromEntity(_ as OfferEntity) >> offer
+        1 * offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        1 * offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
     }
 
     def "getOffersFiltered() WHEN called with filters SHOULD return exactly what repository returns"() {
@@ -165,7 +161,7 @@ class OfferServiceSpec extends Specification {
                 >> allOfferEntities
 
         and: "mocked offerMapper"
-        offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
+        offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
 
         when: "getOffersFiltered() returns Page of offers"
         Page<Offer> returnedOffers = offerService.getOffersFiltered(filters, pageable)
@@ -188,7 +184,7 @@ class OfferServiceSpec extends Specification {
                 >> allOfferEntities
 
         and: "mocked offerMapper"
-        offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
+        offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
 
         when: "we run getOffersFiltered()"
         offerService.getOffersFiltered(filters, pageable)
@@ -198,7 +194,7 @@ class OfferServiceSpec extends Specification {
                 _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
                 >> allOfferEntities
-        1 * offerMapper.fromEntities(_ as List<OfferEntity>) >> listOfOffers
+        1 * offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
     }
 
     def "getOffer() WHEN called with id, which is found in offerRepository SHOULD return offer with given id"() {
@@ -209,7 +205,7 @@ class OfferServiceSpec extends Specification {
         offerRepository.findById(_ as Long) >> Optional.of(offerEntity)
 
         and: "mocked offerMapper"
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "getOffer() returns offer"
         def returnedOffer = offerService.getOffer(offerId)
@@ -223,7 +219,7 @@ class OfferServiceSpec extends Specification {
         offerRepository.findById(_ as Long) >> Optional.empty()
 
         and: "mocked offerMapper"
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "we run getOffer()"
         offerService.getOffer(offerId)
@@ -248,14 +244,14 @@ class OfferServiceSpec extends Specification {
         offerRepository.findById(_ as Long) >> Optional.of(offerEntity)
 
         and: "mocked offerMapper"
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "we run getOffer()"
         offerService.getOffer(offerId)
 
         then: "findById() is called once"
         1 * offerRepository.findById(_) >> Optional.of(offerEntity)
-        1 * offerMapper.fromEntity(_) >> offer
+        1 * offerMapper.fromOfferEntity(_) >> offer
     }
 
     def "deleteOffer() WHEN called with id SHOULD call deleteById() method from offerRepository once"() {
@@ -278,8 +274,8 @@ class OfferServiceSpec extends Specification {
         offerRepository.saveAndFlush(_ as OfferEntity) >> offerEntity
 
         and: "mocked offerMapper"
-        offerMapper.toEntity(_ as Offer) >> offerEntity
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "updateOffer() returns offer with given offerId"
         def returnedOffer = offerService.updateOffer(updatedOffer, offerId)
@@ -300,8 +296,8 @@ class OfferServiceSpec extends Specification {
         offerRepository.findById(_ as Long) >> Optional.empty()
 
         and: "mocked offerMapper"
-        offerMapper.toEntity(_ as Offer) >> offerEntity
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "updateOffer() returns offer with given offerId"
         offerService.updateOffer(updatedOffer, offerId)
@@ -320,16 +316,16 @@ class OfferServiceSpec extends Specification {
         offerRepository.saveAndFlush(_ as OfferEntity) >> offerEntity
 
         and: "mocked offerMapper"
-        offerMapper.toEntity(_ as Offer) >> offerEntity
-        offerMapper.fromEntity(_ as OfferEntity) >> offer
+        offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
 
         when: "we run updateOffer"
         offerService.updateOffer(updatedOffer, offerId)
 
         then: "saveAndFlush() is called once"
         1 * offerRepository.saveAndFlush(_) >> offerEntity
-        1 * offerMapper.toEntity(_ as Offer) >> offerEntity
-        2 * offerMapper.fromEntity(_ as OfferEntity) >> offer
+        1 * offerMapper.toOfferEntity(_ as Offer) >> offerEntity
+        2 * offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
     }
 
 }

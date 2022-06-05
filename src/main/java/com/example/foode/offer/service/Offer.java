@@ -1,7 +1,7 @@
 package com.example.foode.offer.service;
 
 import com.example.foode.city.City;
-import com.example.foode.product.Product;
+import com.example.foode.product.service.Product;
 import com.example.foode.user.User;
 import lombok.Data;
 

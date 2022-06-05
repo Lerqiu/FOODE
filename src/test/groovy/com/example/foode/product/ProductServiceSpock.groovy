@@ -2,6 +2,9 @@ package com.example.foode.product
 
 
 import com.example.foode.product.exception.ProductNotFoundException
+import com.example.foode.product.persistence.ProductEntity
+import com.example.foode.product.persistence.ProductRepository
+import com.example.foode.product.service.ProductService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -16,39 +19,39 @@ class ProductServiceSpock extends Specification {
     private ProductRepository productRepository
     private ProductService productService
 
-    private Product product
-    private Product secondProduct
-    private Product updatedProduct
-    private Page<Product> allProducts
+    private ProductEntity product
+    private ProductEntity secondProduct
+    private ProductEntity updatedProduct
+    private Page<ProductEntity> allProducts
 
     void setup() {
         productRepository = Mock(ProductRepository)
         productService = new ProductService(productRepository)
 
-        product = new Product(
+        product = new ProductEntity(
                 1,
                 "apple",
                 LocalDate.of(2022, 03, 02))
 
-        secondProduct = new Product(
+        secondProduct = new ProductEntity(
                 1,
                 "orange",
                 LocalDate.of(2022, 01, 04))
 
-        updatedProduct = new Product(
+        updatedProduct = new ProductEntity(
                 1,
                 "apple",
                 LocalDate.of(2022, 05, 02))
 
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
-        def listOfProducts = new ArrayList<Product>(List.of(product, secondProduct))
+        def listOfProducts = new ArrayList<ProductEntity>(List.of(product, secondProduct))
 
         allProducts = new PageImpl<>(listOfProducts, pageable, 100)
     }
 
     def "createProduct() when called with product SHOULD return same product"() {
         given: "mocked productRepository"
-        productRepository.saveAndFlush(_ as Product) >> product
+        productRepository.saveAndFlush(_ as ProductEntity) >> product
 
         when: "createProduct() returns newly created product"
         def result = productService.createProduct(product)
@@ -59,7 +62,7 @@ class ProductServiceSpock extends Specification {
 
     def "createProduct() when called with product SHOULD call saveAndFlush() method from productRepository once"() {
         given: "mocked productRepository"
-        productRepository.saveAndFlush(_ as Product) >> product
+        productRepository.saveAndFlush(_ as ProductEntity) >> product
 
         when: "we run createProduct()"
         productService.createProduct(product)
@@ -79,7 +82,7 @@ class ProductServiceSpock extends Specification {
         productRepository.findAllByNameContainingIgnoreCase(_ as String, _ as Pageable) >> allProducts
 
         when: "getOffersByCity() returns Page of offers"
-        Page<Product> returnedProducts = productService.getProductsByName(name, pageable)
+        Page<ProductEntity> returnedProducts = productService.getProductsByName(name, pageable)
 
         then: "returned offers are of size max. 5"
         returnedProducts == allProducts
@@ -163,7 +166,7 @@ class ProductServiceSpock extends Specification {
 
         and: "mocked productRepository"
         productRepository.findById(_ as Long) >> Optional.of(product)
-        productRepository.saveAndFlush(_ as Product) >> product
+        productRepository.saveAndFlush(_ as ProductEntity) >> product
 
         when: "updateProduct() returns product with given productId"
         def returnedProduct = productService.updateProduct(updatedProduct, productId)
@@ -178,7 +181,7 @@ class ProductServiceSpock extends Specification {
 
         and: "mocked productRepository"
         productRepository.findById(_ as Long) >> Optional.empty()
-        productRepository.saveAndFlush(_ as Product) >> updatedProduct
+        productRepository.saveAndFlush(_ as ProductEntity) >> updatedProduct
 
         when: "updateProduct() returns product with given productId"
         def returnedProduct = productService.updateProduct(updatedProduct, productId)
@@ -193,7 +196,7 @@ class ProductServiceSpock extends Specification {
 
         and: "mocked productRepository"
         productRepository.findById(_ as Long) >> Optional.of(product)
-        productRepository.saveAndFlush(_ as Product) >> product
+        productRepository.saveAndFlush(_ as ProductEntity) >> product
 
         when: "we run updateProduct"
         productService.updateProduct(updatedProduct, productId)

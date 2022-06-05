@@ -1,7 +1,8 @@
 package com.example.foode.offer.presentation;
 
 import com.example.foode.city.City;
-import com.example.foode.product.Product;
+import com.example.foode.product.persistence.ProductEntity;
+import com.example.foode.product.presentation.ProductDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ public class OfferDTO {
 
     private String availability;
 
-    private Product product;
+    private ProductDTO productDTO;
 
     private UserOfferOutput userOutput;
 
@@ -35,7 +36,7 @@ public class OfferDTO {
                     City city,
                     String description,
                     String availability,
-                    Product product,
+                    ProductDTO productDTO,
                     UserOfferOutput userOutput) {
         this.id = id;
         this.price = price;
@@ -43,7 +44,7 @@ public class OfferDTO {
         this.city = city;
         this.description = description;
         this.availability = availability;
-        this.product = product;
+        this.productDTO = productDTO;
         this.userOutput = userOutput;
     }
 }
