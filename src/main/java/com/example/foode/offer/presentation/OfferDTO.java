@@ -25,6 +25,10 @@ public class OfferDto {
 
     private UserOfferOutput userOutput;
 
+    public OfferDTO() {
+
+    }
+
     public OfferDto(Long id,
                     BigDecimal price,
                     LocalDate date,

@@ -5,6 +5,8 @@ import com.example.foode.city.CityRepository
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferRepository
 import com.example.foode.product.Product
+import com.example.foode.user.User
+import com.example.foode.user.UserRepository
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -59,16 +61,32 @@ class OfferControllerSpec extends Specification {
     @Autowired
     private CityRepository cityRepository
 
+    @Autowired
+    private UserRepository userRepository
+
     private OfferEntity offer
 
     private City city
 
     private City secondCity
 
+    private User user
+
     void setup() {
         city = new City("Wrocław")
         secondCity = new City("Warszawa")
         cityRepository.saveAllAndFlush(List.of(city, secondCity))
+
+        user = new User(
+                1,
+                "loginTest",
+                "PasswdTest",
+                BigDecimal.valueOf(50),
+                "contactTest",
+                new ArrayList<>()
+        )
+
+        userRepository.saveAndFlush(user)
 
         offer = new OfferEntity(
                 BigDecimal.valueOf(30).setScale(0),

@@ -41,6 +41,20 @@ public class User {
     public User() {
     }
 
+    public User(Long id,
+                String login,
+                String password,
+                BigDecimal points,
+                String contact,
+                List<OfferEntity> offers) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.points = points;
+        this.contact = contact;
+        this.offers = offers;
+    }
+
     public User(String login,
                 String password,
                 BigDecimal points,
