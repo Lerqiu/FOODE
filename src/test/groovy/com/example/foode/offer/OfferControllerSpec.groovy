@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.MediaType
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
@@ -27,8 +28,7 @@ import static org.assertj.core.api.Assertions.tuple
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@SpringBootTest(classes = OfferConfiguration.class,
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
@@ -96,7 +96,8 @@ class OfferControllerSpec extends Specification {
                 "avail",
                 new Product(
                         "apple",
-                        LocalDate.of(2030, 02, 10)))
+                        LocalDate.of(2030, 02, 10)),
+                user)
     }
 
     def "creates Offer"() throws Exception {
@@ -281,7 +282,8 @@ class OfferControllerSpec extends Specification {
                         "avail",
                         new Product(
                                 "apple",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
                 new OfferEntity(
                         BigDecimal.valueOf(2).setScale(0),
@@ -291,7 +293,8 @@ class OfferControllerSpec extends Specification {
                         "avail",
                         new Product(
                                 "banana",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
                 new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
@@ -301,7 +304,8 @@ class OfferControllerSpec extends Specification {
                         "avail",
                         new Product(
                                 "apple",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
                 new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
@@ -311,7 +315,8 @@ class OfferControllerSpec extends Specification {
                         "avail",
                         new Product(
                                 "apple",
-                                LocalDate.of(2030, 02, 10)))
-        )
+                                LocalDate.of(2030, 02, 10)),
+                        user
+        ))
     }
 }

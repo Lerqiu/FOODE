@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class OfferDto {
+public class OfferDTO {
     private Long id;
 
     private BigDecimal price;
@@ -29,7 +29,7 @@ public class OfferDto {
 
     }
 
-    public OfferDto(Long id,
+    public OfferDTO(Long id,
                     BigDecimal price,
                     LocalDate date,
                     City city,

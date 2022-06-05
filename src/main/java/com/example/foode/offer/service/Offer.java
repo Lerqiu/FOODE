@@ -1,7 +1,6 @@
 package com.example.foode.offer.service;
 
 import com.example.foode.city.City;
-import com.example.foode.offer.presentation.UserOfferOutput;
 import com.example.foode.product.Product;
 import com.example.foode.user.User;
 import lombok.Data;
@@ -46,23 +45,7 @@ public class Offer {
         this.product = product;
     }
 
-    public Offer(Long id,
-                 BigDecimal price,
-                 LocalDate date,
-                 City city,
-                 String description,
-                 String availability,
-                 Product product) {
-        this.id = id;
-        this.price = price;
-        this.date = date;
-        this.city = city;
-        this.description = description;
-        this.availability = availability;
-        this.product = product;
-    }
-
-    public void setFrom(Offer offer) {
+    public void buildFrom(Offer offer) {
         this.setAvailability(offer.getAvailability());
         this.setCity(offer.getCity());
         this.setDate(offer.getDate());
@@ -70,10 +53,6 @@ public class Offer {
         this.setPrice(offer.getPrice());
         this.setProduct(offer.getProduct());
         this.setCity(offer.getCity());
-    }
-
-    public UserOfferOutput getUserOutput() {
-        return UserOfferOutput.from(user != null ? user : new User());
     }
 
 }

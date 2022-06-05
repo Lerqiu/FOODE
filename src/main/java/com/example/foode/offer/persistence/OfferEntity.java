@@ -68,13 +68,20 @@ public class OfferEntity {
         this.product = product;
     }
 
-    public OfferEntity(BigDecimal price, City city, LocalDate date, String description, String availability, Product product) {
+    public OfferEntity(BigDecimal price,
+                       City city,
+                       LocalDate date,
+                       String description,
+                       String availability,
+                       Product product,
+                       User user) {
         this.price = price;
         this.city = city;
         this.date = date;
         this.description = description;
         this.availability = availability;
         this.product = product;
+        this.user = user;
     }
 
 }

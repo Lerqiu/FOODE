@@ -5,7 +5,7 @@ import com.example.foode.offer.exception.OfferNotFoundException
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferFilters
 import com.example.foode.offer.persistence.OfferRepository
-import com.example.foode.offer.presentation.OfferDto
+import com.example.foode.offer.presentation.OfferDTO
 import com.example.foode.offer.service.Offer
 import com.example.foode.offer.service.OfferMapper
 import com.example.foode.offer.service.OfferService
@@ -19,7 +19,9 @@ import java.time.LocalDate
 class OfferServiceSpec extends Specification {
 
     private OfferService offerService
+
     private OfferRepository offerRepository
+
     private OfferMapper offerMapper
 
     private OfferEntity offerEntity
@@ -152,12 +154,12 @@ class OfferServiceSpec extends Specification {
 
         and: "mocked offerRepository"
         offerRepository.findAll(
-                _ as org.springframework.data.jpa.domain.Specification<OfferDto>,
+                _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
                 >> allOffers
 
         when: "getOffersFiltered() returns Page of offers"
-        Page<OfferDto> returnedOffers = offerService.getOffersFiltered(filters, pageable)
+        Page<Offer> returnedOffers = offerService.getOffersFiltered(filters, pageable)
 
         then: "results from service repository are identical"
         returnedOffers == allOffers
@@ -172,7 +174,7 @@ class OfferServiceSpec extends Specification {
 
         and: "mocked offerRepository"
         offerRepository.findAll(
-                _ as org.springframework.data.jpa.domain.Specification<OfferDto>,
+                _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
                 >> allOffers
 

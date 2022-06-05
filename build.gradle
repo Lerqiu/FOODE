@@ -21,12 +21,16 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.4.2.Final'
+	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.1.Final'
 	implementation group: 'org.springframework.data', name: 'spring-data-rest-webmvc', version: '3.7.0'
 
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
+
+	//annotation processors
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.1.Final"
+
 
 	//database
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.7'

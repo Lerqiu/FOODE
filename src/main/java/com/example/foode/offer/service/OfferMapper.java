@@ -2,7 +2,6 @@ package com.example.foode.offer.service;
 
 import com.example.foode.offer.persistence.OfferEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.Collection;
 import java.util.List;

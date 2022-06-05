@@ -16,24 +16,24 @@ import org.springframework.web.bind.annotation.*;
 public class OfferController {
 
     private final OfferService offerService;
-    private final OfferProjectionMapper offerProjectionMapper;
+    private final OfferDTOMapper offerDTOMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OfferDto createOffer(@RequestBody OfferDto offerDto) {
-        Offer offer = offerProjectionMapper.fromOfferDto(offerDto);
-        return offerProjectionMapper.toOfferDto(offerService.createOffer(offer));
+    public OfferDTO createOffer(@RequestBody OfferDTO offerDto) {
+        Offer offer = offerDTOMapper.fromOfferDto(offerDto);
+        return offerDTOMapper.toOfferDto(offerService.createOffer(offer));
     }
 
     @GetMapping()
-    public Page<OfferDto> getOffersFiltered(OfferFilters filters,
+    public Page<OfferDTO> getOffersFiltered(OfferFilters filters,
                                             Pageable pageable) {
-        return offerService.getOffersFiltered(filters, pageable);
+        return offerService.getOffersFiltered(filters, pageable).map(offerDTOMapper::toOfferDto);
     }
 
     @GetMapping("/{id}")
-    public OfferDto getOffer(@PathVariable Long id) throws OfferNotFoundException {
-        return offerProjectionMapper.toOfferDto(offerService.getOffer(id));
+    public OfferDTO getOffer(@PathVariable Long id) throws OfferNotFoundException {
+        return offerDTOMapper.toOfferDto(offerService.getOffer(id));
     }
 
     @DeleteMapping("/{id}")
@@ -44,9 +44,9 @@ public class OfferController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public OfferDto updateOffer(@RequestBody OfferDto offerDto,
+    public OfferDTO updateOffer(@RequestBody OfferDTO offerDto,
                                 @PathVariable Long id) {
-        Offer offer = offerProjectionMapper.fromOfferDto(offerDto);
-        return offerProjectionMapper.toOfferDto(offerService.updateOffer(offer, id));
+        Offer offer = offerDTOMapper.fromOfferDto(offerDto);
+        return offerDTOMapper.toOfferDto(offerService.updateOffer(offer, id));
     }
 }

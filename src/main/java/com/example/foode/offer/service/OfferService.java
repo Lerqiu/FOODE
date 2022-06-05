@@ -5,7 +5,7 @@ import com.example.foode.offer.persistence.OfferEntity;
 import com.example.foode.offer.persistence.OfferFilters;
 import com.example.foode.offer.persistence.OfferRepository;
 import com.example.foode.offer.persistence.OfferSpecification;
-import com.example.foode.offer.presentation.OfferDto;
+import com.example.foode.offer.presentation.OfferDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,8 +26,9 @@ public class OfferService {
         return offerMapper.fromEntity(offerRepository.saveAndFlush(offerEntity));
     }
 
-    public Page<OfferDto> getOffersFiltered(OfferFilters filters, Pageable pageable) {
-        return offerRepository.findAll(new OfferSpecification(filters), pageable);
+    public Page<Offer> getOffersFiltered(OfferFilters filters, Pageable pageable) {
+        return offerRepository.findAll(new OfferSpecification(filters), pageable)
+                .map(offerMapper::fromEntity);
     }
 
     public Page<Offer> getOffers(Pageable pageable) {
@@ -57,7 +58,7 @@ public class OfferService {
 
     private Offer cloneAndSaveOffer(Offer fromOffer,
                                     Offer toOffer) {
-        toOffer.setFrom(fromOffer);
+        toOffer.buildFrom(fromOffer);
         OfferEntity toOfferEntity = offerMapper.toEntity(toOffer);
         return offerMapper.fromEntity(offerRepository.saveAndFlush(toOfferEntity));
     }
