@@ -11,7 +11,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class ProductServiceSpock extends Specification {
+class ProductServiceSpec extends Specification {
 
     private ProductRepository productRepository
     private ProductService productService
