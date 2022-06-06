@@ -325,6 +325,7 @@ class OfferServiceSpec extends Specification {
         offerService.updateOffer(updatedOffer, offerId)
 
         then: "saveAndFlush() is called once"
+        1 * offerRepository.findById(_ as Long) >> Optional.of(offerEntity)
         1 * offerRepository.saveAndFlush(_) >> offerEntity
         1 * offerMapper.toOfferEntity(_ as Offer) >> offerEntity
         2 * offerMapper.fromOfferEntity(_ as OfferEntity) >> offer

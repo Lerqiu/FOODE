@@ -1,6 +1,5 @@
 package com.example.foode.offer.persistence;
 
-import com.example.foode.offer.presentation.OfferDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -23,7 +22,7 @@ public class OfferSpecification implements Specification<OfferEntity> {
         if (filters.getName() != null) {
             predicates.add(
                     criteriaBuilder.like(
-                            root.join("product").get("name"),
+                            root.join("productEntity").get("name"),
                             toPattern(filters.getName()))
             );
         }

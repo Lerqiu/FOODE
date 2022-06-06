@@ -2,6 +2,7 @@ package com.example.foode.product.service;
 
 import com.example.foode.product.persistence.ProductEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

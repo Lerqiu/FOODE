@@ -5,6 +5,7 @@ import com.example.foode.city.CityRepository
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferRepository
 import com.example.foode.product.persistence.ProductEntity
+import com.example.foode.product.presentation.ProductDTO
 import com.example.foode.user.User
 import com.example.foode.user.UserRepository
 import com.jayway.jsonpath.JsonPath

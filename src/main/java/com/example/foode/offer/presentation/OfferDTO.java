@@ -1,7 +1,6 @@
 package com.example.foode.offer.presentation;
 
 import com.example.foode.city.City;
-import com.example.foode.product.persistence.ProductEntity;
 import com.example.foode.product.presentation.ProductDTO;
 import lombok.Data;
 
@@ -22,7 +21,7 @@ public class OfferDTO {
 
     private String availability;
 
-    private ProductDTO productDTO;
+    private ProductDTO product;
 
     private UserOfferOutput userOutput;
 
@@ -36,7 +35,7 @@ public class OfferDTO {
                     City city,
                     String description,
                     String availability,
-                    ProductDTO productDTO,
+                    ProductDTO product,
                     UserOfferOutput userOutput) {
         this.id = id;
         this.price = price;
@@ -44,7 +43,7 @@ public class OfferDTO {
         this.city = city;
         this.description = description;
         this.availability = availability;
-        this.productDTO = productDTO;
+        this.product = product;
         this.userOutput = userOutput;
     }
 }
