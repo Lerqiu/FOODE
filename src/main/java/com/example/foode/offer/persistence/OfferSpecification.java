@@ -30,7 +30,7 @@ public class OfferSpecification implements Specification<OfferEntity> {
         if (filters.getCityId() != null) {
             predicates.add(
                     criteriaBuilder.equal(
-                            root.get("city"),
+                            root.get("cityEntity"),
                             filters.getCityId())
             );
         }

@@ -1,6 +1,6 @@
 package com.example.foode.offer.persistence;
 
-import com.example.foode.city.City;
+import com.example.foode.city.persistence.CityEntity;
 import com.example.foode.product.persistence.ProductEntity;
 import com.example.foode.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -28,7 +28,7 @@ public class OfferEntity {
 
     @ManyToOne()
     @JoinColumn(name = "city_id", referencedColumnName = "id")
-    private City city;
+    private CityEntity cityEntity;
 
     @Column(length = 4000, nullable = false)
     private String description;
@@ -52,7 +52,7 @@ public class OfferEntity {
             Long id,
             BigDecimal price,
             LocalDate date,
-            City city,
+            CityEntity cityEntity,
             String description,
             String availability,
             User user,
@@ -60,7 +60,7 @@ public class OfferEntity {
         this.id = id;
         this.price = price;
         this.date = date;
-        this.city = city;
+        this.cityEntity = cityEntity;
         this.description = description;
         this.availability = availability;
         this.user = user;
@@ -68,14 +68,14 @@ public class OfferEntity {
     }
 
     public OfferEntity(BigDecimal price,
-                       City city,
+                       CityEntity cityEntity,
                        LocalDate date,
                        String description,
                        String availability,
                        ProductEntity productEntity,
                        User user) {
         this.price = price;
-        this.city = city;
+        this.cityEntity = cityEntity;
         this.date = date;
         this.description = description;
         this.availability = availability;

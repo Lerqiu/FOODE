@@ -1,4 +1,4 @@
-package com.example.foode.city;
+package com.example.foode.city.persistence;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "city")
 @Data
-public class City {
+public class CityEntity {
 
     @Id
     @SequenceGenerator(name = "city_id_seq", sequenceName = "city_id_seq", allocationSize = 1)
@@ -17,15 +17,15 @@ public class City {
     @Column(nullable = false)
     private String name;
 
-    public City() {
+    public CityEntity() {
     }
 
-    public City(String name) {
+    public CityEntity(String name) {
         this.name = name;
     }
 
-    public City(Long id,
-                String name) {
+    public CityEntity(Long id,
+                      String name) {
         this.id = id;
         this.name = name;
     }

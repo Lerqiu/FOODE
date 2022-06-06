@@ -1,6 +1,7 @@
 package com.example.foode.offer.service
 
-import com.example.foode.city.City
+import com.example.foode.city.persistence.CityEntity
+import com.example.foode.city.service.City
 import com.example.foode.offer.exception.OfferNotFoundException
 import com.example.foode.offer.persistence.OfferEntity
 import com.example.foode.offer.persistence.OfferFilters
@@ -40,7 +41,9 @@ class OfferServiceSpec extends Specification {
         offerMapper = Mock(OfferMapper)
         offerService = new OfferService(offerRepository, offerMapper)
 
+        def cityEntity = new CityEntity(1, "Wroclaw")
         def city = new City(1, "Wroclaw")
+
         def user = Mock(User)
         def productEntity = Mock(ProductEntity)
         def product = Mock(Product)
@@ -49,7 +52,7 @@ class OfferServiceSpec extends Specification {
                 1,
                 BigDecimal.ONE,
                 LocalDate.now(),
-                city,
+                cityEntity,
                 "testDesc",
                 "testAvailability",
                 user,
@@ -59,7 +62,7 @@ class OfferServiceSpec extends Specification {
                 1,
                 BigDecimal.ZERO,
                 LocalDate.now(),
-                city,
+                cityEntity,
                 "updatedDesc",
                 "updatedAvailability",
                 user,
@@ -69,7 +72,7 @@ class OfferServiceSpec extends Specification {
                 2,
                 BigDecimal.valueOf(50),
                 LocalDate.now(),
-                city,
+                cityEntity,
                 "secondDesc",
                 "secondAvailability",
                 user,

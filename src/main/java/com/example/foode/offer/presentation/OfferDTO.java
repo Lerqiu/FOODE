@@ -1,6 +1,6 @@
 package com.example.foode.offer.presentation;
 
-import com.example.foode.city.City;
+import com.example.foode.city.presentation.CityDTO;
 import com.example.foode.product.presentation.ProductDTO;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class OfferDTO {
 
     private LocalDate date;
 
-    private City city;
+    private CityDTO city;
 
     private String description;
 
@@ -24,26 +24,4 @@ public class OfferDTO {
     private ProductDTO product;
 
     private UserOfferOutput userOutput;
-
-    public OfferDTO() {
-
-    }
-
-    public OfferDTO(Long id,
-                    BigDecimal price,
-                    LocalDate date,
-                    City city,
-                    String description,
-                    String availability,
-                    ProductDTO product,
-                    UserOfferOutput userOutput) {
-        this.id = id;
-        this.price = price;
-        this.date = date;
-        this.city = city;
-        this.description = description;
-        this.availability = availability;
-        this.product = product;
-        this.userOutput = userOutput;
-    }
 }
