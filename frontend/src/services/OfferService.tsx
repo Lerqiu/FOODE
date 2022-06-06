@@ -11,7 +11,8 @@ const apiClient = axios.create({
 
 const handleFilters = () => {
   const storageManagement = getOffersPageManagement();
-  const city = JSON.parse(storageManagement.city || '{}');
+  const cityFromStorage = storageManagement.city;
+  const city = cityFromStorage !== 'default' ? JSON.parse(storageManagement.city || '{}') : JSON.parse('{}');
   let filterString = '';
   filterString += storageManagement.priceFrom ? `&priceFrom=${storageManagement.priceFrom}` : '';
   filterString += storageManagement.priceTo ? `&priceTo=${storageManagement.priceTo}` : '';

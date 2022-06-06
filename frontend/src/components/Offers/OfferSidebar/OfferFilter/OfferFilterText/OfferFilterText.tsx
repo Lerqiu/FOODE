@@ -5,16 +5,18 @@ import { OfferFilterText_style, OfferFilterText_style_nested } from './OfferFilt
 function OfferFilterText(props: {
   title: string,
   onChange:(value: string) => void,
-  defaultValue: string
+  value: string
 }) {
-  const { title, onChange, defaultValue } = props;
+  const {
+    title, onChange, value,
+  } = props;
   return (
     <TextField
       label={title}
-      defaultValue={defaultValue}
       sx={{ m: 2 }}
       variant="filled"
       color="success"
+      value={value}
       onChange={(e) => onChange(e.target.value)}
       InputProps={{ style: OfferFilterText_style_nested }}
       InputLabelProps={{ style: OfferFilterText_style_nested }}

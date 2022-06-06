@@ -20,13 +20,13 @@ function OfferSidebar(props: {showModal: any}) {
   const initMaxPrice = getOffersPageManagement().priceTo || '';
   const initMinPrice = getOffersPageManagement().priceFrom || '';
   const initProductName = getOffersPageManagement().name || '';
-  const initCity = JSON.parse(getOffersPageManagement().city) || 'default';
+  const initCity = getOffersPageManagement()?.city || 'default';
 
   const [cities, setCities] = useState<ICity[]>([]);
   const [maxPrice, setMaxPrice] = useState<string>(initMaxPrice);
   const [minPrice, setMinPrice] = useState<string>(initMinPrice);
   const [productName, setProductName] = useState<string>(initProductName);
-  const [city, setCity] = useState<ICity>(initCity);
+  const [city, setCity] = useState<string>(initCity);
 
   const queryClient = useQueryClient();
 
@@ -50,7 +50,7 @@ function OfferSidebar(props: {showModal: any}) {
       priceFrom: minPrice,
       priceTo: maxPrice,
       name: productName,
-      city: JSON.stringify(city || '{}'),
+      city: city || '{}',
     };
 
     saveOffersPageManagement(offerPageManagementToSave);
@@ -60,8 +60,24 @@ function OfferSidebar(props: {showModal: any}) {
     queryClient.invalidateQueries('offers-get');
   };
 
-  const handleClick = () => {
+  const handleFilterClick = () => {
     handleStorage();
+    handleQuery();
+  };
+
+  const clearFilter = () => {
+    const offerPageManagement = getOffersPageManagement();
+    saveOffersPageManagement({
+      sort: offerPageManagement?.sort,
+    });
+    setMinPrice('');
+    setMaxPrice('');
+    setProductName('');
+    setCity('default');
+  };
+
+  const handleClearFilterClick = () => {
+    clearFilter();
     handleQuery();
   };
 
@@ -84,31 +100,40 @@ function OfferSidebar(props: {showModal: any}) {
         <OfferFilterText
           title="Nazwa produktu:"
           onChange={setProductName}
-          defaultValue={initProductName}
+          value={productName}
         />
         <OfferFilterText
           title="Minimanlna cena:"
           onChange={setMinPrice}
-          defaultValue={initMinPrice}
+          value={minPrice}
         />
         <OfferFilterText
           title="Maksymalna cena:"
           onChange={setMaxPrice}
-          defaultValue={initMaxPrice}
+          value={maxPrice}
         />
         <OfferFilterCitySelect
           cities={cities}
           onChange={setCity}
-          defaultValue={initCity}
+          value={city}
         />
         <Button
           variant="contained"
           color="success"
           sx={{ mx: 2, mt: 2 }}
           style={OfferFilter_style_ButtonStyles}
-          onClick={() => handleClick()}
+          onClick={() => handleFilterClick()}
         >
           Filtruj
+        </Button>
+        <Button
+          variant="contained"
+          color="success"
+          sx={{ mx: 2, mt: 2 }}
+          style={OfferFilter_style_ButtonStyles}
+          onClick={() => handleClearFilterClick()}
+        >
+          wyczyść filtry
         </Button>
       </Stack>
     </AppBar>

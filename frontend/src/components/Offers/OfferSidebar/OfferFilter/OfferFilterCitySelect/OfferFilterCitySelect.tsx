@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MenuItem, Select, Typography } from '@mui/material';
 import ICity from '../../../../../interfaces/city/ICity';
 import {
@@ -7,23 +7,21 @@ import {
 } from '../../OfferSort/OfferSortSelect/OfferSortSelect.style';
 
 function OfferFilterCitySelect(props: {
-  cities: ICity[],
-  onChange: (value: ICity) => void,
-  defaultValue: string}) {
-  const { cities, onChange, defaultValue } = props;
-  const [selectIndex, setSelectIndex] = useState(defaultValue);
+  cities: ICity[]
+  onChange: (value: string) => void,
+  value: string}) {
+  const { cities, onChange, value } = props;
 
   const handleChange = (event: { target: { value: string } }) => {
     const choosenValue = event.target.value;
-    onChange(JSON.parse(choosenValue));
-    setSelectIndex(choosenValue);
+    onChange(choosenValue);
   };
 
   return (
     <Select
       labelId="demo-customized-select-label"
       id="demo-customized-select"
-      value={selectIndex}
+      value={value}
       onChange={handleChange}
       variant="filled"
       style={OfferSortSelect_style}
