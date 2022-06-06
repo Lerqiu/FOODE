@@ -3,12 +3,12 @@ import { Box, Container } from '@mui/material';
 import { useQuery } from 'react-query';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
 import OfferList from '../../components/Offers/OfferList/OfferList';
-import { OffersPage_style_contextContainer, OffersPage_style_mainContainer } from './OffersPage.style';
 import IOfferView from '../../interfaces/offer/IOfferView';
 import IOffers from '../../interfaces/offer/IOffers';
 import OfferSidebar from '../../components/Offers/OfferSidebar/OfferSidebar';
 import AddOfferModal from '../../components/Offers/AddOfferModal/AddOfferModal';
 import OfferService from '../../services/OfferService';
+import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.style';
 
 const mapOffers = (_offers: IOffers): IOfferView[] => {
   const IMAGE_PLACEHOLDER_URL = 'https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png';
@@ -40,8 +40,8 @@ function OffersPage() {
   );
 
   return (
-    <Box style={OffersPage_style_mainContainer}>
-      <Box style={OffersPage_style_contextContainer}>
+    <OffersPage_MainContainer>
+      <OffersPage_SecondaryContainer>
         <Box>
           <OfferSidebar showModal={setShowModal} />
         </Box>
@@ -52,9 +52,9 @@ function OffersPage() {
           />
           <OfferList offers={offers} />
         </Container>
-      </Box>
+      </OffersPage_SecondaryContainer>
       <ProductsOffersPagination />
-    </Box>
+    </OffersPage_MainContainer>
   );
 }
 

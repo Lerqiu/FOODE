@@ -1,10 +1,7 @@
 import React from 'react';
-import { MenuItem, Select, Typography } from '@mui/material';
+import { MenuItem, Typography } from '@mui/material';
 import ICity from '../../../../../interfaces/city/ICity';
-import {
-  OfferSortSelect_style,
-  OfferSortSelect_style_Display,
-} from '../../OfferSort/OfferSortSelect/OfferSortSelect.style';
+import OfferFilterCity_Select from './OfferFilterCitySelect.styles';
 
 function OfferFilterCitySelect(props: {
   cities: ICity[]
@@ -18,14 +15,12 @@ function OfferFilterCitySelect(props: {
   };
 
   return (
-    <Select
+    <OfferFilterCity_Select
       labelId="demo-customized-select-label"
       id="demo-customized-select"
       value={value}
-      onChange={handleChange}
+      onChange={(e: any) => handleChange(e)}
       variant="filled"
-      style={OfferSortSelect_style}
-      SelectDisplayProps={{ style: OfferSortSelect_style_Display }}
     >
       <MenuItem value="default" hidden>
         Wybierz miasto
@@ -38,7 +33,7 @@ function OfferFilterCitySelect(props: {
           </Typography>
         </MenuItem>
       )) : ''}
-    </Select>
+    </OfferFilterCity_Select>
   );
 }
 

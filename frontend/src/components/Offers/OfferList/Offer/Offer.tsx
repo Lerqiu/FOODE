@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, Container, Grid,
+  Box, Button, Grid,
 } from '@mui/material';
 import IOfferView from '../../../../interfaces/offer/IOfferView';
 import OfferImage from './OfferImage/OfferImage';
@@ -9,7 +9,7 @@ import OffersPrice from './OfferPrice/OfferPrice';
 import OfferDate from './OfferDate/OfferDate';
 import OfferProduct from './OfferProduct/OfferProduct';
 import OfferCity from './OfferCity/OfferCity';
-import Offer_style from './Offer.style';
+import Offers_Container from './Offer.style';
 
 function Offer(props: { offer: IOfferView }) {
   const { offer } = props;
@@ -20,8 +20,8 @@ function Offer(props: { offer: IOfferView }) {
   };
 
   return (
-  // Main container
-    <Container style={Offer_style} sx={{ m: 1 }}>
+    // Main container
+    <Offers_Container sx={{ m: 1 }}>
       <Grid container alignItems="center" justifyContent="center">
 
         <Grid item xs={2}>
@@ -56,7 +56,7 @@ function Offer(props: { offer: IOfferView }) {
           </Grid>
         </Grid>
       </Grid>
-    </Container>
+    </Offers_Container>
   );
 }
 

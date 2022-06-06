@@ -1,6 +1,9 @@
-const Offer_style = {
+import { styled } from '@mui/material/styles';
+import MuiContainer from '@mui/material/Container';
+
+const Offers_Container = styled(MuiContainer)(() => ({
   backgroundColor: '#cee8ab',
   borderRadius: 20,
-};
+}));
 
-export default Offer_style;
+export default Offers_Container;

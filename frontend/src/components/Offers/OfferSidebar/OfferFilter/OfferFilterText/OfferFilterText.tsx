@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
-import { OfferFilterText_style, OfferFilterText_style_nested } from './OfferFilterText.styles';
+import OfferFilterText_TextField, { OfferFilterText_style_nested } from './OfferFilterText.styles';
 
 function OfferFilterText(props: {
   title: string,
@@ -11,7 +10,7 @@ function OfferFilterText(props: {
     title, onChange, value,
   } = props;
   return (
-    <TextField
+    <OfferFilterText_TextField
       label={title}
       sx={{ m: 2 }}
       variant="filled"
@@ -20,7 +19,6 @@ function OfferFilterText(props: {
       onChange={(e) => onChange(e.target.value)}
       InputProps={{ style: OfferFilterText_style_nested }}
       InputLabelProps={{ style: OfferFilterText_style_nested }}
-      style={OfferFilterText_style}
     />
   );
 }

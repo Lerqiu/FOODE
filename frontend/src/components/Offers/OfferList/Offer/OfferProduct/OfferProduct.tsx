@@ -1,20 +1,18 @@
 import React from 'react';
-import { Typography } from '@mui/material';
-import OfferProduct_style from './OfferProduct.style';
 import IProduct from '../../../../../interfaces/product/IProduct';
+import OffersList_Typography from './OfferProduct.style';
 
 function OfferProduct(props: { product: IProduct }) {
   const { product } = props;
 
   return (
-    <Typography
+    <OffersList_Typography
       variant="h5"
       noWrap
-      style={OfferProduct_style}
       align="center"
     >
       {product.name}
-    </Typography>
+    </OffersList_Typography>
   );
 }
 
