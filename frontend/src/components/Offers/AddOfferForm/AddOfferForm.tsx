@@ -97,7 +97,7 @@ function AddOfferForm(props: {cities: ICity[], submit: (values: any) => void}) {
               onChange={handleChange}
               name="city"
             >
-              <option value="">
+              <option value="" hidden>
                 Wybierz miasto
                 {' '}
               </option>
