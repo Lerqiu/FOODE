@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  AppBar, Box, Container, Toolbar,
+  Box, Container, Toolbar,
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
-import NavbarStyles from './Navbar.styles';
 import NavbarProfile from './Profile/NavbarProfile';
 import Paths from '../../conf/Paths';
+import Navbar_AppBar from './Navbar.styles';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function Navbar() {
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexFlow: 'column' }}>
-      <AppBar position="static" style={NavbarStyles}>
+      <Navbar_AppBar position="static">
         <Container maxWidth={false}>
           <Toolbar disableGutters>
 
@@ -46,7 +46,7 @@ function Navbar() {
             <NavbarProfile />
           </Toolbar>
         </Container>
-      </AppBar>
+      </Navbar_AppBar>
 
       <Outlet />
     </Box>

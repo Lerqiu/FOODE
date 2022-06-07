@@ -1,12 +1,11 @@
 import { styled } from '@mui/material/styles';
 import MuiButton from '@mui/material/Button';
 
-const OfferDate_Button = styled(MuiButton)(() => ({
+const OffersPrice_Button = styled(MuiButton)(() => ({
   '&.Mui-disabled': {
-    backgroundColor: '#83BD75',
-    borderRadius: 35,
+    backgroundColor: '#4E944F',
     color: 'white',
   },
 }));
 
-export default OfferDate_Button;
+export default OffersPrice_Button;
