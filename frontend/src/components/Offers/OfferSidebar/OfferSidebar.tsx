@@ -100,7 +100,7 @@ function OfferSidebar(props: {showModal: any}) {
           value={productName}
         />
         <OfferFilterText
-          title="Minimanlna cena:"
+          title="Minimalna cena:"
           onChange={setMinPrice}
           value={minPrice}
         />

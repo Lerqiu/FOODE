@@ -1,10 +1,10 @@
 package com.example.foode.city.presentation
 
-import com.example.foode.city.presentation.CityController
+
 import com.example.foode.city.service.CityService
 import spock.lang.Specification
 
-class CityControllerSpec extends Specification{
+class CityControllerSpec extends Specification {
     private CityService cityService
     private CityDTOMapper cityDTOMapper
     private CityController cityController

@@ -38,7 +38,7 @@ function AddOfferModal(props: {show: any, onHide: any}) {
     return {
       ...offer,
       date: new Date(),
-      user: {
+      userOutput: {
         id: 1,
       },
       product,
