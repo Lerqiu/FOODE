@@ -30,9 +30,6 @@ class OfferServiceSpec extends Specification {
     private Offer updatedOffer
     private Offer secondOffer
 
-    private List<OfferEntity> listOfOfferEntities
-    private List<Offer> listOfOffers
-
     private Page<OfferEntity> allOfferEntities
     private Page<Offer> allOffers
 
@@ -109,8 +106,8 @@ class OfferServiceSpec extends Specification {
                 product)
 
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
-        listOfOfferEntities = new ArrayList<OfferEntity>(List.of(offerEntity, secondOfferEntity))
-        listOfOffers = new ArrayList<Offer>(List.of(offer, secondOffer))
+        def listOfOfferEntities = new ArrayList<OfferEntity>(List.of(offerEntity, secondOfferEntity))
+        def listOfOffers = new ArrayList<Offer>(List.of(offer, secondOffer))
 
         allOfferEntities = new PageImpl<>(listOfOfferEntities, pageable, 100)
         allOffers = new PageImpl<>(listOfOffers, pageable, 100)
@@ -148,8 +145,6 @@ class OfferServiceSpec extends Specification {
 
         then: "saveAndFlush() is called once"
         1 * offerRepository.saveAndFlush(_) >> offerEntity
-        1 * offerMapper.toOfferEntity(_ as Offer) >> offerEntity
-        1 * offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
     }
 
     def "getOffersFiltered() WHEN called with filters SHOULD return exactly what repository returns"() {
@@ -166,7 +161,8 @@ class OfferServiceSpec extends Specification {
                 >> allOfferEntities
 
         and: "mocked offerMapper"
-        offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
+        offerMapper.fromOfferEntity(offerEntity) >> offer
+        offerMapper.fromOfferEntity(secondOfferEntity) >> secondOffer
 
         when: "getOffersFiltered() returns Page of offers"
         Page<Offer> returnedOffers = offerService.getOffersFiltered(filters, pageable)
@@ -189,7 +185,8 @@ class OfferServiceSpec extends Specification {
                 >> allOfferEntities
 
         and: "mocked offerMapper"
-        offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
+        offerMapper.fromOfferEntity(offerEntity) >> offer
+        offerMapper.fromOfferEntity(secondOfferEntity) >> secondOffer
 
         when: "we run getOffersFiltered()"
         offerService.getOffersFiltered(filters, pageable)
@@ -199,7 +196,6 @@ class OfferServiceSpec extends Specification {
                 _ as org.springframework.data.jpa.domain.Specification<OfferEntity>,
                 _ as Pageable)
                 >> allOfferEntities
-        1 * offerMapper.fromOfferEntities(_ as List<OfferEntity>) >> listOfOffers
     }
 
     def "getOffer() WHEN called with id, which is found in offerRepository SHOULD return offer with given id"() {
@@ -256,7 +252,6 @@ class OfferServiceSpec extends Specification {
 
         then: "findById() is called once"
         1 * offerRepository.findById(_) >> Optional.of(offerEntity)
-        1 * offerMapper.fromOfferEntity(_) >> offer
     }
 
     def "deleteOffer() WHEN called with id SHOULD call deleteById() method from offerRepository once"() {
@@ -330,8 +325,6 @@ class OfferServiceSpec extends Specification {
         then: "saveAndFlush() is called once"
         1 * offerRepository.findById(_ as Long) >> Optional.of(offerEntity)
         1 * offerRepository.saveAndFlush(_) >> offerEntity
-        1 * offerMapper.toOfferEntity(_ as Offer) >> offerEntity
-        2 * offerMapper.fromOfferEntity(_ as OfferEntity) >> offer
     }
 
 }

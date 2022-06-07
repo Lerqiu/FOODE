@@ -20,9 +20,9 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.1.Final'
-	implementation group: 'org.springframework.data', name: 'spring-data-rest-webmvc', version: '3.7.0'
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.mapstruct:mapstruct:1.5.1.Final')
+	implementation('org.springframework.data:spring-data-rest-webmvc:3.7.0')
 
 	//lombok
 	compileOnly('org.projectlombok:lombok')

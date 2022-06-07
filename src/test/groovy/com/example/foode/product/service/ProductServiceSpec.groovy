@@ -30,8 +30,6 @@ class ProductServiceSpec extends Specification {
     private Product updatedProduct
     private Page<Product> allProducts
 
-    private List<Product> listOfProducts
-
     void setup() {
         productRepository = Mock(ProductRepository)
         productMapper = Mock(ProductMapper)
@@ -69,7 +67,7 @@ class ProductServiceSpec extends Specification {
 
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
         def listOfProductEntities = new ArrayList<ProductEntity>(List.of(productEntity, secondProductEntity))
-        listOfProducts = new ArrayList<Product>(List.of(product, secondProduct))
+        def listOfProducts = new ArrayList<Product>(List.of(product, secondProduct))
 
         allProductEntities = new PageImpl<>(listOfProductEntities, pageable, 100)
         allProducts = new PageImpl<>(listOfProducts, pageable, 100)
@@ -105,8 +103,6 @@ class ProductServiceSpec extends Specification {
 
         then: "saveAndFlush() is called once"
         1 * productRepository.saveAndFlush(_) >> productEntity
-        1 * productMapper.toProductEntity(_ as Product) >> productEntity
-        1 * productMapper.fromProductEntity(_ as ProductEntity) >> product
     }
 
     def "getProductsByName() WHEN called with name SHOULD return page of products with given name"() {
@@ -120,7 +116,8 @@ class ProductServiceSpec extends Specification {
         productRepository.findAllByNameContainingIgnoreCase(_ as String, _ as Pageable) >> allProductEntities
 
         and: "mocked productMapper"
-        productMapper.fromProductEntities(_ as List<ProductEntity>) >> listOfProducts
+        productMapper.fromProductEntity(productEntity) >> product
+        productMapper.fromProductEntity(secondProductEntity) >> secondProduct
 
         when: "getOffersByCity() returns Page of offers"
         Page<Product> returnedProducts = productService.getProductsByName(name, pageable)
@@ -137,17 +134,17 @@ class ProductServiceSpec extends Specification {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("name")))
 
         and: "mocked productRepository"
-        productRepository.findAllByNameContainingIgnoreCase(_ as String, _ as Pageable) >> allProducts
+        productRepository.findAllByNameContainingIgnoreCase(_ as String, _ as Pageable) >> allProductEntities
 
         and: "mocked productMapper"
-        productMapper.fromProductEntities(_ as List<ProductEntity>) >> listOfProducts
+        productMapper.fromProductEntity(productEntity) >> product
+        productMapper.fromProductEntity(secondProductEntity) >> secondProduct
 
         when: "we run getProductsByName"
         productService.getProductsByName(name, pageable)
 
         then: "findAllByName() is called once"
-        1 * productRepository.findAllByNameContainingIgnoreCase(_, _) >> allProducts
-        1 * productMapper.fromProductEntities(_ as List<ProductEntity>) >> listOfProducts
+        1 * productRepository.findAllByNameContainingIgnoreCase(_, _) >> allProductEntities
     }
 
     def "getProduct() when called with id, which is found in productRepository SHOULD return product with given id"() {
@@ -197,7 +194,6 @@ class ProductServiceSpec extends Specification {
 
         then: "findById() is called once"
         1 * productRepository.findById(_) >> Optional.of(productEntity)
-        1 * productMapper.fromProductEntity(_ as ProductEntity) >> product
     }
 
     def "deleteProduct() when called with id SHOULD call deleteById() from ProductRepository once"() {
@@ -266,8 +262,6 @@ class ProductServiceSpec extends Specification {
         then: "saveAndFlush() is called once"
         1 * productRepository.findById(_ as Long) >> Optional.of(productEntity)
         1 * productRepository.saveAndFlush(_) >> productEntity
-        1 * productMapper.toProductEntity(_ as Product) >> productEntity
-        2 * productMapper.fromProductEntity(_ as ProductEntity) >> product
     }
 
 }

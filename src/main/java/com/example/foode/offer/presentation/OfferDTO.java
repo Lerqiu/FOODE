@@ -23,5 +23,5 @@ public class OfferDTO {
 
     private ProductDTO product;
 
-    private UserOfferOutput userOutput;
+    private UserOfferDTO userOutput;
 }

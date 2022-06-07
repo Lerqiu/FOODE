@@ -2,7 +2,6 @@ package com.example.foode.offer.presentation;
 
 import com.example.foode.offer.exception.OfferNotFoundException;
 import com.example.foode.offer.persistence.OfferFilters;
-import com.example.foode.offer.service.Offer;
 import com.example.foode.offer.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,14 +20,15 @@ public class OfferController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OfferDTO createOffer(@RequestBody OfferDTO offerDto) {
-        Offer offer = offerDTOMapper.fromOfferDto(offerDto);
+        var offer = offerDTOMapper.fromOfferDto(offerDto);
         return offerDTOMapper.toOfferDto(offerService.createOffer(offer));
     }
 
     @GetMapping()
     public Page<OfferDTO> getOffersFiltered(OfferFilters filters,
                                             Pageable pageable) {
-        return offerService.getOffersFiltered(filters, pageable).map(offerDTOMapper::toOfferDto);
+        return offerService.getOffersFiltered(filters, pageable)
+                .map(offerDTOMapper::toOfferDto);
     }
 
     @GetMapping("/{id}")
@@ -46,7 +46,7 @@ public class OfferController {
     @ResponseStatus(HttpStatus.CREATED)
     public OfferDTO updateOffer(@RequestBody OfferDTO offerDto,
                                 @PathVariable Long id) {
-        Offer offer = offerDTOMapper.fromOfferDto(offerDto);
+        var offer = offerDTOMapper.fromOfferDto(offerDto);
         return offerDTOMapper.toOfferDto(offerService.updateOffer(offer, id));
     }
 }

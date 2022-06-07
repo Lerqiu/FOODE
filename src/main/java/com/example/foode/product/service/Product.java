@@ -2,7 +2,6 @@ package com.example.foode.product.service;
 
 import lombok.Data;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -23,8 +22,8 @@ public class Product {
     }
 
     public Product(Long id,
-                         String name,
-                         LocalDate expirationDate) {
+                   String name,
+                   LocalDate expirationDate) {
         this(name, expirationDate);
         this.id = id;
     }
