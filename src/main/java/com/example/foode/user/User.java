@@ -1,7 +1,7 @@
 package com.example.foode.user;
 
 import com.example.foode.fridge.Fridge;
-import com.example.foode.offer.Offer;
+import com.example.foode.offer.persistence.OfferEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -36,16 +36,30 @@ public class User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
-    private List<Offer> offers;
+    private List<OfferEntity> offers;
 
     public User() {
+    }
+
+    public User(Long id,
+                String login,
+                String password,
+                BigDecimal points,
+                String contact,
+                List<OfferEntity> offers) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.points = points;
+        this.contact = contact;
+        this.offers = offers;
     }
 
     public User(String login,
                 String password,
                 BigDecimal points,
                 String contact,
-                List<Offer> offers) {
+                List<OfferEntity> offers) {
         this.login = login;
         this.password = password;
         this.points = points;

@@ -1,8 +1,12 @@
-package com.example.foode.offer
+package com.example.foode.offer.presentation
 
-import com.example.foode.city.City
-import com.example.foode.city.CityRepository
-import com.example.foode.product.Product
+import com.example.foode.city.persistence.CityEntity
+import com.example.foode.city.persistence.CityRepository
+import com.example.foode.offer.persistence.OfferEntity
+import com.example.foode.offer.persistence.OfferRepository
+import com.example.foode.product.persistence.ProductEntity
+import com.example.foode.user.User
+import com.example.foode.user.UserRepository
 import com.jayway.jsonpath.JsonPath
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -36,6 +40,11 @@ class OfferControllerSpec extends Specification {
             "product": {
                 "name": "Apple",
                 "expirationDate": "2030-02-10"
+            },
+            "userOutput": {
+                "id": 1,
+                "login": "log",
+                "contact": "cont"
             }
         }
         """
@@ -49,26 +58,43 @@ class OfferControllerSpec extends Specification {
     @Autowired
     private CityRepository cityRepository
 
-    private Offer offer
+    @Autowired
+    private UserRepository userRepository
 
-    private City city
+    private OfferEntity offer
 
-    private City secondCity
+    private CityEntity city
+
+    private CityEntity secondCity
+
+    private User user
 
     void setup() {
-        city = new City("Wrocław")
-        secondCity = new City("Warszawa")
+        city = new CityEntity("Wrocław")
+        secondCity = new CityEntity("Warszawa")
         cityRepository.saveAllAndFlush(List.of(city, secondCity))
 
-        offer = new Offer(
+        user = new User(
+                1,
+                "loginTest",
+                "PasswdTest",
+                BigDecimal.valueOf(50),
+                "contactTest",
+                new ArrayList<>()
+        )
+
+        userRepository.saveAndFlush(user)
+
+        offer = new OfferEntity(
                 BigDecimal.valueOf(30).setScale(0),
                 city,
                 LocalDate.of(2022, 03, 02),
                 "newDesc",
                 "avail",
-                new Product(
+                new ProductEntity(
                         "apple",
-                        LocalDate.of(2030, 02, 10)))
+                        LocalDate.of(2030, 02, 10)),
+                user)
     }
 
     def "creates Offer"() throws Exception {
@@ -198,11 +224,11 @@ class OfferControllerSpec extends Specification {
 
         assertThat(offerRepository.findAll())
                 .extracting(
-                        Offer.&getId as Function,
-                        Offer.&getPrice as Function,
-                        Offer.&getDate as Function,
-                        Offer.&getDescription as Function,
-                        Offer.&getAvailability as Function)
+                        OfferEntity.&getId as Function,
+                        OfferEntity.&getPrice as Function,
+                        OfferEntity.&getDate as Function,
+                        OfferEntity.&getDescription as Function,
+                        OfferEntity.&getAvailability as Function)
                 .doesNotContain(tuple(
                         offer.getId(),
                         offer.getPrice(),
@@ -232,10 +258,10 @@ class OfferControllerSpec extends Specification {
 
         assertThat(offerRepository.findAll())
                 .extracting(
-                        Offer.&getPrice as Function,
-                        Offer.&getDate as Function,
-                        Offer.&getDescription as Function,
-                        Offer.&getAvailability as Function)
+                        OfferEntity.&getPrice as Function,
+                        OfferEntity.&getDate as Function,
+                        OfferEntity.&getDescription as Function,
+                        OfferEntity.&getAvailability as Function)
                 .contains(tuple(
                         offer.getPrice(),
                         offer.getDate(),
@@ -243,47 +269,51 @@ class OfferControllerSpec extends Specification {
                         offer.getAvailability()))
     }
 
-    private List<Offer> exampleOffers() {
+    private List<OfferEntity> exampleOffers() {
         return List.of(
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(1).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(2).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "banana",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
                         city,
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
-                                LocalDate.of(2030, 02, 10))
+                                LocalDate.of(2030, 02, 10)),
+                        user
                 ),
-                new Offer(
+                new OfferEntity(
                         BigDecimal.valueOf(3).setScale(0),
                         secondCity,
                         LocalDate.of(2022, 03, 02),
                         "newDesc",
                         "avail",
-                        new Product(
+                        new ProductEntity(
                                 "apple",
-                                LocalDate.of(2030, 02, 10)))
-        )
+                                LocalDate.of(2030, 02, 10)),
+                        user
+        ))
     }
 }

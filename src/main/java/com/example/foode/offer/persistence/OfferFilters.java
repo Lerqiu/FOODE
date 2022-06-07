@@ -1,4 +1,4 @@
-package com.example.foode.offer;
+package com.example.foode.offer.persistence;
 
 import lombok.Data;
 

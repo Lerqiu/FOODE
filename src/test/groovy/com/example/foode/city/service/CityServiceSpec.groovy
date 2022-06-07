@@ -1,14 +1,17 @@
-package com.example.foode.city
+package com.example.foode.city.service
 
+import com.example.foode.city.persistence.CityRepository
 import spock.lang.Specification
 
-class CityServiceSpec extends Specification{
+class CityServiceSpec extends Specification {
     private CityRepository cityRepository
-    private CityService  cityService
+    private CityService cityService
+    private CityMapper cityMapper
 
     void setup() {
         cityRepository = Mock(CityRepository)
-        cityService = new CityService(cityRepository)
+        cityMapper = Mock(CityMapper.class)
+        cityService = new CityService(cityRepository, cityMapper)
     }
 
     def "getAll WHEN called SHOULD return all values from repository"() {

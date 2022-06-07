@@ -79,7 +79,6 @@ function AddOfferForm(props: {cities: ICity[], submit: (values: any) => void}) {
             <Form.Control.Feedback type="invalid" tooltip>{errors.productName}</Form.Control.Feedback>
           </InputGroup>
           <FormLabel>Cena</FormLabel>
-          f
           <InputGroup>
             <FormControl
               name="price"

@@ -1,4 +1,4 @@
-package com.example.foode.offer;
+package com.example.foode.offer.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class OfferSpecification implements Specification<OfferProjection> {
+public class OfferSpecification implements Specification<OfferEntity> {
 
     private final OfferFilters filters;
 
     @Override
-    public Predicate toPredicate(Root<OfferProjection> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<OfferEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (filters.getName() != null) {
             predicates.add(
                     criteriaBuilder.like(
-                            root.join("product").get("name"),
+                            root.join("productEntity").get("name"),
                             toPattern(filters.getName()))
             );
         }
@@ -30,7 +30,7 @@ public class OfferSpecification implements Specification<OfferProjection> {
         if (filters.getCityId() != null) {
             predicates.add(
                     criteriaBuilder.equal(
-                            root.get("city"),
+                            root.get("cityEntity"),
                             filters.getCityId())
             );
         }

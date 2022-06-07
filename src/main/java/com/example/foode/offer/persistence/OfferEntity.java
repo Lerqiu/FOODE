@@ -1,7 +1,7 @@
-package com.example.foode.offer;
+package com.example.foode.offer.persistence;
 
-import com.example.foode.city.City;
-import com.example.foode.product.Product;
+import com.example.foode.city.persistence.CityEntity;
+import com.example.foode.product.persistence.ProductEntity;
 import com.example.foode.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "offer")
 @Data
-public class Offer {
+public class OfferEntity {
 
     @Id
     @SequenceGenerator(name = "offers_id_seq", sequenceName = "offers_id_seq", allocationSize = 1)
@@ -28,7 +28,7 @@ public class Offer {
 
     @ManyToOne()
     @JoinColumn(name = "city_id", referencedColumnName = "id")
-    private City city;
+    private CityEntity cityEntity;
 
     @Column(length = 4000, nullable = false)
     private String description;
@@ -43,51 +43,44 @@ public class Offer {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private ProductEntity productEntity;
 
-    public Offer() {
+    public OfferEntity() {
     }
 
-    public Offer(
+    public OfferEntity(
             Long id,
             BigDecimal price,
             LocalDate date,
-            City city,
+            CityEntity cityEntity,
             String description,
             String availability,
             User user,
-            Product product) {
+            ProductEntity productEntity) {
         this.id = id;
         this.price = price;
         this.date = date;
-        this.city = city;
+        this.cityEntity = cityEntity;
         this.description = description;
         this.availability = availability;
         this.user = user;
-        this.product = product;
+        this.productEntity = productEntity;
     }
 
-    public Offer(BigDecimal price, City city, LocalDate date, String description, String availability, Product product) {
+    public OfferEntity(BigDecimal price,
+                       CityEntity cityEntity,
+                       LocalDate date,
+                       String description,
+                       String availability,
+                       ProductEntity productEntity,
+                       User user) {
         this.price = price;
-        this.city = city;
+        this.cityEntity = cityEntity;
         this.date = date;
         this.description = description;
         this.availability = availability;
-        this.product = product;
-    }
-
-    public void setFrom(Offer offer) {
-        this.setAvailability(offer.getAvailability());
-        this.setCity(offer.getCity());
-        this.setDate(offer.getDate());
-        this.setDescription(offer.getDescription());
-        this.setPrice(offer.getPrice());
-        this.setProduct(offer.getProduct());
-        this.setCity(offer.getCity());
-    }
-
-    public UserOfferOutput getUserOutput() {
-        return UserOfferOutput.from(user != null ? user : new User());
+        this.productEntity = productEntity;
+        this.user = user;
     }
 
 }
