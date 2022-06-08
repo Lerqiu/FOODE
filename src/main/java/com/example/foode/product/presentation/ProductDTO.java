@@ -2,30 +2,22 @@ package com.example.foode.product.presentation;
 
 import lombok.Data;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
 public class ProductDTO {
-
+    @Positive(message = "Id must be positive")
     private Long id;
 
+    @NotBlank(message = "Product name cannot be blank")
+    @Size(max = 255, message = "Product name must be of max size 255")
     private String name;
 
+    @Future(message = "Expiration date should be from future")
     private LocalDate expirationDate;
 
     public ProductDTO() {
-    }
-
-    public ProductDTO(String name, LocalDate expirationDate) {
-        this.name = name;
-        this.expirationDate = expirationDate;
-    }
-
-    public ProductDTO(Long id,
-                   String name,
-                   LocalDate expirationDate) {
-        this(name, expirationDate);
-        this.id = id;
     }
 
 }

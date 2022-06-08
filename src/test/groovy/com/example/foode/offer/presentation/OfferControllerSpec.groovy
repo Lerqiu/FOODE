@@ -37,6 +37,10 @@ class OfferControllerSpec extends Specification {
             "date": "2022-03-02",
             "description": "newDesc",
             "availability": "avail",
+            "city": {
+                "id": 1,
+                "name": "Wroclaw"
+            },
             "product": {
                 "name": "Apple",
                 "expirationDate": "2030-02-10"
