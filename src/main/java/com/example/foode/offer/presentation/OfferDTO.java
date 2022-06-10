@@ -1,6 +1,7 @@
 package com.example.foode.offer.presentation;
 
 import com.example.foode.city.presentation.CityDTO;
+import com.example.foode.offer.presentation.crudmarker.OnOfferCreate;
 import com.example.foode.product.presentation.ProductDTO;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Data
 public class OfferDTO {
     @Positive(message = "Id must be positive")
+    @Null(groups = OnOfferCreate.class, message = "Id must be null if we want to create a new offer")
     private Long id;
 
     @NotNull

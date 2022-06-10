@@ -8,6 +8,8 @@ import com.example.foode.product.persistence.ProductEntity
 import com.example.foode.user.User
 import com.example.foode.user.UserRepository
 import com.jayway.jsonpath.JsonPath
+import org.hamcrest.Matchers
+import org.hamcrest.core.Is
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
@@ -22,6 +24,7 @@ import java.util.function.Function
 
 import static org.assertj.core.api.Assertions.assertThat
 import static org.assertj.core.api.Assertions.tuple
+import static org.hamcrest.Matchers.containsString
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -33,6 +36,30 @@ class OfferControllerSpec extends Specification {
 
     private static final String OFFER_BODY = """
         {
+            "id": 1
+            "price": 30,
+            "date": "2022-03-02",
+            "description": "newDesc",
+            "availability": "avail",
+            "city": {
+                "id": 1,
+                "name": "Wroclaw"
+            },
+            "product": {
+                "name": "Apple",
+                "expirationDate": "2030-02-10"
+            },
+            "userOutput": {
+                "id": 1,
+                "login": "log",
+                "contact": "cont"
+            }
+        }
+        """
+
+    private static final String NOT_VALID_OFFER_BODY = """
+        {
+            "id": 1,
             "price": 30,
             "date": "2022-03-02",
             "description": "newDesc",
@@ -124,6 +151,20 @@ class OfferControllerSpec extends Specification {
         createdOffer.getDescription() == offer.getDescription()
         createdOffer.getPrice() == offer.getPrice()
         createdOffer.getDate() == offer.getDate()
+    }
+
+    def "returns bad_request while offer we want to create include id"() {
+        when: "we perform post request with offer given in body including id"
+        def result = mockMvc
+                .perform(post("/api/offers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(NOT_VALID_OFFER_BODY))
+
+        then: "we get map of fields and errors"
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().string(containsString("Id must be null if we want to create a new offer")))
+
     }
 
     def "gets Offers filtered"() throws Exception {
@@ -318,6 +359,6 @@ class OfferControllerSpec extends Specification {
                                 "apple",
                                 LocalDate.of(2030, 02, 10)),
                         user
-        ))
+                ))
     }
 }

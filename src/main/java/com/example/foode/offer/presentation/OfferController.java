@@ -2,11 +2,13 @@ package com.example.foode.offer.presentation;
 
 import com.example.foode.offer.exception.OfferNotFoundException;
 import com.example.foode.offer.persistence.OfferFilters;
+import com.example.foode.offer.presentation.crudmarker.OnOfferCreate;
 import com.example.foode.offer.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/offers")
+@Validated
 public class OfferController {
 
     private final OfferService offerService;
@@ -27,6 +30,7 @@ public class OfferController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(OnOfferCreate.class)
     public OfferDTO createOffer(@Valid @RequestBody OfferDTO offerDto) {
         var offer = offerDTOMapper.fromOfferDto(offerDto);
         return offerDTOMapper.toOfferDto(offerService.createOffer(offer));
@@ -71,7 +75,12 @@ public class OfferController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    String handleConstraintViolationException(ConstraintViolationException e) {
-        return "Not valid due to validation error: " + e.getMessage();
+    public Map<String, String> handleConstraintViolationException(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getConstraintViolations().forEach(error ->
+                errors.put(error.getPropertyPath().toString(), error.getMessage()));
+
+        return errors;
     }
 }
