@@ -8,9 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class OfferService {
 
     private final OfferRepository offerRepository;
@@ -21,7 +25,8 @@ public class OfferService {
         return offerMapper.fromOfferEntity(offerRepository.saveAndFlush(offerEntity));
     }
 
-    public Page<Offer> getOffersFiltered(OfferFilters filters, Pageable pageable) {
+    public Page<Offer> getOffersFiltered(@Valid OfferFilters filters,
+                                         Pageable pageable) {
         return offerRepository.findAll(new OfferSpecification(filters), pageable)
                 .map(offerMapper::fromOfferEntity);
     }

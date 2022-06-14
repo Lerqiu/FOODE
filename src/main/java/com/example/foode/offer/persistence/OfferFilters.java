@@ -10,8 +10,8 @@ public class OfferFilters {
 
     private final String name;
     private final Long cityId;
-    @PositiveOrZero
+    @PositiveOrZero(message = "Filtered price must be non-negative")
     private final BigDecimal priceFrom;
-    @PositiveOrZero
+    @PositiveOrZero(message = "Filtered price must be non-negative")
     private final BigDecimal priceTo;
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -37,7 +38,7 @@ public class OfferController {
     }
 
     @GetMapping()
-    public Page<OfferDTO> getOffersFiltered(@Valid OfferFilters filters,
+    public Page<OfferDTO> getOffersFiltered(OfferFilters filters,
                                             Pageable pageable) {
         return offerService.getOffersFiltered(filters, pageable)
                 .map(offerDTOMapper::toOfferDto);
@@ -78,8 +79,13 @@ public class OfferController {
     public Map<String, String> handleConstraintViolationException(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
 
-        ex.getConstraintViolations().forEach(error ->
-                errors.put(error.getPropertyPath().toString(), error.getMessage()));
+        ex.getConstraintViolations().forEach(error -> {
+            var field = "";
+            for (Path.Node node : error.getPropertyPath()) {
+                field = node.getName();
+            }
+            errors.put(field, error.getMessage());
+        });
 
         return errors;
     }

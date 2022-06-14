@@ -14,7 +14,7 @@ public class ProductDTO {
     @Size(max = 255, message = "Product name must be of max size 255")
     private String name;
 
-    @Future(message = "Expiration date should be from future")
+    @FutureOrPresent(message = "Expiration date should be from future or present")
     private LocalDate expirationDate;
 
     public ProductDTO() {

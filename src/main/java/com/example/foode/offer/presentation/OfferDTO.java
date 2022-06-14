@@ -21,6 +21,7 @@ public class OfferDTO {
     private BigDecimal price;
 
     @NotNull
+    @PastOrPresent(message = "Offer publication date should be from past or present")
     private LocalDate date;
 
     @NotNull
