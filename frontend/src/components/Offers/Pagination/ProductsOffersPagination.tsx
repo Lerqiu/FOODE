@@ -2,8 +2,20 @@ import React from 'react';
 import { Box, Pagination, PaginationItem } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { IPage } from '../../../interfaces/pagination/IPagination';
+import { setPageHelper } from '../../../helpers/offersPagination';
 
-function ProductsOffersPagination() {
+// eslint-disable-next-line no-unused-vars
+type IDoRender = (r: IPage) => void
+
+function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) {
+  const { state, doRender } = props;
+  const { pagesCount } = state;
+
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    doRender(setPageHelper(state, page));
+  };
+
   return (
     <Box
       display="flex"
@@ -15,7 +27,9 @@ function ProductsOffersPagination() {
       justifyContent="center"
     >
       <Pagination
-        count={5}
+        count={pagesCount > 9 ? 10 : pagesCount}
+        page={state.currentPage}
+        onChange={handleChange}
         renderItem={(item) => (
           <PaginationItem
             components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}

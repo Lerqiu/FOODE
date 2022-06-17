@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
 import OfferList from '../../components/Offers/OfferList/OfferList';
 import IOfferView from '../../interfaces/offer/IOfferView';
@@ -9,6 +9,9 @@ import OfferSidebar from '../../components/Offers/OfferSidebar/OfferSidebar';
 import AddOfferModal from '../../components/Offers/AddOfferModal/AddOfferModal';
 import OfferService from '../../services/OfferService';
 import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.style';
+import { IPage, IPaginationRaw } from '../../interfaces/pagination/IPagination';
+import { getDefaultPage } from '../../helpers/offersPagination';
+import IOffersResponse from '../../interfaces/offersResponse/offersResponse';
 
 const mapOffers = (_offers: IOffers): IOfferView[] => {
   const IMAGE_PLACEHOLDER_URL = 'https://media.discordapp.net/attachments/966704303119171658/970037795995398144/unknown.png';
@@ -22,19 +25,31 @@ const mapOffers = (_offers: IOffers): IOfferView[] => {
     }));
 };
 
-function OffersPage() {
-  const [showModal, setShowModal] = useState(false);
-  const [offers, setOffers] = useState<IOfferView[]>([]);
+const mapPage = (res: IPaginationRaw): IPage => ({
+  pagesCount: res.totalPages,
+  currentPage: res.number + 1,
+  pageSize: res.size,
+});
 
-  useQuery<IOffers, Error>(
-    'offers-get',
-    async () => OfferService.findAll(),
+function OffersPage() {
+  const reset: [IOfferView[], IPage] = [[], getDefaultPage()];
+
+  const [showModal, setShowModal] = useState(false);
+  const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
+
+  const setPage = (_page: IPage) => {
+    setOffers([offers, _page]);
+  };
+
+  useQuery<IOffersResponse, Error>(
+    ['offers-get', { page: page.currentPage }],
+    async () => OfferService.findAll(page),
     {
       onSuccess: (res) => {
-        setOffers(mapOffers(res));
+        setOffers([mapOffers(res), mapPage(res)]);
       },
       onError: () => {
-        setOffers([]);
+        setOffers(reset);
       },
     },
   );
@@ -53,7 +68,7 @@ function OffersPage() {
           <OfferList offers={offers} />
         </Container>
       </OffersPage_SecondaryContainer>
-      <ProductsOffersPagination />
+      <ProductsOffersPagination doRender={setPage} state={page} />
     </OffersPage_MainContainer>
   );
 }
