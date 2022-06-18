@@ -26,7 +26,7 @@ const mapOffers = (_offers: IOffers): IOfferView[] => {
 };
 
 const mapPage = (res: IPaginationRaw): IPage => ({
-  pagesCount: res.totalPages,
+  pagesCount: res.totalPages <= 0 ? 1 : res.totalPages,
   currentPage: res.number + 1,
   pageSize: res.size,
 });

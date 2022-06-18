@@ -16,6 +16,8 @@ function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) 
     doRender(setPageHelper(state, page));
   };
 
+  const count = pagesCount > 9 ? 10 : pagesCount;
+
   return (
     <Box
       display="flex"
@@ -27,7 +29,7 @@ function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) 
       justifyContent="center"
     >
       <Pagination
-        count={pagesCount > 9 ? 10 : pagesCount}
+        count={count}
         page={state.currentPage}
         onChange={handleChange}
         renderItem={(item) => (
