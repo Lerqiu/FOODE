@@ -36,7 +36,7 @@ function OffersPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
-
+  
   const setPage = (_page: IPage) => {
     setOffers([offers, _page]);
   };
