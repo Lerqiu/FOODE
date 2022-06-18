@@ -5,6 +5,7 @@ import OfferFilterCity_Select from './OfferFilterCitySelect.styles';
 
 function OfferFilterCitySelect(props: {
   cities: ICity[]
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void,
   value: string}) {
   const { cities, onChange, value } = props;

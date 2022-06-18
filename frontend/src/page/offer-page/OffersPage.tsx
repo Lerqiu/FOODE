@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
 import OfferList from '../../components/Offers/OfferList/OfferList';
 import IOfferView from '../../interfaces/offer/IOfferView';
@@ -53,6 +53,8 @@ function OffersPage() {
       },
     },
   );
+
+  if (page.currentPage > page.pagesCount) { setOffers([offers, { ...page, currentPage: page.pagesCount }]); }
 
   return (
     <OffersPage_MainContainer>

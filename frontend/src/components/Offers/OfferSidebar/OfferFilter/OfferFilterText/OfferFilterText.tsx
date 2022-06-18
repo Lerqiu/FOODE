@@ -3,6 +3,7 @@ import OfferFilterText_TextField, { OfferFilterText_style_nested } from './Offer
 
 function OfferFilterText(props: {
   title: string,
+  // eslint-disable-next-line no-unused-vars
   onChange:(value: string) => void,
   value: string
 }) {
