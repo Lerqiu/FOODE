@@ -1,6 +1,7 @@
 import axios from 'axios';
-import IOffers from '../interfaces/offer/IOffers';
 import { getOffersPageManagement } from '../helpers/offerPageStorageHelper';
+import { IPage } from '../interfaces/pagination/IPagination';
+import IOffersResponse from '../interfaces/offersResponse/offersResponse';
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_URL_PREFIX,
@@ -8,6 +9,13 @@ const apiClient = axios.create({
     'Content-type': 'application/json',
   },
 });
+
+export const Offer_handlePagination = (page: IPage): string => {
+  let pageString = '';
+  pageString += `&page=${page.currentPage - 1}`;
+  pageString += `&size=${page.pageSize}`;
+  return pageString;
+};
 
 const handleFilters = () => {
   const storageManagement = getOffersPageManagement();
@@ -21,15 +29,16 @@ const handleFilters = () => {
   return filterString;
 };
 
-const findAll = async () => {
+const findAll = async (page: IPage) => {
   const storageManagement = getOffersPageManagement();
   const sort = storageManagement.sort ? `sort=${storageManagement.sort}` : '';
   const filter = handleFilters();
-  const response = await apiClient.get<IOffers>(`/offers?${sort}${filter}`);
+  const pagination = Offer_handlePagination(page);
+  const response = await apiClient.get<IOffersResponse>(`/offers?${sort}${filter}${pagination}`);
   return response.data;
 };
 
-const save = async (offer : any) => {
+const save = async (offer: any) => {
   await apiClient.post('offers', offer);
 };
 
