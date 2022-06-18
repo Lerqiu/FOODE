@@ -14,6 +14,7 @@ const INPUT_TOO_LONG = 'Podane pole jest za długie';
 
 const today = new Date();
 
+// eslint-disable-next-line no-unused-vars
 function AddOfferForm(props: {cities: ICity[], submit: (values: any) => void}) {
   const { cities, submit } = props;
 

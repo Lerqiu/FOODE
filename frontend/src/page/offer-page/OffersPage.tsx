@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import ProductsOffersPagination from '../../components/Offers/Pagination/ProductsOffersPagination';
 import OfferList from '../../components/Offers/OfferList/OfferList';
 import IOfferView from '../../interfaces/offer/IOfferView';
@@ -36,7 +36,7 @@ function OffersPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
-  
+
   const setPage = (_page: IPage) => {
     setOffers([offers, _page]);
   };
