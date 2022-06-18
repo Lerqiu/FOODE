@@ -54,6 +54,8 @@ function OffersPage() {
     },
   );
 
+  if (page.currentPage > page.pagesCount) { setOffers([offers, { ...page, currentPage: page.pagesCount }]); }
+
   return (
     <OffersPage_MainContainer>
       <OffersPage_SecondaryContainer>
