@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getOffersPageManagement } from '../helpers/offerPageStorageHelper';
 import { IPage } from '../interfaces/pagination/IPagination';
 import IOffersResponse from '../interfaces/offersResponse/offersResponse';
+import IOfferView from '../interfaces/offer/IOfferView';
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_URL_PREFIX,
@@ -42,8 +43,13 @@ const save = async (offer: any) => {
   await apiClient.post('offers', offer);
 };
 
+const deleteOne = async (offer: IOfferView) => {
+  await apiClient.delete(`offers/${offer.id}`);
+};
+
 const OfferService = {
   findAll,
   save,
+  deleteOne,
 };
 export default OfferService;

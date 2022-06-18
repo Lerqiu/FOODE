@@ -36,7 +36,7 @@ function OffersPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
-
+  
   const setPage = (_page: IPage) => {
     setOffers([offers, _page]);
   };
@@ -53,6 +53,8 @@ function OffersPage() {
       },
     },
   );
+
+  if (page.currentPage > page.pagesCount) { setOffers([offers, { ...page, currentPage: page.pagesCount }]); }
 
   return (
     <OffersPage_MainContainer>
