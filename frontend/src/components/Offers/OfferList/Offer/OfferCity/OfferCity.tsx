@@ -4,7 +4,7 @@ import ICity from '../../../../../interfaces/city/ICity';
 
 function OfferCity(props: { city: ICity }) {
   const { city } = props;
-  return <Chip variant="outlined" label={city.name} />;
+  return <Chip variant="filled" label={city.name} />;
 }
 
 export default OfferCity;

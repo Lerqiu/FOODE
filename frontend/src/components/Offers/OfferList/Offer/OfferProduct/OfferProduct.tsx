@@ -11,7 +11,7 @@ function OfferProduct(props: { product: IProduct }) {
       noWrap
       align="center"
     >
-      {product.name}
+      {product.name.toUpperCase()}
     </OffersList_Typography>
   );
 }
