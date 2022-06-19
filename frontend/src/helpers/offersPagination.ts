@@ -3,7 +3,7 @@ import { IPage } from '../interfaces/pagination/IPagination';
 export const getDefaultPage = (): IPage => ({
   pagesCount: 1,
   currentPage: 1,
-  pageSize: 2,
+  pageSize: 4,
 });
 
 export const setPageHelper = (_state: IPage, page: number): IPage => {
