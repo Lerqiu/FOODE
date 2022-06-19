@@ -19,6 +19,6 @@ public abstract class OfferDTOMapper {
     public abstract OfferDTO toOfferDto(Offer offer);
 
     @Mapping(target = "user",
-            expression = "java(userRepository.findById(offerDto.getUserOutput().id()).orElseGet(User::new))")
+            expression = "java(userRepository.findById(offerDto.getUserOutput().getId()).orElseGet(User::new))")
     public abstract Offer fromOfferDto(OfferDTO offerDto);
 }

@@ -37,6 +37,10 @@ class OfferControllerSpec extends Specification {
             "date": "2022-03-02",
             "description": "newDesc",
             "availability": "avail",
+            "city": {
+                "id": 1,
+                "name": "Wroclaw"
+            },
             "product": {
                 "name": "Apple",
                 "expirationDate": "2030-02-10"
@@ -44,6 +48,48 @@ class OfferControllerSpec extends Specification {
             "userOutput": {
                 "id": 1,
                 "login": "log",
+                "contact": "cont"
+            }
+        }
+        """
+
+    private static final String OFFER_BODY_WITH_ID = """
+        {
+            "id": 1,
+            "price": 30,
+            "date": "2022-03-02",
+            "description": "newDesc",
+            "availability": "avail",
+            "city": {
+                "id": 1,
+                "name": "Wroclaw"
+            },
+            "product": {
+                "name": "Apple",
+                "expirationDate": "2030-02-10"
+            },
+            "userOutput": {
+                "id": 1,
+                "login": "log",
+                "contact": "cont"
+            }
+        }
+        """
+
+    private static final String NOT_VALID_OFFER_BODY = """
+        {
+            "price": -30,
+            "date": "2022-03-02",
+            "description": "newDesc",
+            "city": {
+                "id": 1,
+                "name": "Wroclaw"
+            },
+            "product": {
+                "expirationDate": "2030-02-10"
+            },
+            "userOutput": {
+                "id": 1,
                 "contact": "cont"
             }
         }
@@ -122,6 +168,36 @@ class OfferControllerSpec extends Specification {
         createdOffer.getDate() == offer.getDate()
     }
 
+    def "returns bad_request while offer we want to create include id"() throws Exception {
+        when: "we perform post request with offer given in body including id"
+        def result = mockMvc
+                .perform(post("/api/offers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(OFFER_BODY_WITH_ID))
+
+        then: "we get map of fields and errors"
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("id").value("Id must be null if we want to create a new offer"))
+
+    }
+
+    def "returns bad_request while offer we want to create is not valid"() throws Exception {
+        when: "we perform post request with not valid offer"
+        def result = mockMvc
+                .perform(post("/api/offers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(NOT_VALID_OFFER_BODY))
+
+        then: "we get map of fields and errors"
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("price").value("Price must be non-negative"))
+                .andExpect(jsonPath("availability").value("Availability cannot be blank"))
+                .andExpect(jsonPath("['product.name']").value("Product name cannot be blank"))
+                .andExpect(jsonPath("['userOutput.login']").value("Login cannot be blank"))
+    }
+
     def "gets Offers filtered"() throws Exception {
         given: "product name"
         def name = "app"
@@ -165,6 +241,42 @@ class OfferControllerSpec extends Specification {
                 .andExpect(jsonPath("content[0].availability").value(filteredOffer.getAvailability()))
     }
 
+    def "returns bad_request while passed offerFilters are not valid"() throws Exception {
+        given: "product name"
+        def name = "app"
+
+        and: "city id"
+        def cityId = city.getId().toString()
+
+        and: "price from"
+        def priceFrom = "-2"
+
+        and: "price to"
+        def priceTo = "-3"
+
+        and: "example offers"
+        def offers = exampleOffers()
+
+        and: "offers saved to db"
+        offerRepository.saveAllAndFlush(offers)
+
+        when: "we perform get request with pageable parameters and filters"
+        def result = mockMvc
+                .perform(get("/api/offers")
+                        .param("page", "0")
+                        .param('size', "10")
+                        .param("name", name)
+                        .param("cityId", cityId)
+                        .param("priceFrom", priceFrom)
+                        .param("priceTo", priceTo))
+
+        then: "response status is equal to BadRequest and we get map of fields and errors"
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("priceFrom").value("Filtered price must be non-negative"))
+                .andExpect(jsonPath("priceTo").value("Filtered price must be non-negative"))
+    }
+
     def "gets Offer"() throws Exception {
         given: "firstly we save it to db"
         def savedOffer = offerRepository.saveAndFlush(offer)
@@ -186,6 +298,22 @@ class OfferControllerSpec extends Specification {
                 .andExpect(jsonPath("date").value(offer.getDate().toString()))
                 .andExpect(jsonPath("description").value(offer.getDescription()))
                 .andExpect(jsonPath("availability").value(offer.getAvailability()))
+    }
+
+    def "returns BAD_REQUEST while called getOffer() with given negative id"() throws Exception {
+        given: "negative id"
+        def offerId = -1
+
+        when: "we perform get request with negative id"
+        def result = mockMvc
+                .perform(get(String.format(
+                        "/api/offers/%d",
+                        offerId)))
+
+        then: "response status is equal to BAD_REQUEST and we map of fields and errors"
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("id").value("must be greater than 0"))
     }
 
     def "returns NOT_FOUND response status while offer with given id isn't persisted in db"() throws Exception {
@@ -314,6 +442,6 @@ class OfferControllerSpec extends Specification {
                                 "apple",
                                 LocalDate.of(2030, 02, 10)),
                         user
-        ))
+                ))
     }
 }
