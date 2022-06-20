@@ -15,9 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={root.__get} element={<Navbar />}>
-            <Route path={root.__get} element={<h1>Strona główna</h1>} />
-            <Route path={root.market.__get} element={<OffersPage />} />
-            <Route path={root.fridge.__get} element={<h1>TODO</h1>} />
+            <Route path={root.__get} element={<OffersPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -5,6 +5,7 @@ import IOfferUser from './user/IOfferUser';
 interface IOfferView {
     id: string
     date: Date,
+    description: string,
     expirationDate: Date,
     userOutput: IOfferUser,
     product: IProduct,

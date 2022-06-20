@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
 import NavbarButton from './Button/NavbarButton';
-import NavbarProfile from './Profile/NavbarProfile';
 import Paths from '../../conf/Paths';
 import Navbar_AppBar from './Navbar.styles';
 
@@ -14,9 +13,7 @@ function Navbar() {
   const root = Paths;
 
   const pages = [
-    { name: 'Strona główna', link: root.__get },
-    { name: 'Oferty produktów', link: root.market.__get },
-    { name: 'Posiadane produkty', link: root.fridge.__get },
+    { name: 'Strona główna', link: root.__get }
   ];
 
   const changeSubSite = (link: string) => () => {
@@ -43,7 +40,6 @@ function Navbar() {
                 </NavbarButton>
               ))}
             </Box>
-            <NavbarProfile />
           </Toolbar>
         </Container>
       </Navbar_AppBar>
