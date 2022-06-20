@@ -11,12 +11,12 @@ type IDoRender = (r: IPage) => void
 function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) {
   const { state, doRender } = props;
   const { pagesCount } = state;
+  const limitOfListedPages = 10;
+  const amountOfShowedPages = pagesCount >= limitOfListedPages ? limitOfListedPages : pagesCount;
 
   const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
     doRender(setPageHelper(state, page));
   };
-
-  const count = pagesCount > 9 ? 10 : pagesCount;
 
   return (
     <Box
@@ -29,7 +29,7 @@ function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) 
       justifyContent="center"
     >
       <Pagination
-        count={count}
+        count={amountOfShowedPages}
         page={state.currentPage}
         onChange={handleChange}
         renderItem={(item) => (
