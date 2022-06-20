@@ -1,7 +1,7 @@
 import React from 'react';
 import { MenuItem, Typography } from '@mui/material';
 import ICity from '../../../../../interfaces/city/ICity';
-import OfferFilterCity_Select from './OfferFilterCitySelect.styles';
+import OfferFilterCity_Select from './OfferFilterCitySelect.styling';
 
 function OfferFilterCitySelect(props: {
   cities: ICity[]

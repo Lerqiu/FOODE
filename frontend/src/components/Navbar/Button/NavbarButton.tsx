@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonProps } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { NavbarButton_NoBackground, NavbarButton_WithBackground } from './NavbarButton.styles';
+import { NavbarButton_NoBackground, NavbarButton_WithBackground } from './NavbarButton.styling';
 
 interface NavbarButtonProps extends ButtonProps {
   renderLink: string

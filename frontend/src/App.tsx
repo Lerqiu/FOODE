@@ -3,13 +3,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Navbar from './components/Navbar/Navbar';
 import OffersPage from './page/offer-page/OffersPage';
-import Paths from './conf/Paths';
+import SubSitesPaths from './conf/Paths';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const queryClient = new QueryClient();
 
 function App() {
-  const root = Paths;
+  const root = SubSitesPaths;
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

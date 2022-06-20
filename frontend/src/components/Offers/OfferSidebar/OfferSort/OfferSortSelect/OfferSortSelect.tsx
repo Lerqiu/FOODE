@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MenuItem, Typography } from '@mui/material';
 import { useQueryClient } from 'react-query';
-import OfferSidebarSort_Select from './OfferSortSelect.style';
+import OfferSidebarSort_Select from './OfferSortSelect.styling';
 import { getOffersPageManagement, saveOffersPageManagement } from '../../../../../helpers/offerPageStorageHelper';
 
 function OfferSortSelect() {

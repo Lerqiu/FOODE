@@ -8,7 +8,7 @@ import IOffers from '../../interfaces/offer/IOffers';
 import OfferSidebar from '../../components/Offers/OfferSidebar/OfferSidebar';
 import AddOfferModal from '../../components/Offers/AddOfferModal/AddOfferModal';
 import OfferService from '../../services/OfferService';
-import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.style';
+import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.styling';
 import { IPage, IPaginationRaw } from '../../interfaces/pagination/IPagination';
 import { getDefaultPage } from '../../helpers/offersPagination';
 import IOffersResponse from '../../interfaces/offersResponse/offersResponse';
