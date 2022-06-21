@@ -41,7 +41,7 @@ function OfferSortSelect() {
       variant="filled"
     >
       <MenuItem value="date,desc"><Typography variant="button">Data dodania</Typography></MenuItem>
-      <MenuItem value="product.expirationDate,asc"><Typography variant="button">Data ważności</Typography></MenuItem>
+      <MenuItem value="productEntity.expirationDate,asc"><Typography variant="button">Data ważności</Typography></MenuItem>
       <MenuItem value="price,desc"><Typography variant="button">Cena malejąco</Typography></MenuItem>
       <MenuItem value="price,asc"><Typography variant="button">Cena rosnąco</Typography></MenuItem>
     </OfferSidebarSort_Select>
