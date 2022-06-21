@@ -5,10 +5,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { IPage } from '../../../interfaces/pagination/IPagination';
 import { setPageHelper } from '../../../helpers/offersPagination';
 
-// eslint-disable-next-line no-unused-vars
-type IDoRender = (r: IPage) => void
-
-function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) {
+function ProductsOffersPagination(props: { state: IPage, doRender: React.Dispatch<React.SetStateAction<IPage>> }) {
   const { state, doRender } = props;
   const { pagesCount } = state;
 
@@ -16,7 +13,7 @@ function ProductsOffersPagination(props: { state: IPage, doRender: IDoRender }) 
     doRender(setPageHelper(state, page));
   };
 
-  const count = pagesCount > 9 ? 10 : pagesCount;
+  const count = Math.min(Math.max(1, pagesCount), 10);
 
   return (
     <Box

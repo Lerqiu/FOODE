@@ -1,11 +1,10 @@
 import React from 'react';
 import { MenuItem, Typography } from '@mui/material';
 import ICity from '../../../../../interfaces/city/ICity';
-import OfferFilterCity_Select from './OfferFilterCitySelect.styles';
+import OfferSidebar_Select from '../../OfferSortSelect.style';
 
 function OfferFilterCitySelect(props: {
   cities: ICity[]
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string) => void,
   value: string}) {
   const { cities, onChange, value } = props;
@@ -16,7 +15,7 @@ function OfferFilterCitySelect(props: {
   };
 
   return (
-    <OfferFilterCity_Select
+    <OfferSidebar_Select
       labelId="demo-customized-select-label"
       id="demo-customized-select"
       value={value}
@@ -34,7 +33,7 @@ function OfferFilterCitySelect(props: {
           </Typography>
         </MenuItem>
       )) : ''}
-    </OfferFilterCity_Select>
+    </OfferSidebar_Select>
   );
 }
 

@@ -26,35 +26,38 @@ const mapOffers = (_offers: IOffers): IOfferView[] => {
 };
 
 const mapPage = (res: IPaginationRaw): IPage => ({
-  pagesCount: res.totalPages <= 0 ? 1 : res.totalPages,
+  pagesCount: res.totalPages,
   currentPage: res.number + 1,
   pageSize: res.size,
 });
 
 function OffersPage() {
-  const reset: [IOfferView[], IPage] = [[], getDefaultPage()];
-
   const [showModal, setShowModal] = useState(false);
-  const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
-
-  const setPage = (_page: IPage) => {
-    setOffers([offers, _page]);
-  };
+  const [offers, setOffers] = useState<IOfferView[]>([]);
+  const [page, setPage] = useState<IPage>(getDefaultPage());
 
   useQuery<IOffersResponse, Error>(
     ['offers-get', { page: page.currentPage }],
     async () => OfferService.findAll(page),
     {
       onSuccess: (res) => {
-        setOffers([mapOffers(res), mapPage(res)]);
+        setOffers((_prevState: IOfferView[]) => {
+          setPage(mapPage(res));
+          return mapOffers(res);
+        });
       },
       onError: () => {
-        setOffers(reset);
+        setOffers((_prevState: IOfferView[]) => {
+          setPage(getDefaultPage());
+          return [];
+        });
       },
     },
   );
 
-  if (page.currentPage > page.pagesCount) { setOffers([offers, { ...page, currentPage: page.pagesCount }]); }
+  if (page.currentPage > page.pagesCount) {
+    setPage((_page: IPage) => ({ ..._page, currentPage: Math.min(_page.pagesCount, _page.currentPage) }));
+  }
 
   return (
     <OffersPage_MainContainer>

@@ -13,7 +13,7 @@ function Navbar() {
   const root = Paths;
 
   const pages = [
-    { name: 'Strona główna', link: root.__get }
+    { name: 'Strona główna', link: root.__get },
   ];
 
   const changeSubSite = (link: string) => () => {

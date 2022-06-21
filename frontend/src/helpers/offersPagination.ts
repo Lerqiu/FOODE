@@ -1,9 +1,12 @@
 import { IPage } from '../interfaces/pagination/IPagination';
 
+const pageSizeStr = process.env.REACT_APP_ELEMENTS_PER_PAGE;
+const pageSizeNumber = pageSizeStr ? +pageSizeStr : 2;
+
 export const getDefaultPage = (): IPage => ({
   pagesCount: 1,
   currentPage: 1,
-  pageSize: 4,
+  pageSize: pageSizeNumber,
 });
 
 export const setPageHelper = (_state: IPage, page: number): IPage => {

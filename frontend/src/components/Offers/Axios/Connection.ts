@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const url_prefix = process.env.REACT_APP_URL_PREFIX;
-const client = axios.create({
+const apiClient = axios.create({
   baseURL: url_prefix,
+  headers: {
+    'Content-type': 'application/json',
+  },
 });
 
-const getOffersConnection = () => client;
-export default getOffersConnection;
+export default apiClient;
