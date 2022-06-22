@@ -1,5 +1,5 @@
 import React from 'react';
-import OffersPrice_Button from './OfferPrice.style';
+import OffersPrice_Button from './OfferPrice.styling';
 
 function OffersPrice(props: { price: number }) {
   const { price } = props;

@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import OfferSidebar_AppBar, { OfferSidebar_Button } from './OfferSidebar.style';
+import OfferSidebar_AppBar, { OfferSidebar_Button } from './OfferSidebar.styling';
 import OfferSortSelect from './OfferSort/OfferSortSelect/OfferSortSelect';
 import OfferFilterText from './OfferFilter/OfferFilterText/OfferFilterText';
 import OfferFilterCitySelect from './OfferFilter/OfferFilterCitySelect/OfferFilterCitySelect';

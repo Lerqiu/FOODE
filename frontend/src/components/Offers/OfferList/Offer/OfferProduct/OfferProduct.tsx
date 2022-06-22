@@ -1,6 +1,6 @@
 import React from 'react';
 import IProduct from '../../../../../interfaces/product/IProduct';
-import OffersList_Typography from './OfferProduct.style';
+import OffersList_Typography from './OfferProduct.styling';
 
 function OfferProduct(props: { product: IProduct }) {
   const { product } = props;

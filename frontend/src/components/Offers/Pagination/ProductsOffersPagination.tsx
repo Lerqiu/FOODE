@@ -8,6 +8,8 @@ import { setPageHelper } from '../../../helpers/offersPagination';
 function ProductsOffersPagination(props: { state: IPage, doRender: React.Dispatch<React.SetStateAction<IPage>> }) {
   const { state, doRender } = props;
   const { pagesCount } = state;
+  const limitOfListedPages = 10;
+  const amountOfShowedPages = pagesCount >= limitOfListedPages ? limitOfListedPages : pagesCount;
 
   const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
     doRender(setPageHelper(state, page));
@@ -26,7 +28,7 @@ function ProductsOffersPagination(props: { state: IPage, doRender: React.Dispatc
       justifyContent="center"
     >
       <Pagination
-        count={count}
+        count={amountOfShowedPages}
         page={state.currentPage}
         onChange={handleChange}
         renderItem={(item) => (
