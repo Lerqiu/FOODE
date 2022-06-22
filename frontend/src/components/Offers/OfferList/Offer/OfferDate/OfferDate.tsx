@@ -1,10 +1,10 @@
 import React from 'react';
-import OfferDate_Button from './OfferDate.style';
+import OfferDate_Button from './OfferDate.styling';
 
 function OfferDate(props: { date: Date, prefix: string }) {
   const { date, prefix } = props;
 
-  const getButtonText = () => `${prefix} ${date.toLocaleDateString()}`;
+  const getButtonText = `${prefix} ${date.toLocaleDateString()}`;
 
   return (
     <OfferDate_Button
@@ -12,7 +12,7 @@ function OfferDate(props: { date: Date, prefix: string }) {
       disabled
       size="small"
     >
-      {getButtonText()}
+      {getButtonText}
     </OfferDate_Button>
   );
 }

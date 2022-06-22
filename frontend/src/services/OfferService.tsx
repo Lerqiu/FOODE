@@ -1,15 +1,9 @@
-import axios from 'axios';
 import { getOffersPageManagement } from '../helpers/offerPageStorageHelper';
 import { IPage } from '../interfaces/pagination/IPagination';
 import IOffersResponse from '../interfaces/offersResponse/offersResponse';
 import IOfferView from '../interfaces/offer/IOfferView';
-
-const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_URL_PREFIX,
-  headers: {
-    'Content-type': 'application/json',
-  },
-});
+import apiClient from '../components/Offers/Axios/Connection';
+import IOfferForm from '../interfaces/offer/IOfferForm';
 
 export const Offer_handlePagination = (page: IPage): string => {
   let pageString = '';
@@ -39,7 +33,7 @@ const findAll = async (page: IPage) => {
   return response.data;
 };
 
-const save = async (offer: any) => {
+const save = async (offer: IOfferForm) => {
   await apiClient.post('offers', offer);
 };
 

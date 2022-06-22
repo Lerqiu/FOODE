@@ -30,8 +30,8 @@
         "no-console": "off",
         "no-underscore-dangle": "off",
         "react/no-children-prop" : "off",
-        "no-unused-vars": "warn",
         "react/jsx-pascal-case" : "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "no-unused-vars": "off"
     }
 }

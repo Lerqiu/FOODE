@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MenuItem, Typography } from '@mui/material';
 import { useQueryClient } from 'react-query';
-import OfferSidebarSort_Select from './OfferSortSelect.style';
 import { getOffersPageManagement, saveOffersPageManagement } from '../../../../../helpers/offerPageStorageHelper';
+import OfferSidebarSort_Select from '../../OfferSortSelect.style';
 
 function OfferSortSelect() {
   const initialSelect = getOffersPageManagement().sort || 'date,desc';

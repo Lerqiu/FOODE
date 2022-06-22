@@ -8,7 +8,7 @@ import IOffers from '../../interfaces/offer/IOffers';
 import OfferSidebar from '../../components/Offers/OfferSidebar/OfferSidebar';
 import AddOfferModal from '../../components/Offers/AddOfferModal/AddOfferModal';
 import OfferService from '../../services/OfferService';
-import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.style';
+import { OffersPage_MainContainer, OffersPage_SecondaryContainer } from './OffersPage.styling';
 import { IPage, IPaginationRaw } from '../../interfaces/pagination/IPagination';
 import { getDefaultPage } from '../../helpers/offersPagination';
 import IOffersResponse from '../../interfaces/offersResponse/offersResponse';
@@ -26,35 +26,38 @@ const mapOffers = (_offers: IOffers): IOfferView[] => {
 };
 
 const mapPage = (res: IPaginationRaw): IPage => ({
-  pagesCount: res.totalPages <= 0 ? 1 : res.totalPages,
+  pagesCount: res.totalPages,
   currentPage: res.number + 1,
   pageSize: res.size,
 });
 
 function OffersPage() {
-  const reset: [IOfferView[], IPage] = [[], getDefaultPage()];
-
   const [showModal, setShowModal] = useState(false);
-  const [[offers, page], setOffers] = useState<[IOfferView[], IPage]>(reset);
-
-  const setPage = (_page: IPage) => {
-    setOffers([offers, _page]);
-  };
+  const [offers, setOffers] = useState<IOfferView[]>([]);
+  const [page, setPage] = useState<IPage>(getDefaultPage());
 
   useQuery<IOffersResponse, Error>(
     ['offers-get', { page: page.currentPage }],
     async () => OfferService.findAll(page),
     {
       onSuccess: (res) => {
-        setOffers([mapOffers(res), mapPage(res)]);
+        setOffers((_prevState: IOfferView[]) => {
+          setPage(mapPage(res));
+          return mapOffers(res);
+        });
       },
       onError: () => {
-        setOffers(reset);
+        setOffers((_prevState: IOfferView[]) => {
+          setPage(getDefaultPage());
+          return [];
+        });
       },
     },
   );
 
-  if (page.currentPage > page.pagesCount) { setOffers([offers, { ...page, currentPage: page.pagesCount }]); }
+  if (page.currentPage > page.pagesCount) {
+    setPage((_page: IPage) => ({ ..._page, currentPage: Math.min(_page.pagesCount, _page.currentPage) }));
+  }
 
   return (
     <OffersPage_MainContainer>

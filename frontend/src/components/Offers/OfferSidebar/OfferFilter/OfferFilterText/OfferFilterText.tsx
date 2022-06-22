@@ -1,9 +1,8 @@
 import React from 'react';
-import OfferFilterText_TextField, { OfferFilterText_style_nested } from './OfferFilterText.styles';
+import OfferFilterText_TextField, { OfferFilterText_style_nested } from './OfferFilterText.styling';
 
 function OfferFilterText(props: {
   title: string,
-  // eslint-disable-next-line no-unused-vars
   onChange:(value: string) => void,
   value: string
 }) {

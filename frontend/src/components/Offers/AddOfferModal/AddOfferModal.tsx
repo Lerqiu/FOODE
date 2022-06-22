@@ -8,7 +8,24 @@ import CityService from '../../../services/CityService';
 import AddOfferForm from '../AddOfferForm/AddOfferForm';
 import IOfferForm from '../../../interfaces/offer/IOfferForm';
 
-function AddOfferModal(props: {show: any, onHide: any}) {
+const buildOfferFromForm = (offer: IOfferForm) => {
+  const product = {
+    name: offer.productName,
+    expirationDate: offer.expirationDate,
+  };
+
+  return {
+    ...offer,
+    date: new Date(),
+    userOutput: {
+      id: 1,
+    },
+    product,
+    city: JSON.parse(offer.city),
+  };
+};
+
+function AddOfferModal(props: { show: any, onHide: any }) {
   const { show, onHide } = props;
   const [cities, setCities] = useState<ICity[]>([]);
 
@@ -29,24 +46,7 @@ function AddOfferModal(props: {show: any, onHide: any}) {
     },
   );
 
-  const buildOfferFromForm = (offer: IOfferForm) => {
-    const product = {
-      name: offer.productName,
-      expirationDate: offer.expirationDate,
-    };
-
-    return {
-      ...offer,
-      date: new Date(),
-      userOutput: {
-        id: 1,
-      },
-      product,
-      city: JSON.parse(offer.city),
-    };
-  };
-
-  const addOffer = (offer: any) => {
+  const addOffer = (offer: IOfferForm) => {
     const offerToSend = buildOfferFromForm(offer);
     OfferService.save(offerToSend)
       .then(() => queryClient.invalidateQueries('offers-get'));

@@ -1,12 +1,5 @@
-import axios from 'axios';
+import apiClient from '../components/Offers/Axios/Connection';
 import ICity from '../interfaces/city/ICity';
-
-const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_URL_PREFIX,
-  headers: {
-    'Content-type': 'application/json',
-  },
-});
 
 const findAll = async () => {
   const response = await apiClient.get<ICity[]>('/city');
